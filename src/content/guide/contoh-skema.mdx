@@ -1,0 +1,31 @@
+---
+title: "Contoh Skema: Sahkan Pipeline Content Collection"
+description: "Fail contoh untuk membuktikan skema guide content collection dipatuhi: medan wajib, sumber whitelist, dan reference penulis berfungsi sebelum kandungan sebenar diseed di PAN-7."
+section: "persiapan"
+order: 99
+publishedAt: 2026-05-24
+author: aiman
+sources:
+  - label: "Astro Content Collections — Dokumentasi Rasmi"
+    url: "https://quran.com/2/197"
+    accessedAt: 2026-05-24
+    excerpt: "Ayat tentang bulan haji dan persiapan, digunakan di sini sebagai placeholder URL whitelist."
+draft: true
+---
+
+import { Fragment } from "astro/jsx-runtime";
+
+# Contoh Skema (placeholder)
+
+Fail ini wujud semata-mata untuk **mengesahkan content collection compile** sebelum kandungan
+sebenar dimasukkan menerusi PAN-7 (_Tatacara Asas Umrah_).
+
+Kalau `astro sync` dan `astro build` lulus dengan fail ini di tempatnya, ertinya:
+
+- Skema `guide` di `src/content.config.ts` betul-betul dikuatkuasakan.
+- Whitelist `ALLOWED_SOURCE_DOMAINS` (JAKIM, Mufti WP, Tabung Haji, quran.com, sunnah.com,
+  dll.) menerima URL yang sah dan menolak yang luar senarai.
+- Reference `author: aiman` menjumpai entri di `src/content/author/aiman.json`.
+- `draft: true` menyebabkan fail ini dikecualikan dari laman terbitan.
+
+> **Nota:** padam atau ganti fail ini sebaik sahaja artikel sebenar siap.
