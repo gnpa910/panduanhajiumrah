@@ -1,0 +1,217 @@
+{
+  "batch_id": "2026-05-24-muzakarah-pengalaman",
+  "total": 12,
+  "completed": 0,
+  "topics": [
+    {
+      "slug": "hukum-berhutang-untuk-haji-pinjaman-pendidikan",
+      "title": "Hukum Berhutang dan Meminjam untuk Menunaikan Haji",
+      "category": "muzakarah",
+      "priority": 1,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/715-bayan-li-al-haj-siri-11-hukum-berhutang-untuk-menunaikan-ibadah-haji",
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/714-bayan-li-al-haj-siri-12-pemiutang-menghalang-penghutang-daripada-melaksanakan-haji",
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5674-irsyad-al-fatwa-khas-haji-dan-korban-siri-ke-77-hukum-berhutang-bagi-mengerjakan-ibadah-korban"
+      ],
+      "tags": [
+        "hukum-berhutang",
+        "istitaah",
+        "tabung-haji",
+        "muzakarah-fatwa"
+      ],
+      "description": "Tiga panduan Mufti Wilayah tentang hukum berhutang untuk menunaikan haji — bila harus, bila terlarang, dan bagaimana hak pemiutang menentukan keabsahan keberangkatan jemaah."
+    },
+    {
+      "slug": "badal-haji-vs-infaq-arwah-mana-utama",
+      "title": "Badal Haji atau Infaq untuk Arwah: Mana Lebih Utama?",
+      "category": "muzakarah",
+      "priority": 2,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/3300-bayan-li-al-haj-siri-ke-38-badal-haji-atau-infaq-untuk-arwah-datuk-dan-nenek-lebih-utama",
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4879-irsyad-fatwa-haji-dan-korban-siri-ke-50-adakah-boleh-mengerjakan-badal-haji-melebihi-seorang-di-dalam-satu-haji"
+      ],
+      "tags": [
+        "badal-haji",
+        "arwah",
+        "infaq",
+        "sedekah-jariah",
+        "muzakarah-fatwa"
+      ],
+      "description": "Bayan Mufti WP Siri 38 tentang pilihan antara badal haji dan infaq untuk arwah, serta keputusan tentang melebihi seorang badal dalam satu musim haji."
+    },
+    {
+      "slug": "wanita-umrah-tanpa-mahram-syarat-dan-hukum",
+      "title": "Hukum Wanita Menunaikan Umrah Tanpa Mahram",
+      "category": "muzakarah",
+      "priority": 3,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/3836-bayan-li-al-haj-siri-ke-39-hukum-seorang-wanita-menunaikan-umrah-tanpa-mahram"
+      ],
+      "tags": [
+        "wanita",
+        "mahram",
+        "umrah",
+        "syarat",
+        "muzakarah-fatwa"
+      ],
+      "description": "Bayan Mufti WP Siri 39 tentang syarat dan keadaan harus seorang wanita menunaikan umrah tanpa mahram — termasuk pandangan mazhab Syafie dan keputusan terkini."
+    },
+    {
+      "slug": "wanita-haid-hari-arafah-tatacara-haji",
+      "title": "Wanita Datang Haid pada Hari Arafah: Apa Boleh, Apa Tidak",
+      "category": "muzakarah",
+      "priority": 4,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4222-irsyad-al-fatwa-haji-dan-korban-siri-ke-36-hukum-jika-wanita-datang-haid-ketika-melaksanakan-ibadah-haji-pada-hari-arafah",
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4869-irsyad-al-fatwa-haji-dan-korban-siri-ke-42-qadha-puasa-hari-arafah-kerana-datang-haid"
+      ],
+      "tags": [
+        "wanita",
+        "haid",
+        "wukuf-arafah",
+        "qadha-puasa",
+        "muzakarah-fatwa"
+      ],
+      "description": "Irsyad Hukum Mufti WP Siri 36 dan 42 menjelaskan apa yang boleh dan tak boleh dilakukan wanita haid pada Hari Arafah, termasuk wukuf dan qadha puasa Arafah."
+    },
+    {
+      "slug": "wanita-haid-laksana-saie",
+      "title": "Bolehkah Wanita Haid Melaksanakan Saie?",
+      "category": "muzakarah",
+      "priority": 5,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5321-irsyad-fatwa-khas-haji-dan-korban-siri-ke-58-bolehkah-wanita-haid-melaksanakan-sa-ie"
+      ],
+      "tags": [
+        "wanita",
+        "haid",
+        "saie",
+        "syarat-suci",
+        "muzakarah-fatwa"
+      ],
+      "description": "Irsyad Fatwa Khas Mufti WP Siri 58 menjelaskan hukum saie dalam keadaan haid — perlukah suci, dan apa pilihan jemaah wanita yang datang haid selepas tawaf umrah."
+    },
+    {
+      "slug": "hukum-tertidur-selepas-tawaf-wada",
+      "title": "Hukum Tertidur dan Tertangguh Selepas Tawaf Wada'",
+      "category": "muzakarah",
+      "priority": 6,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6251-irsyad-hukum-khas-haji-dan-korban-siri-ke-100-hukum-tertidur-selepas-mengerjakan-tawaf-wada",
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/2747-bayan-li-al-haj-siri-ke-37-perkara-yang-boleh-dilakukan-selepas-tawaf-wada"
+      ],
+      "tags": [
+        "tawaf-wada",
+        "perpisahan-baitullah",
+        "kelewatan-pulang",
+        "muzakarah-fatwa"
+      ],
+      "description": "Irsyad Mufti WP Siri 100 dan Bayan Siri 37 tentang status tawaf wada apabila jemaah tertidur, tertangguh urusan kebenaran imigresen, atau singgah di tempat lain sebelum berangkat."
+    },
+    {
+      "slug": "haji-mabrur-menggugur-dosa-hak-manusia",
+      "title": "Adakah Haji Mabrur Menggugurkan Semua Dosa, Termasuk Hak Manusia?",
+      "category": "muzakarah",
+      "priority": 7,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5351-irsyad-al-fatwa-khas-haji-dan-korban-siri-ke-71-adakah-haji-mabrur-menggugurkan-dosa-dosa-berkaitan-kewajipan-dan-hak-ke-atas-seseorang"
+      ],
+      "tags": [
+        "haji-mabrur",
+        "pengampunan-dosa",
+        "hak-allah",
+        "hak-manusia",
+        "muzakarah-fatwa"
+      ],
+      "description": "Irsyad Mufti WP Siri 71 menjelaskan beza antara dosa berkaitan hak Allah dan hak manusia — apa yang gugur dengan haji mabrur, dan apa yang masih perlu diselesaikan jemaah."
+    },
+    {
+      "slug": "hukum-memotong-giliran-tunai-haji",
+      "title": "Hukum Memotong Giliran Haji dengan Cara Tunai",
+      "category": "muzakarah",
+      "priority": 8,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5927-irsyad-hukum-khas-haji-dan-korban-siri-ke-84-hukum-memotong-giliran-tunai-haji"
+      ],
+      "tags": [
+        "giliran-haji",
+        "tabung-haji",
+        "tunai-haji",
+        "muzakarah-fatwa"
+      ],
+      "description": "Irsyad Mufti WP Siri 84 menjelaskan hukum syariat dan etika memotong giliran haji dengan cara tunai — apa pertimbangan untuk yang berkemampuan dan yang tertangguh giliran."
+    },
+    {
+      "slug": "persiapan-jemaah-haji-kali-pertama",
+      "title": "Sepuluh Perkara Penting untuk Jemaah Haji Kali Pertama",
+      "category": "pengalaman",
+      "priority": 9,
+      "primary_sources": [
+        "https://www.tabunghaji.gov.my/",
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/702-bayan-al-haj-siri-23-waktu-sesuai-melaksanakan-dam-tamattu"
+      ],
+      "tags": [
+        "jemaah-pertama",
+        "persediaan-haji",
+        "tabung-haji",
+        "pengalaman"
+      ],
+      "description": "Senarai semak praktikal dari nasihat Tabung Haji dan rukhsah Mufti WP — apa yang jemaah kali pertama selalu terlepas pandang dan bagaimana mengelaknya."
+    },
+    {
+      "slug": "sakit-dan-dehidrasi-semasa-wukuf",
+      "title": "Sakit dan Dehidrasi Semasa Wukuf: Pencegahan dan Rukhsah",
+      "category": "pengalaman",
+      "priority": 10,
+      "primary_sources": [
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4222-irsyad-al-fatwa-haji-dan-korban-siri-ke-36-hukum-jika-wanita-datang-haid-ketika-melaksanakan-ibadah-haji-pada-hari-arafah",
+        "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5922-irsyad-hukum-khas-haji-dan-korban-siri-ke-83-wanita-kematian-suami-semasa-melakukan-haji-adakah-wajib-pulang",
+        "https://www.tabunghaji.gov.my/"
+      ],
+      "tags": [
+        "wukuf-arafah",
+        "kesihatan",
+        "dehidrasi",
+        "rukhsah",
+        "pengalaman"
+      ],
+      "description": "Panduan kesihatan praktikal untuk wukuf di Arafah pada cuaca melampau — pencegahan strok haba, tatacara solat dalam keadaan sakit, dan bila boleh menggunakan rukhsah."
+    },
+    {
+      "slug": "dokumen-hilang-di-tanah-suci",
+      "title": "Dokumen atau Pasport Hilang di Tanah Suci: Apa Nak Buat",
+      "category": "pengalaman",
+      "priority": 11,
+      "primary_sources": [
+        "https://www.tabunghaji.gov.my/",
+        "https://www.tabunghaji.gov.my/siaran-media/haji/"
+      ],
+      "tags": [
+        "dokumen-hilang",
+        "pasport",
+        "konsulat",
+        "tabung-haji",
+        "pengalaman"
+      ],
+      "description": "SOP praktikal apabila pasport, kad pengenalan, atau bukti tempahan hilang semasa di Mekah atau Madinah — saluran rasmi Tabung Haji dan Konsulat Malaysia."
+    },
+    {
+      "slug": "hilang-dari-rombongan-haji",
+      "title": "Terpisah dari Rombongan Haji: Cara Pulang ke Maktab",
+      "category": "pengalaman",
+      "priority": 12,
+      "primary_sources": [
+        "https://www.tabunghaji.gov.my/",
+        "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/3836-bayan-li-al-haj-siri-ke-39-hukum-seorang-wanita-menunaikan-umrah-tanpa-mahram"
+      ],
+      "tags": [
+        "maktab",
+        "rombongan",
+        "tabung-haji",
+        "ketua-rombongan",
+        "pengalaman"
+      ],
+      "description": "Risiko terpisah dari rombongan dan cara mengelak — kod warna pakaian, sistem buddy, kontak ketua rombongan, dan apa nak buat kalau terlanjur hilang."
+    }
+  ]
+}
