@@ -1,0 +1,532 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Kalkulator Dam", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Kalkulator Dam Haji & Umrah",
+  description:
+    "Kira jenis dam, kategori (takhyir/tartib), dan kadar wajib bagi pelanggaran ihram atau dam tamattu — berdasarkan fatwa Mufti WP dan kadar ADAHI semasa.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+---
+
+<BaseLayout
+  title="Kalkulator Dam Haji & Umrah"
+  description="Kira dam wajib untuk pelanggaran ihram, dam tamattu', atau fidyah — dengan kadar ADAHI 2026 (RM810/kibas) dan rujukan fatwa Mufti Wilayah Persekutuan."
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Kalkulator Dam</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Alat Interaktif · Berasaskan Fatwa</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Kalkulator Dam
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Pilih jenis dam atau pelanggaran ihram, kalkulator akan tunjukkan
+        kategori, pilihan bayaran, dan kadar wajar mengikut fatwa Mufti
+        Wilayah Persekutuan dan kadar ADAHI semasa.
+      </p>
+    </header>
+
+    {/* ─────── INPUT ─────── */}
+    <div
+      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm"
+    >
+      <label
+        for="dam-type"
+        class="block text-sm font-semibold text-emerald-900 mb-2"
+      >
+        Pilih situasi
+      </label>
+      <select
+        id="dam-type"
+        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+      >
+        <option value="">— Pilih situasi anda —</option>
+        <optgroup label="Dam Wajib (Tamattu/Qiran)">
+          <option value="tamattu">Dam Tamattu' / Qiran (gabung umrah + haji)</option>
+        </optgroup>
+        <optgroup label="Pelanggaran Itlaf (kerosakan)">
+          <option value="cukur-rambut">Mencukur 3 helai rambut atau lebih (sengaja)</option>
+          <option value="cukur-rambut-terlupa">Mencukur rambut dalam keadaan terlupa</option>
+          <option value="potong-kuku">Mengerat kuku 3 helai atau lebih</option>
+          <option value="bunuh-binatang">Membunuh binatang buruan dalam Tanah Haram</option>
+        </optgroup>
+        <optgroup label="Pelanggaran Taraffuh (keseronokan)">
+          <option value="wangian-sengaja">Memakai wangian dengan sengaja</option>
+          <option value="wangian-terlupa">Memakai wangian dalam keadaan terlupa</option>
+          <option value="jahitan-lelaki">Lelaki memakai pakaian berjahit</option>
+          <option value="tutup-kepala-lelaki">Lelaki menutup kepala (tutup melekat)</option>
+          <option value="tutup-muka-wanita">Wanita menutup muka dengan kain melekat</option>
+          <option value="sarung-tangan">Wanita memakai sarung tangan</option>
+        </optgroup>
+        <optgroup label="Meninggalkan Wajib Haji">
+          <option value="tinggal-mabit">Meninggalkan mabit di Muzdalifah/Mina</option>
+          <option value="tinggal-tawaf-wada">Meninggalkan tawaf wada</option>
+          <option value="tinggal-melontar">Meninggalkan melontar jamrah</option>
+          <option value="tinggal-niat-miqat">Tertinggal miqat tanpa berihram</option>
+        </optgroup>
+        <optgroup label="Lain-lain">
+          <option value="ihsar">Dam Ihsar (terhalang ke Mekah selepas berihram)</option>
+          <option value="hubungan-suami-isteri">Hubungan suami isteri ketika ihram (sebelum tahallul awal)</option>
+        </optgroup>
+      </select>
+
+      <p class="text-xs text-stone-500 mt-3">
+        Tidak nampak situasi anda? Rujuk
+        <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/"
+           class="text-emerald-700 underline">artikel lengkap dam</a>
+        atau
+        <a href="https://muftiwp.gov.my/" rel="noopener"
+           class="text-emerald-700 underline">Mufti WP</a>.
+      </p>
+    </div>
+
+    {/* ─────── OUTPUT ─────── */}
+    <div id="dam-result" class="hidden">
+      <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+        <div class="flex items-baseline gap-3 mb-3 flex-wrap">
+          <span id="dam-category-pill" class="badge badge-teal text-xs"></span>
+          <span id="dam-type-label" class="text-sm text-stone-600"></span>
+        </div>
+        <h2 id="dam-headline" class="text-2xl font-semibold text-emerald-900 mb-3"
+            style="font-family: var(--font-serif);"></h2>
+        <p id="dam-explanation" class="text-stone-700 mb-4"></p>
+
+        <div id="dam-options" class="space-y-3 mb-4"></div>
+
+        <div id="dam-amount" class="text-lg font-medium text-emerald-900 mb-4"></div>
+
+        <details class="text-sm">
+          <summary class="cursor-pointer text-emerald-700 font-medium">
+            Sumber rujukan
+          </summary>
+          <ul id="dam-sources" class="mt-2 space-y-1 list-disc list-inside text-stone-700"></ul>
+        </details>
+      </div>
+
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-stone-700">
+        <p class="font-medium text-stone-900 mb-1">⚠ Disclaimer penting</p>
+        <p>
+          Kalkulator ini panduan umum. Untuk kes khusus (uzur kesihatan,
+          kekangan kewangan, kombinasi pelanggaran), rujuk pegawai Tabung
+          Haji atau hubungi Mufti WP secara langsung. Kadar ADAHI boleh
+          berubah setiap musim haji.
+        </p>
+      </div>
+    </div>
+
+    {/* ─────── FOOTER LINKS ─────── */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+        Bacaan lanjut
+      </h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>
+          →
+          <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/"
+             class="text-emerald-700 underline">
+            Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/ihram-miqat/larangan-ihram-lelaki-wanita-perbezaan/"
+             class="text-emerald-700 underline">
+            Senarai Lengkap Larangan Ihram Lelaki dan Wanita
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/haji/wajib-haji-tujuh-perkara/"
+             class="text-emerald-700 underline">
+            Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/ihram-miqat/ihram-pampers-sanitizer-payung-hukum/"
+             class="text-emerald-700 underline">
+            Pampers, Sanitizer, dan Payung Semasa Ihram: Halal atau Dam
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    // Dam logic — keyed by select value
+    const DAM_DATA = {
+      "tamattu": {
+        category: "Wajib Sebab Manfaat",
+        type: "Dam Tartib & Taqdir",
+        headline: "Dam Tamattu' atau Qiran",
+        explanation:
+          "Wajib bagi jemaah yang menggabungkan umrah dan haji dalam satu musim (Tamattu'), atau menggabungkan niat haji dan umrah serentak (Qiran). Asas dari Surah al-Baqarah 2:196.",
+        options: [
+          "1️⃣ Sembelih seekor kambing/kibas di Tanah Haram",
+          "2️⃣ Jika tidak mampu: puasa 10 hari (3 hari di Tanah Suci + 7 hari setelah pulang)",
+        ],
+        amount: "RM810/kibas (kadar ADAHI 2026 melalui Tabung Haji)",
+        sources: [
+          ["Surah al-Baqarah 2:196", "https://quran.com/2/196"],
+          ["Mufti WP — Bayan Siri 36: Bayar Dam di Malaysia", "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/2560-bayan-li-al-haj-siri-ke-36-bayar-dam-di-malaysia"],
+          ["Mufti WP — Bayan Siri 23: Waktu Dam Tamattu", "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/702-bayan-al-haj-siri-23-waktu-sesuai-melaksanakan-dam-tamattu"],
+        ],
+      },
+      "cukur-rambut": {
+        category: "Itlaf",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Cukur 3 helai rambut atau lebih",
+        explanation:
+          "Itlaf bermaksud kerosakan. Kerana mencukur rambut termasuk merosakkan tanda ihram, ia kena dam takhyir — anda pilih satu daripada tiga: kambing, sedekah, atau puasa.",
+        options: [
+          "Pilih SATU sahaja:",
+          "🐑 Sembelih seekor kambing di Tanah Haram (RM810 melalui ADAHI), atau",
+          "🍞 Sedekah 3 sa' makanan asasi (sekitar 6.6 kg) kepada 6 fakir miskin, atau",
+          "🌙 Puasa 3 hari berturut-turut",
+        ],
+        amount: "RM810 (jika pilih kambing) — pilihan termurah biasa: puasa",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109: Pelanggaran Ihram Kerana Terlupa", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+          ["Mufti WP — Irsyad Siri 38: Dam Sekiranya Syak Rambut Gugur", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4304-irsyad-al-fatwa-haji-dan-korban-siri-ke-38-adakah-dikenakan-dam-sekiranya-syak-rambut-gugur"],
+        ],
+      },
+      "cukur-rambut-terlupa": {
+        category: "Itlaf",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Cukur rambut dalam keadaan terlupa",
+        explanation:
+          "Mufti WP Irsyad Khas Siri 109 menjelaskan: pelanggaran itlaf seperti cukur rambut atau erat kuku, kekal kena fidyah walaupun terlupa atau jahil. Anda tidak berdosa, tetapi fidyah tetap wajib.",
+        options: [
+          "Sama macam sengaja, pilih SATU:",
+          "🐑 Kambing (RM810 ADAHI), atau",
+          "🍞 Sedekah 6.6 kg makanan kepada 6 fakir, atau",
+          "🌙 Puasa 3 hari",
+        ],
+        amount: "RM810 (kambing) atau alternatif (puasa/sedekah)",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109: Pelanggaran Ihram Terlupa", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+        ],
+      },
+      "potong-kuku": {
+        category: "Itlaf",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Mengerat kuku 3 helai atau lebih",
+        explanation:
+          "Sama hukum dengan cukur rambut. Termasuk pelanggaran itlaf — terkena dam walaupun terlupa.",
+        options: [
+          "Pilih SATU:",
+          "🐑 Kambing (RM810), atau",
+          "🍞 Sedekah 6.6 kg makanan, atau",
+          "🌙 Puasa 3 hari",
+        ],
+        amount: "RM810 (kambing) atau alternatif",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+        ],
+      },
+      "bunuh-binatang": {
+        category: "Itlaf (Dam Jaza')",
+        type: "Dam Tartib & Ta'dil",
+        headline: "Membunuh binatang buruan",
+        explanation:
+          "Dam Jaza' — kena bayar gantian setara dengan binatang yang dibunuh. Asas dari Surah al-Maidah 5:95.",
+        options: [
+          "Tertib dan ta'dil:",
+          "🦌 Sembelih binatang setara dengan yang dibunuh (cth: ayam liar → ayam), atau",
+          "🍞 Sedekah makanan setara nilai binatang itu, atau",
+          "🌙 Puasa setara nilai (1 hari = 1 mud makanan)",
+        ],
+        amount: "Berbeza ikut nilai binatang — rujuk Mufti WP",
+        sources: [
+          ["Surah al-Maidah 5:95", "https://quran.com/5/95"],
+        ],
+      },
+      "wangian-sengaja": {
+        category: "Taraffuh",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Memakai wangian dengan sengaja",
+        explanation:
+          "Taraffuh bermaksud keseronokan. Kerana memakai wangian itu menjurus pada keseronokan, kena dam takhyir bila dilakukan dengan sengaja dan tahu.",
+        options: [
+          "Pilih SATU:",
+          "🐑 Kambing (RM810), atau",
+          "🍞 Sedekah 6.6 kg makanan kepada 6 fakir, atau",
+          "🌙 Puasa 3 hari",
+        ],
+        amount: "RM810 (kambing) atau alternatif",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+        ],
+      },
+      "wangian-terlupa": {
+        category: "Taraffuh — Terlupa",
+        type: "Tiada Dam (Tiada Fidyah)",
+        headline: "Memakai wangian dalam keadaan terlupa",
+        explanation:
+          "Berbeza dengan itlaf. Mufti WP Irsyad Khas Siri 109 jelaskan: pelanggaran taraffuh seperti wangian atau pakaian berjahit, kalau dilakukan dalam keadaan terlupa atau jahil — tidak berdosa dan TIDAK kena fidyah.",
+        options: [
+          "✅ Tiada dam wajib",
+          "Cuma: tanggal/basuh wangian itu segera bila anda sedar",
+        ],
+        amount: "RM0 (tiada bayaran)",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+          ["Mufti WP — Irsyad Siri 33: Deodoran Selepas Niat Bersyarat", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4196-irsyad-al-fatwa-haji-dan-korban-siri-ke-33-memakai-deodoran-kerana-tidak-tahu-perlu-menjaga-pantang-larang-selepas-niat-bersyarat"],
+        ],
+      },
+      "jahitan-lelaki": {
+        category: "Taraffuh",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Lelaki memakai pakaian berjahit",
+        explanation:
+          "Kena dam takhyir bila dilakukan sengaja. Kalau terlupa/jahil — tiada dam (taraffuh).",
+        options: [
+          "Sengaja: Pilih SATU:",
+          "🐑 Kambing (RM810), atau",
+          "🍞 Sedekah 6.6 kg makanan kepada 6 fakir, atau",
+          "🌙 Puasa 3 hari",
+          "Terlupa/jahil: Tiada dam — tanggalkan segera",
+        ],
+        amount: "RM810 (jika sengaja) / RM0 (jika terlupa)",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 109", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6594-irsyad-hukum-khas-haji-dan-korban-siri-ke-109-melanggar-larangan-ihram-kerana-terlupa-adakah-dikenakan-fidyah-2"],
+        ],
+      },
+      "tutup-kepala-lelaki": {
+        category: "Taraffuh",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Lelaki menutup kepala (melekat)",
+        explanation:
+          "Tutup kepala dengan kain/topi melekat = dam takhyir bila sengaja. Payung yang tidak melekat (Mufti WP Irsyad Khas Siri 99): tidak kena dam.",
+        options: [
+          "Tutup melekat sengaja: kambing / sedekah / puasa 3 hari",
+          "Payung TIDAK MELEKAT: tiada dam ✅",
+        ],
+        amount: "RM810 (jika sengaja) / RM0 (jika payung)",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 99: Payung Semasa Ihram", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/6250-irsyad-hukum-khas-haji-dan-korban-siri-ke-99-hukum-menggunakan-payung-ketika-ihram"],
+        ],
+      },
+      "tutup-muka-wanita": {
+        category: "Taraffuh",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Wanita tutup muka melekat",
+        explanation:
+          "Wanita haram tutup muka dengan kain melekat. Niqab yang tidak melekat di muka (Irsyad Khas Siri 89): boleh untuk tawaf sunat.",
+        options: [
+          "Melekat sengaja: kambing / sedekah / puasa 3 hari",
+          "Niqab tidak melekat: boleh ✅",
+        ],
+        amount: "RM810 (jika sengaja) / RM0 (jika niqab terapung)",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 89: Niqab Tawaf Sunat", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5932-irsyad-hukum-khas-haji-dan-korban-siri-ke-89-hukum-memakai-niqab-ketika-melakukan-tawaf-sunat"],
+        ],
+      },
+      "sarung-tangan": {
+        category: "Taraffuh",
+        type: "Dam Takhyir & Taqdir",
+        headline: "Wanita memakai sarung tangan",
+        explanation:
+          "Wanita dilarang pakai sarung tangan ketika ihram. Kena dam takhyir bila sengaja.",
+        options: [
+          "Pilih SATU:",
+          "🐑 Kambing (RM810), atau",
+          "🍞 Sedekah 6.6 kg makanan, atau",
+          "🌙 Puasa 3 hari",
+        ],
+        amount: "RM810 atau alternatif",
+        sources: [
+          ["Mufti WP — Irsyad Khas Siri 68: Pelitup Muka Ihram", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/5336-irsyad-al-fatwa-khas-haji-dan-korban-siri-ke-68-hukum-memakai-pelitup-muka-ketika-dalam-ihram"],
+        ],
+      },
+      "tinggal-mabit": {
+        category: "Tinggal Wajib Haji",
+        type: "Dam Tartib & Taqdir",
+        headline: "Tinggal mabit di Muzdalifah/Mina",
+        explanation:
+          "Mabit adalah wajib haji. Meninggalkannya wajib bayar dam tartib (perlu turutan).",
+        options: [
+          "Turutan:",
+          "1️⃣ Sembelih seekor kambing di Tanah Haram, atau",
+          "2️⃣ Jika tidak mampu: puasa 10 hari (3 hari masa haji + 7 hari pulang)",
+        ],
+        amount: "RM810 (kambing) atau puasa 10 hari",
+        sources: [
+          ["Mufti WP — Bayan Siri 29: Melontar dan Mabit", "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/690-bayan-li-al-haj-siri-ke-29-masa-untuk-melontar-jamratul-kubra-dan-amalan-sunat-ketika-melontar"],
+        ],
+      },
+      "tinggal-tawaf-wada": {
+        category: "Tinggal Wajib Haji",
+        type: "Dam Tartib & Taqdir",
+        headline: "Tinggal tawaf wada",
+        explanation:
+          "Tawaf wada adalah wajib haji bagi yang bukan haid. Wanita haid dimaafkan tanpa dam (hadis Ibn Abbas).",
+        options: [
+          "Bukan kerana haid: kambing atau puasa 10 hari",
+          "Wanita haid: tiada dam ✅",
+        ],
+        amount: "RM810 atau RM0 (jika haid)",
+        sources: [
+          ["Mufti WP — Bayan Siri 37: Selepas Tawaf Wada", "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/2747-bayan-li-al-haj-siri-ke-37-perkara-yang-boleh-dilakukan-selepas-tawaf-wada"],
+        ],
+      },
+      "tinggal-melontar": {
+        category: "Tinggal Wajib Haji",
+        type: "Dam Tartib & Taqdir",
+        headline: "Tinggal melontar jamrah",
+        explanation:
+          "Melontar adalah wajib haji. Tinggal sebahagian atau semua = dam.",
+        options: [
+          "Tinggal SEMUA jamrah: dam penuh (kambing atau puasa 10 hari)",
+          "Tinggal sebahagian: 1 batu = 1 mud makanan; 2 batu = 2 mud; lebih = dam penuh",
+        ],
+        amount: "RM810 (penuh) atau lebih kecil ikut bilangan",
+        sources: [
+          ["Mufti WP — Bayan Siri 29: Melontar Jamratul Kubra", "https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/690-bayan-li-al-haj-siri-ke-29-masa-untuk-melontar-jamratul-kubra-dan-amalan-sunat-ketika-melontar"],
+        ],
+      },
+      "tinggal-niat-miqat": {
+        category: "Tinggal Wajib Haji/Umrah",
+        type: "Dam Tartib & Taqdir",
+        headline: "Lalu miqat tanpa berihram",
+        explanation:
+          "Wajib berniat ihram di miqat. Lalu tanpa berihram dan terus ke Mekah = dam tartib.",
+        options: [
+          "Pilihan:",
+          "✈ Patah balik ke miqat sebelum lakukan apa-apa rukun → tidak kena dam",
+          "Tidak patah balik: kambing atau puasa 10 hari",
+        ],
+        amount: "RM0 (jika patah balik) / RM810 (jika tidak)",
+        sources: [
+          ["Mufti WP — Irsyad Siri 35: Miqat Umrah Penduduk Mekah", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4216-irsyad-al-fatwa-haji-dan-korban-siri-ke-35-adakah-miqat-umrah-bagi-penduduk-mekah-hanya-di-tanah-halal-tan-im-atau-boleh-di-mana-mana-tanah-halal-selainnya"],
+        ],
+      },
+      "ihsar": {
+        category: "Dam Ihsar",
+        type: "Dam Wajib (Sebab Halangan)",
+        headline: "Terhalang ke Mekah selepas berihram",
+        explanation:
+          "Dam ihsar wajib bila jemaah terhalang melengkapkan haji/umrah selepas berihram (sakit, sekatan keselamatan, dll). Asas: Surah al-Baqarah 2:196.",
+        options: [
+          "Sembelih seekor kambing di tempat terhalang itu, lalu bertahallul",
+          "Jika niat bersyarat (al-istithna') dilafazkan di miqat: bebas tanpa dam ✅",
+        ],
+        amount: "RM810 (kambing) / RM0 (jika niat bersyarat)",
+        sources: [
+          ["Surah al-Baqarah 2:196", "https://quran.com/2/196"],
+          ["Mufti WP — Irsyad Siri 32: Niat Bersyarat Umrah", "https://muftiwp.gov.my/ms/artikel/irsyad-hukum/edisi-haji-korban/4194-irsyad-al-fatwa-haji-dan-korban-siri-ke-32-niat-bersyarat-ketika-mengerjakan-ibadah-umrah"],
+        ],
+      },
+      "hubungan-suami-isteri": {
+        category: "Pelanggaran Berat",
+        type: "Dam Tartib (Berat)",
+        headline: "Hubungan suami isteri ketika ihram (sebelum tahallul awal)",
+        explanation:
+          "Pelanggaran paling berat. Haji/umrah BATAL tetapi wajib disempurnakan, dan wajib qadha haji yang lain pada tahun berikut, serta dam berat.",
+        options: [
+          "Wajib turutan:",
+          "1️⃣ Sembelih seekor unta, atau",
+          "2️⃣ Jika tidak mampu: seekor lembu, atau",
+          "3️⃣ Tujuh ekor kambing, atau",
+          "4️⃣ Sedekah/puasa setara nilai unta",
+          "+ Wajib qadha haji tahun depan",
+        ],
+        amount: "Bergantung pasaran — rujuk pegawai TH/Mufti segera",
+        sources: [
+          ["Surah al-Baqarah 2:197", "https://quran.com/2/197"],
+        ],
+      },
+    };
+
+    const select = document.getElementById("dam-type");
+    const result = document.getElementById("dam-result");
+    const pill = document.getElementById("dam-category-pill");
+    const typeLabel = document.getElementById("dam-type-label");
+    const headline = document.getElementById("dam-headline");
+    const explanation = document.getElementById("dam-explanation");
+    const optionsEl = document.getElementById("dam-options");
+    const amount = document.getElementById("dam-amount");
+    const sourcesEl = document.getElementById("dam-sources");
+
+    select.addEventListener("change", (e) => {
+      const key = e.target.value;
+      if (!key || !DAM_DATA[key]) {
+        result.classList.add("hidden");
+        return;
+      }
+      const d = DAM_DATA[key];
+      pill.textContent = d.category;
+      typeLabel.textContent = d.type;
+      headline.textContent = d.headline;
+      explanation.textContent = d.explanation;
+
+      optionsEl.innerHTML = d.options
+        .map(
+          (o) =>
+            `<div class="flex items-start gap-2 text-stone-700"><span>${o}</span></div>`
+        )
+        .join("");
+
+      amount.innerHTML = `💰 <span class="text-emerald-700">Anggaran:</span> ${d.amount}`;
+
+      sourcesEl.innerHTML = d.sources
+        .map(
+          ([label, url]) =>
+            `<li><a href="${url}" rel="noopener" class="text-emerald-700 underline">${label}</a></li>`
+        )
+        .join("");
+
+      result.classList.remove("hidden");
+      result.scrollIntoView({ behavior: "smooth", block: "start" });
+    });
+  </script>
+
+  <style>
+    .badge-teal {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--color-teal, #115e4e);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bg-saffron-50 { background-color: #fef9ec; }
+    .border-saffron-200 { border-color: #f7e3a3; }
+  </style>
+</BaseLayout>

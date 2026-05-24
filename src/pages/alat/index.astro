@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const tools = [
+  {
+    href: "/alat/kalkulator-dam/",
+    title: "Kalkulator Dam",
+    description:
+      "Kira jenis, kategori, dan kadar dam untuk pelanggaran ihram, dam tamattu, atau wajib haji yang ditinggalkan.",
+    icon: "🐑",
+  },
+];
+---
+
+<BaseLayout
+  title="Alat Interaktif Haji & Umrah"
+  description="Alat interaktif untuk jemaah haji dan umrah — kalkulator dam, checklist persiapan, jadual ibadah. Berasaskan fatwa Mufti WP dan kadar Tabung Haji."
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <header class="mb-10">
+      <p class="badge badge-teal mb-4">Alat Interaktif</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Alat Untuk Jemaah
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Alat ringkas, percuma, tanpa pendaftaran. Setiap output disokong
+        rujukan rasmi.
+      </p>
+    </header>
+
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {tools.map((t) => (
+        <a
+          href={t.href}
+          class="block bg-white border border-stone-200 rounded-lg p-6 hover:border-emerald-700 hover:shadow-md transition-all"
+        >
+          <div class="text-4xl mb-3">{t.icon}</div>
+          <h2 class="text-xl font-semibold text-emerald-900 mb-2">{t.title}</h2>
+          <p class="text-stone-600 text-sm">{t.description}</p>
+        </a>
+      ))}
+    </div>
+
+    <div class="mt-10 text-sm text-stone-500">
+      <p>
+        Lebih banyak alat dalam pembangunan: jadual ibadah haji 2026, checklist
+        barang ihram, kalkulator masa qasar.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
