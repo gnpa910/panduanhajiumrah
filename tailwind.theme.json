@@ -1,0 +1,125 @@
+{
+  "theme": {
+    "extend": {
+      "colors": {
+        "primary": "#0f2922",
+        "secondary": "#5c5854",
+        "tertiary": "#8b5a1f",
+        "neutral": "#faf7f2",
+        "surface": "#ffffff",
+        "surface-soft": "#f0ede6",
+        "border": "#e0dad0",
+        "accent-soft": "#fbf3e2",
+        "on-primary": "#faf7f2",
+        "on-tertiary": "#ffffff",
+        "on-neutral": "#1a1a18",
+        "success": "#2f5d3f",
+        "warning": "#8b5a1f"
+      },
+      "fontFamily": {
+        "display": [
+          "Lora"
+        ],
+        "h1": [
+          "Lora"
+        ],
+        "h2": [
+          "Lora"
+        ],
+        "h3": [
+          "Inter"
+        ],
+        "body-lg": [
+          "Inter"
+        ],
+        "body-md": [
+          "Inter"
+        ],
+        "body-sm": [
+          "Inter"
+        ],
+        "label-caps": [
+          "Inter"
+        ],
+        "arabic": [
+          "Amiri"
+        ]
+      },
+      "fontSize": {
+        "display": [
+          "3.5rem",
+          {
+            "letterSpacing": "-0.02em",
+            "fontWeight": "600"
+          }
+        ],
+        "h1": [
+          "2.5rem",
+          {
+            "letterSpacing": "-0.015em",
+            "fontWeight": "600"
+          }
+        ],
+        "h2": [
+          "1.75rem",
+          {
+            "letterSpacing": "-0.01em",
+            "fontWeight": "600"
+          }
+        ],
+        "h3": [
+          "1.25rem",
+          {
+            "fontWeight": "600"
+          }
+        ],
+        "body-lg": [
+          "1.125rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-md": [
+          "1rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "body-sm": [
+          "0.875rem",
+          {
+            "fontWeight": "400"
+          }
+        ],
+        "label-caps": [
+          "0.75rem",
+          {
+            "letterSpacing": "0.1em",
+            "fontWeight": "700"
+          }
+        ],
+        "arabic": [
+          "1.5rem",
+          {
+            "fontWeight": "400"
+          }
+        ]
+      },
+      "borderRadius": {
+        "none": "0px",
+        "sm": "2px",
+        "md": "6px",
+        "lg": "12px",
+        "full": "9999px"
+      },
+      "spacing": {
+        "xs": "4px",
+        "sm": "8px",
+        "md": "16px",
+        "lg": "24px",
+        "xl": "48px",
+        "2xl": "80px"
+      }
+    }
+  }
+}

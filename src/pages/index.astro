@@ -14,20 +14,21 @@ const sectionOrder = [
   "tempat", "doa-zikir", "hukum-khas", "selepas",
 ] as const;
 
-const sectionLabels: Record<typeof sectionOrder[number], string> = {
-  persiapan: "Persiapan",
-  "ihram-miqat": "Ihram & Miqat",
-  umrah: "Umrah",
-  haji: "Haji",
-  tempat: "Tempat Penting",
-  "doa-zikir": "Doa & Zikir",
-  "hukum-khas": "Hukum Khas",
-  selepas: "Selepas Pulang",
+const sectionLabels: Record<typeof sectionOrder[number], { ms: string; ar: string }> = {
+  persiapan: { ms: "Persiapan", ar: "الاستعداد" },
+  "ihram-miqat": { ms: "Ihram & Miqat", ar: "الإحرام والميقات" },
+  umrah: { ms: "Umrah", ar: "العمرة" },
+  haji: { ms: "Haji", ar: "الحج" },
+  tempat: { ms: "Tempat Penting", ar: "الأماكن المقدسة" },
+  "doa-zikir": { ms: "Doa & Zikir", ar: "الدعاء والذكر" },
+  "hukum-khas": { ms: "Hukum Khas", ar: "أحكام خاصة" },
+  selepas: { ms: "Selepas Pulang", ar: "بعد العودة" },
 };
 
 const guideBySection = sectionOrder.map((section) => ({
   section,
-  label: sectionLabels[section],
+  ms: sectionLabels[section].ms,
+  ar: sectionLabels[section].ar,
   entries: guideEntries
     .filter((e) => e.data.section === section)
     .sort((a, b) => a.data.order - b.data.order),
@@ -38,81 +39,198 @@ const guideBySection = sectionOrder.map((section) => ({
   title="Panduan Lengkap Haji & Umrah dalam Bahasa Melayu"
   description="Panduan A-Z untuk jemaah haji dan umrah Malaysia & Indonesia. Sumber rasmi JAKIM, Mufti Wilayah, Tabung Haji, Kemenag. Setiap fakta disemak terhadap rujukan."
 >
-  <section class="bg-gradient-to-b from-emerald-50 to-stone-50 border-b border-stone-200">
-    <div class="max-w-4xl mx-auto px-4 py-12 md:py-20">
-      <h1 class="text-4xl md:text-5xl font-bold text-emerald-900 leading-tight mb-4">
-        Panduan Haji &amp; Umrah
-      </h1>
-      <p class="text-lg md:text-xl text-stone-700 max-w-2xl">
-        Rujukan lengkap dalam Bahasa Melayu, disemak fakta terhadap sumber rasmi
-        JAKIM, Mufti Wilayah Persekutuan, Tabung Haji, dan Kemenag RI.
-      </p>
-      <div class="mt-6 flex flex-wrap gap-3">
-        <a href="/panduan" class="inline-block px-5 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 font-semibold">
-          Mulakan Panduan A-Z
-        </a>
-        <a href="/artikel" class="inline-block px-5 py-2 bg-white text-emerald-800 border border-emerald-700 rounded-lg hover:bg-emerald-50 font-semibold">
-          Artikel Terkini
-        </a>
+  {/* ───────── Hero — kitab cover with verse card ───────── */}
+  <section class="pattern-bg">
+    <div class="max-w-5xl mx-auto px-4 pt-16 md:pt-20 pb-16 md:pb-20">
+      <div class="grid grid-cols-1 lg:grid-cols-[1.4fr_1fr] gap-10 lg:gap-14 items-center">
+        <div>
+          <p class="badge badge-teal mb-6">
+            Rujukan Bahasa Melayu · Disemak Fakta
+          </p>
+          <h1
+            class="text-5xl md:text-6xl lg:text-7xl font-semibold text-[var(--color-ink)] leading-[1.02] mb-6"
+            style="font-family: var(--font-serif); letter-spacing: -0.025em;"
+          >
+            Panduan Haji <span class="text-[var(--color-saffron)]">&amp;</span> Umrah
+            <br />
+            <span class="text-[var(--color-stone-warm)] font-normal italic text-3xl md:text-4xl lg:text-5xl">
+              untuk jemaah yang membaca dengan teliti.
+            </span>
+          </h1>
+          <p class="text-lg md:text-xl text-[var(--color-stone-warm)] leading-relaxed max-w-xl mb-8">
+            Rujukan A–Z dalam Bahasa Melayu, disemak terhadap JAKIM, Mufti Wilayah,
+            Tabung Haji, Kemenag RI, sunnah.com, dan quran.com. Setiap hukum dan
+            tatacara membawa sumbernya sendiri.
+          </p>
+          <div class="flex flex-wrap gap-3">
+            <a href="/panduan" class="btn-primary">
+              <svg class="btn-icon-star" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M12 0 L14.4 9.6 L24 12 L14.4 14.4 L12 24 L9.6 14.4 L0 12 L9.6 9.6 Z" />
+              </svg>
+              Mulakan Panduan A–Z
+            </a>
+            <a href="/artikel" class="btn-secondary">Baca Artikel Terkini</a>
+          </div>
+        </div>
+
+        {/* Verse card — Quran ayat about Hajj as content-as-hero */}
+        <aside class="verse-card">
+          <span class="corner-tr" aria-hidden="true"></span>
+          <span class="corner-bl" aria-hidden="true"></span>
+          <span class="corner-br" aria-hidden="true"></span>
+          <p class="verse-source mb-4" style="text-align:center; margin-top:0;">
+            Surah Al-Baqarah · 197
+          </p>
+          <p class="verse-arabic" lang="ar">
+            ٱلْحَجُّ أَشْهُرٌ مَّعْلُومَٰتٌ ۚ فَمَن فَرَضَ فِيهِنَّ ٱلْحَجَّ
+            فَلَا رَفَثَ وَلَا فُسُوقَ وَلَا جِدَالَ فِى ٱلْحَجِّ
+          </p>
+          <p class="verse-translation">
+            "Musim haji ialah beberapa bulan yang termaklum. Maka sesiapa yang
+            mewajibkan dirinya mengerjakan haji itu, maka tidak boleh mencampuri
+            isteri, dan tidak boleh fasik, dan tidak boleh bertengkar."
+          </p>
+          <p class="verse-source mt-4">Rujukan: quran.com/2/197</p>
+        </aside>
       </div>
     </div>
+    <hr class="rule-saffron" />
   </section>
 
+  {/* ───────── Panduan grid with bilingual section title ───────── */}
   {guideBySection.length > 0 && (
-    <section class="max-w-4xl mx-auto px-4 py-10">
-      <h2 class="text-2xl md:text-3xl font-bold text-emerald-900 mb-6">Panduan A-Z</h2>
+    <section class="max-w-5xl mx-auto px-4 py-16 md:py-20">
+      <div class="section-title">
+        <div class="flex items-baseline gap-4">
+          <h2>Panduan A–Z</h2>
+          <span class="arabic-label" lang="ar">الدليل الشامل</span>
+        </div>
+        <a
+          href="/panduan"
+          class="text-sm font-semibold text-[var(--color-teal-deep)] hover:text-[var(--color-saffron)] uppercase tracking-[0.12em]"
+        >Lihat semua →</a>
+      </div>
+
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
         {guideBySection.map((group) => (
-          <div class="bg-white border border-stone-200 rounded-lg p-5">
-            <h3 class="text-lg font-semibold text-emerald-800 mb-3">{group.label}</h3>
-            <ul class="space-y-1 text-stone-700">
+          <article class="card">
+            <div class="flex items-baseline justify-between mb-3 gap-3">
+              <span class="badge badge-teal">{group.ms}</span>
+              <span class="text-sm text-[var(--color-stone-warm)]" lang="ar" style="font-family: var(--font-arabic); font-size: 1.1rem;">{group.ar}</span>
+            </div>
+            <ul class="space-y-2 mt-3">
               {group.entries.map((entry) => (
-                <li>
+                <li class="flex items-start gap-2">
+                  <span class="text-[var(--color-saffron)] mt-1 flex-shrink-0" aria-hidden="true">◆</span>
                   <a
                     href={`/panduan/${entry.data.section}/${entry.id}`}
-                    class="hover:text-emerald-700 hover:underline"
+                    class="text-[var(--color-ink)] hover:text-[var(--color-teal-deep)] underline decoration-transparent hover:decoration-[var(--color-teal)] underline-offset-4 transition-colors"
                   >
                     {entry.data.title}
                   </a>
                 </li>
               ))}
             </ul>
-          </div>
+          </article>
         ))}
       </div>
     </section>
   )}
 
+  {/* ───────── Ornament break — 8-point star ───────── */}
+  {articles.length > 0 && guideBySection.length > 0 && (
+    <div class="ornament max-w-5xl mx-auto px-4" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="currentColor">
+        <path d="M12 0 L14.4 9.6 L24 12 L14.4 14.4 L12 24 L9.6 14.4 L0 12 L9.6 9.6 Z" />
+      </svg>
+    </div>
+  )}
+
+  {/* ───────── Artikel terkini — editorial list ───────── */}
   {articles.length > 0 && (
-    <section class="max-w-4xl mx-auto px-4 py-10">
-      <h2 class="text-2xl md:text-3xl font-bold text-emerald-900 mb-6">Artikel Terkini</h2>
-      <ul class="space-y-6">
+    <section class="max-w-5xl mx-auto px-4 pb-16 md:pb-20">
+      <div class="section-title">
+        <div class="flex items-baseline gap-4">
+          <h2>Artikel Terkini</h2>
+          <span class="arabic-label" lang="ar">المقالات الحديثة</span>
+        </div>
+        <a
+          href="/artikel"
+          class="text-sm font-semibold text-[var(--color-teal-deep)] hover:text-[var(--color-saffron)] uppercase tracking-[0.12em]"
+        >Semua artikel →</a>
+      </div>
+
+      <ul class="divide-y divide-[var(--color-rule)]">
         {articles.map((entry) => (
-          <li class="bg-white border border-stone-200 rounded-lg p-5 hover:border-emerald-300 transition-colors">
-            <span class="category-badge mb-2">{entry.data.category}</span>
-            <h3 class="text-xl font-semibold text-stone-900 mt-2 mb-2">
-              <a href={`/artikel/${entry.data.category}/${entry.id}`} class="hover:text-emerald-700">
-                {entry.data.title}
-              </a>
-            </h3>
-            <p class="text-stone-700 mb-2">{entry.data.description}</p>
-            <p class="text-sm text-stone-500">
-              {entry.data.publishedAt.toLocaleDateString("ms-MY", {
-                year: "numeric", month: "long", day: "numeric",
-              })}
-              {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
-            </p>
+          <li class="py-6 first:pt-0 last:pb-0">
+            <article class="grid grid-cols-1 md:grid-cols-[8rem_1fr] gap-3 md:gap-6">
+              <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-stone-warm)] md:pt-1">
+                {entry.data.publishedAt.toLocaleDateString("ms-MY", {
+                  year: "numeric", month: "short", day: "numeric",
+                })}
+              </p>
+              <div>
+                <p class="badge badge-teal mb-2">{entry.data.category}</p>
+                <h3
+                  class="text-xl md:text-2xl font-semibold text-[var(--color-ink)] mb-2 leading-snug"
+                  style="font-family: var(--font-serif);"
+                >
+                  <a
+                    href={`/artikel/${entry.data.category}/${entry.id}`}
+                    class="hover:text-[var(--color-teal-deep)] transition-colors"
+                  >
+                    {entry.data.title}
+                  </a>
+                </h3>
+                <p class="text-[var(--color-stone-warm)] leading-relaxed">
+                  {entry.data.description}
+                </p>
+                {entry.data.readingMinutes && (
+                  <p class="mt-2 text-xs text-[var(--color-stone-warm)] uppercase tracking-[0.12em]">
+                    {entry.data.readingMinutes} min bacaan
+                  </p>
+                )}
+              </div>
+            </article>
           </li>
         ))}
       </ul>
     </section>
   )}
 
+  {/* ───────── Trust strip — sources ───────── */}
+  <section class="border-t border-[var(--color-rule)] bg-[var(--color-surface-soft)]">
+    <div class="max-w-5xl mx-auto px-4 py-10 md:py-14">
+      <div class="flex items-baseline justify-between mb-6 gap-4 flex-wrap">
+        <div class="flex items-baseline gap-3">
+          <p class="badge badge-teal">Sumber Rasmi</p>
+          <span class="text-sm text-[var(--color-stone-warm)]" lang="ar" style="font-family: var(--font-arabic); font-size: 1.1rem;">المصادر الرسمية</span>
+        </div>
+        <p class="text-xs text-[var(--color-stone-warm)] uppercase tracking-[0.12em] font-semibold">
+          Setiap fakta disemak silang
+        </p>
+      </div>
+      <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-6 gap-3">
+        <span class="source-pill">JAKIM e-Fatwa</span>
+        <span class="source-pill">Mufti Wilayah</span>
+        <span class="source-pill">Tabung Haji</span>
+        <span class="source-pill">Kemenag RI</span>
+        <span class="source-pill">sunnah.com</span>
+        <span class="source-pill">quran.com</span>
+      </div>
+    </div>
+  </section>
+
   {guideBySection.length === 0 && articles.length === 0 && (
-    <section class="max-w-4xl mx-auto px-4 py-16 text-center">
-      <p class="text-lg text-stone-600">
-        Kandungan akan diterbitkan tidak lama lagi. Kembali kemudian.
+    <section class="max-w-2xl mx-auto px-4 py-24 text-center">
+      <p class="badge badge-teal mb-4">Akan Datang</p>
+      <p
+        class="text-2xl text-[var(--color-ink)]"
+        style="font-family: var(--font-serif);"
+      >
+        Kandungan akan diterbitkan tidak lama lagi.
       </p>
+      <p class="mt-3 text-[var(--color-stone-warm)]">Kembali kemudian.</p>
     </section>
   )}
 </BaseLayout>

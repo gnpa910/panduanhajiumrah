@@ -20,10 +20,19 @@ const siteName = "Panduan Haji & Umrah";
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
+    <meta name="theme-color" content="#0F2922" />
 
     <title>{title} | {siteName}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical.href} />
+
+    <!-- Brand fonts: Lora (display serif), Inter (UI sans), Amiri (Arabic) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap"
+    />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -43,47 +52,97 @@ const siteName = "Panduan Haji & Umrah";
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
   </head>
   <body>
-    <header class="border-b border-stone-200 bg-white">
-      <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between" aria-label="Utama">
-        <a href="/" class="text-xl font-bold text-emerald-900 hover:text-emerald-700">
-          Panduan Haji &amp; Umrah
+    <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]">
+      <nav
+        class="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between"
+        aria-label="Utama"
+      >
+        <a
+          href="/"
+          class="flex items-center gap-3 text-[var(--color-ink)] hover:text-[var(--color-saffron)] transition-colors"
+        >
+          <svg
+            width="28" height="28" viewBox="0 0 24 24"
+            class="text-[var(--color-saffron)] flex-shrink-0"
+            fill="currentColor"
+            aria-hidden="true"
+          >
+            <path d="M12 0 L14.4 9.6 L24 12 L14.4 14.4 L12 24 L9.6 14.4 L0 12 L9.6 9.6 Z" />
+          </svg>
+          <span
+            class="text-xl md:text-2xl font-semibold tracking-tight"
+            style="font-family: var(--font-serif);"
+          >
+            Panduan Haji <span class="text-[var(--color-saffron)]">&amp;</span> Umrah
+          </span>
         </a>
-        <ul class="hidden md:flex gap-6 text-stone-700">
-          <li><a href="/panduan" class="hover:text-emerald-700">Panduan A-Z</a></li>
-          <li><a href="/artikel" class="hover:text-emerald-700">Artikel</a></li>
-          <li><a href="/tentang" class="hover:text-emerald-700">Tentang</a></li>
+        <ul class="hidden md:flex gap-8 text-sm font-medium text-[var(--color-stone-warm)]">
+          <li>
+            <a
+              href="/panduan"
+              class="hover:text-[var(--color-teal-deep)] transition-colors"
+            >Panduan A–Z</a>
+          </li>
+          <li>
+            <a
+              href="/artikel"
+              class="hover:text-[var(--color-teal-deep)] transition-colors"
+            >Artikel</a>
+          </li>
+          <li>
+            <a
+              href="/tentang"
+              class="hover:text-[var(--color-teal-deep)] transition-colors"
+            >Tentang</a>
+          </li>
         </ul>
       </nav>
+      <hr class="rule-saffron" />
     </header>
 
     <main>
       <slot />
     </main>
 
-    <footer class="border-t border-stone-200 bg-stone-100 mt-16">
-      <div class="max-w-4xl mx-auto px-4 py-8 text-sm text-stone-600">
-        <p class="mb-2">
-          Sumber kandungan: JAKIM e-Fatwa, Mufti Wilayah Persekutuan, Tabung Haji,
-          Kemenag RI, sunnah.com, quran.com.
-        </p>
-        <p class="mb-2">
-          Setiap artikel telah disemak fakta terhadap sumber rasmi sebelum diterbitkan.
-        </p>
-        <p class="mb-2 text-stone-500">
-          <strong>Disclaimer:</strong> Panduan umum berdasarkan rujukan
-          rasmi pada tarikh ditulis. Hukum dan tatacara boleh berbeza
-          mengikut mazhab dan keadaan individu — rujuk pegawai agama
-          bertauliah untuk hukum khas. Kami bukan agensi haji/umrah dan
-          tidak menjual pakej.
-        </p>
-        <p class="mb-2">
-          <a href="/tentang" class="text-emerald-700 hover:text-emerald-900 underline">
-            Tentang &amp; sumber rujukan penuh
-          </a>
-        </p>
-        <p class="text-stone-500">
-          © {new Date().getFullYear()} Panduan Haji &amp; Umrah. Hak cipta terpelihara.
-        </p>
+    <footer class="mt-24 border-t border-[var(--color-rule)] bg-[var(--color-surface-soft)]">
+      <div class="max-w-5xl mx-auto px-4 py-12">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8 text-sm text-[var(--color-stone-warm)]">
+          <div>
+            <p class="badge mb-3">Sumber</p>
+            <p class="leading-relaxed">
+              JAKIM e-Fatwa, Mufti Wilayah Persekutuan, Tabung Haji,
+              Kemenag RI, sunnah.com, quran.com.
+            </p>
+          </div>
+          <div>
+            <p class="badge mb-3">Semakan</p>
+            <p class="leading-relaxed">
+              Setiap artikel disemak fakta terhadap sumber rasmi sebelum
+              diterbitkan.
+            </p>
+          </div>
+          <div>
+            <p class="badge mb-3">Disclaimer</p>
+            <p class="leading-relaxed">
+              Panduan umum berdasarkan rujukan rasmi pada tarikh ditulis.
+              Hukum boleh berbeza mengikut mazhab dan keadaan individu —
+              rujuk pegawai agama bertauliah. Kami bukan agensi haji/umrah
+              dan tidak menjual pakej.
+            </p>
+          </div>
+        </div>
+
+        <hr class="rule-saffron mt-10 mb-6" />
+
+        <div class="flex flex-col md:flex-row justify-between gap-3 text-xs text-[var(--color-stone-warm)]">
+          <p>
+            <a
+              href="/tentang"
+              class="text-[var(--color-ink)] underline decoration-[var(--color-saffron)] underline-offset-4 hover:text-[var(--color-saffron)]"
+            >Tentang &amp; sumber rujukan penuh</a>
+          </p>
+          <p>© {new Date().getFullYear()} Panduan Haji &amp; Umrah</p>
+        </div>
       </div>
     </footer>
   </body>
