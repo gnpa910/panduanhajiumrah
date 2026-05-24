@@ -1,0 +1,118 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+// Latest 6 articles, published only
+const articles = (await getCollection("article", ({ data }) => !data.draft))
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 6);
+
+// Guide chapters grouped by section, sorted by order
+const guideEntries = await getCollection("guide", ({ data }) => !data.draft);
+const sectionOrder = [
+  "persiapan", "ihram-miqat", "umrah", "haji",
+  "tempat", "doa-zikir", "hukum-khas", "selepas",
+] as const;
+
+const sectionLabels: Record<typeof sectionOrder[number], string> = {
+  persiapan: "Persiapan",
+  "ihram-miqat": "Ihram & Miqat",
+  umrah: "Umrah",
+  haji: "Haji",
+  tempat: "Tempat Penting",
+  "doa-zikir": "Doa & Zikir",
+  "hukum-khas": "Hukum Khas",
+  selepas: "Selepas Pulang",
+};
+
+const guideBySection = sectionOrder.map((section) => ({
+  section,
+  label: sectionLabels[section],
+  entries: guideEntries
+    .filter((e) => e.data.section === section)
+    .sort((a, b) => a.data.order - b.data.order),
+})).filter((s) => s.entries.length > 0);
+---
+
+<BaseLayout
+  title="Panduan Lengkap Haji & Umrah dalam Bahasa Melayu"
+  description="Panduan A-Z untuk jemaah haji dan umrah Malaysia & Indonesia. Sumber rasmi JAKIM, Mufti Wilayah, Tabung Haji, Kemenag. Setiap fakta disemak terhadap rujukan."
+>
+  <section class="bg-gradient-to-b from-emerald-50 to-stone-50 border-b border-stone-200">
+    <div class="max-w-4xl mx-auto px-4 py-12 md:py-20">
+      <h1 class="text-4xl md:text-5xl font-bold text-emerald-900 leading-tight mb-4">
+        Panduan Haji &amp; Umrah
+      </h1>
+      <p class="text-lg md:text-xl text-stone-700 max-w-2xl">
+        Rujukan lengkap dalam Bahasa Melayu, disemak fakta terhadap sumber rasmi
+        JAKIM, Mufti Wilayah Persekutuan, Tabung Haji, dan Kemenag RI.
+      </p>
+      <div class="mt-6 flex flex-wrap gap-3">
+        <a href="/panduan" class="inline-block px-5 py-2 bg-emerald-700 text-white rounded-lg hover:bg-emerald-800 font-semibold">
+          Mulakan Panduan A-Z
+        </a>
+        <a href="/artikel" class="inline-block px-5 py-2 bg-white text-emerald-800 border border-emerald-700 rounded-lg hover:bg-emerald-50 font-semibold">
+          Artikel Terkini
+        </a>
+      </div>
+    </div>
+  </section>
+
+  {guideBySection.length > 0 && (
+    <section class="max-w-4xl mx-auto px-4 py-10">
+      <h2 class="text-2xl md:text-3xl font-bold text-emerald-900 mb-6">Panduan A-Z</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {guideBySection.map((group) => (
+          <div class="bg-white border border-stone-200 rounded-lg p-5">
+            <h3 class="text-lg font-semibold text-emerald-800 mb-3">{group.label}</h3>
+            <ul class="space-y-1 text-stone-700">
+              {group.entries.map((entry) => (
+                <li>
+                  <a
+                    href={`/panduan/${entry.data.section}/${entry.id}`}
+                    class="hover:text-emerald-700 hover:underline"
+                  >
+                    {entry.data.title}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ))}
+      </div>
+    </section>
+  )}
+
+  {articles.length > 0 && (
+    <section class="max-w-4xl mx-auto px-4 py-10">
+      <h2 class="text-2xl md:text-3xl font-bold text-emerald-900 mb-6">Artikel Terkini</h2>
+      <ul class="space-y-6">
+        {articles.map((entry) => (
+          <li class="bg-white border border-stone-200 rounded-lg p-5 hover:border-emerald-300 transition-colors">
+            <span class="category-badge mb-2">{entry.data.category}</span>
+            <h3 class="text-xl font-semibold text-stone-900 mt-2 mb-2">
+              <a href={`/artikel/${entry.data.category}/${entry.id}`} class="hover:text-emerald-700">
+                {entry.data.title}
+              </a>
+            </h3>
+            <p class="text-stone-700 mb-2">{entry.data.description}</p>
+            <p class="text-sm text-stone-500">
+              {entry.data.publishedAt.toLocaleDateString("ms-MY", {
+                year: "numeric", month: "long", day: "numeric",
+              })}
+              {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
+            </p>
+          </li>
+        ))}
+      </ul>
+    </section>
+  )}
+
+  {guideBySection.length === 0 && articles.length === 0 && (
+    <section class="max-w-4xl mx-auto px-4 py-16 text-center">
+      <p class="text-lg text-stone-600">
+        Kandungan akan diterbitkan tidak lama lagi. Kembali kemudian.
+      </p>
+    </section>
+  )}
+</BaseLayout>

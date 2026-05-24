@@ -1,0 +1,65 @@
+---
+import { getCollection, render } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const guides = await getCollection("guide", ({ data }) => !data.draft);
+  return guides.map((entry) => ({
+    params: { section: entry.data.section, slug: entry.id },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout
+  title={entry.data.title}
+  description={entry.data.description}
+  ogType="article"
+  publishedAt={entry.data.publishedAt}
+  updatedAt={entry.data.updatedAt}
+>
+  <article class="prose-haji">
+    <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
+      Panduan / {entry.data.section.replace("-", " ")}
+    </p>
+    <h1>{entry.data.title}</h1>
+    <p class="text-lg text-stone-600 mb-6">{entry.data.description}</p>
+    <p class="text-sm text-stone-500 mb-8">
+      Diterbitkan {entry.data.publishedAt.toLocaleDateString("ms-MY", {
+        year: "numeric", month: "long", day: "numeric",
+      })}
+      {entry.data.updatedAt && ` · Dikemaskini ${entry.data.updatedAt.toLocaleDateString("ms-MY", {
+        year: "numeric", month: "long", day: "numeric",
+      })}`}
+      {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
+    </p>
+
+    <Content />
+
+    <div class="source-list">
+      <h3>Rujukan</h3>
+      <ol class="list-decimal pl-6 space-y-1">
+        {entry.data.sources.map((src) => (
+          <li>
+            <a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>
+            <span class="text-stone-500 text-xs">
+              {" "}— diakses {src.accessedAt.toLocaleDateString("ms-MY")}
+            </span>
+            {src.excerpt && (
+              <p class="text-stone-600 text-xs italic ml-4 mt-1">"{src.excerpt}"</p>
+            )}
+          </li>
+        ))}
+      </ol>
+      {entry.data.factChecked && entry.data.factCheckedAt && (
+        <p class="mt-4 text-emerald-700">
+          ✓ Disemak fakta pada {entry.data.factCheckedAt.toLocaleDateString("ms-MY")}
+          {entry.data.factCheckedBy && ` oleh ${entry.data.factCheckedBy}`}
+        </p>
+      )}
+    </div>
+  </article>
+</BaseLayout>

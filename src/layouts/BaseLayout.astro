@@ -1,0 +1,77 @@
+---
+import "../styles/global.css";
+
+interface Props {
+  title: string;
+  description: string;
+  ogType?: "website" | "article";
+  publishedAt?: Date;
+  updatedAt?: Date;
+}
+
+const { title, description, ogType = "website", publishedAt, updatedAt } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://panduanhajiumrah.vercel.app");
+const siteName = "Panduan Haji & Umrah";
+---
+
+<!doctype html>
+<html lang="ms">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="generator" content={Astro.generator} />
+
+    <title>{title} | {siteName}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical.href} />
+
+    <!-- Open Graph -->
+    <meta property="og:title" content={title} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content={ogType} />
+    <meta property="og:url" content={canonical.href} />
+    <meta property="og:site_name" content={siteName} />
+    <meta property="og:locale" content="ms_MY" />
+    {publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
+    {updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
+
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content={title} />
+    <meta name="twitter:description" content={description} />
+
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+  </head>
+  <body>
+    <header class="border-b border-stone-200 bg-white">
+      <nav class="max-w-4xl mx-auto px-4 py-4 flex items-center justify-between" aria-label="Utama">
+        <a href="/" class="text-xl font-bold text-emerald-900 hover:text-emerald-700">
+          Panduan Haji &amp; Umrah
+        </a>
+        <ul class="hidden md:flex gap-6 text-stone-700">
+          <li><a href="/panduan" class="hover:text-emerald-700">Panduan A-Z</a></li>
+          <li><a href="/artikel" class="hover:text-emerald-700">Artikel</a></li>
+        </ul>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-stone-200 bg-stone-100 mt-16">
+      <div class="max-w-4xl mx-auto px-4 py-8 text-sm text-stone-600">
+        <p class="mb-2">
+          Sumber kandungan: JAKIM e-Fatwa, Mufti Wilayah Persekutuan, Tabung Haji,
+          Kemenag RI, sunnah.com, quran.com.
+        </p>
+        <p class="mb-2">
+          Setiap artikel telah disemak fakta terhadap sumber rasmi sebelum diterbitkan.
+        </p>
+        <p class="text-stone-500">
+          © {new Date().getFullYear()} Panduan Haji &amp; Umrah. Hak cipta terpelihara.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
