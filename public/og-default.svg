@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#0F2922"/>
+      <stop offset="100%" stop-color="#0A1F1A"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="30%">
+      <stop offset="0%" stop-color="#D4A547" stop-opacity="0.15"/>
+      <stop offset="100%" stop-color="#D4A547" stop-opacity="0"/>
+    </radialGradient>
+    <pattern id="dots" x="0" y="0" width="40" height="40" patternUnits="userSpaceOnUse">
+      <circle cx="20" cy="20" r="1" fill="#2D5F5D" opacity="0.3"/>
+    </pattern>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <rect width="1200" height="630" fill="url(#dots)"/>
+  <rect width="1200" height="630" fill="url(#halo)"/>
+
+  <!-- Saffron rule top -->
+  <rect x="0" y="0" width="1200" height="6" fill="#D4A547"/>
+
+  <!-- Corner ornaments (teal flourishes) -->
+  <g stroke="#2D5F5D" stroke-width="1.5" fill="none" opacity="0.6">
+    <!-- Top left -->
+    <path d="M 60 90 L 60 60 L 90 60" />
+    <path d="M 65 95 L 65 65 L 95 65" stroke-width="0.8"/>
+    <!-- Top right -->
+    <path d="M 1140 90 L 1140 60 L 1110 60" />
+    <path d="M 1135 95 L 1135 65 L 1105 65" stroke-width="0.8"/>
+    <!-- Bottom left -->
+    <path d="M 60 540 L 60 570 L 90 570" />
+    <path d="M 65 535 L 65 565 L 95 565" stroke-width="0.8"/>
+    <!-- Bottom right -->
+    <path d="M 1140 540 L 1140 570 L 1110 570" />
+    <path d="M 1135 535 L 1135 565 L 1105 565" stroke-width="0.8"/>
+  </g>
+
+  <!-- 8-point geometric star (centered upper) -->
+  <g transform="translate(600 250)">
+    <!-- Outer ring -->
+    <circle r="115" fill="none" stroke="#D4A547" stroke-width="1" opacity="0.4"/>
+    <circle r="100" fill="none" stroke="#D4A547" stroke-width="0.8" opacity="0.3"/>
+
+    <!-- 8-point star: two squares rotated 45deg -->
+    <g fill="none" stroke="#D4A547" stroke-width="2.5" stroke-linejoin="round">
+      <polygon points="0,-90 22,-22 90,0 22,22 0,90 -22,22 -90,0 -22,-22"/>
+      <polygon points="0,-90 22,-22 90,0 22,22 0,90 -22,22 -90,0 -22,-22"
+               transform="rotate(22.5)" opacity="0.7"/>
+    </g>
+
+    <!-- Inner ornament -->
+    <circle r="32" fill="none" stroke="#D4A547" stroke-width="1.5"/>
+    <polygon points="0,-18 5,-5 18,0 5,5 0,18 -5,5 -18,0 -5,-5"
+             fill="#D4A547" opacity="0.9"/>
+  </g>
+
+  <!-- Saffron divider rule -->
+  <line x1="200" y1="430" x2="1000" y2="430" stroke="#D4A547" stroke-width="0.8" opacity="0.5"/>
+  <circle cx="600" cy="430" r="4" fill="#D4A547"/>
+
+  <!-- Title -->
+  <text x="600" y="490"
+        font-family="'Lora', 'Times New Roman', serif"
+        font-size="58" font-weight="600"
+        fill="#F5F1E8"
+        text-anchor="middle" letter-spacing="-1">
+    Panduan Haji <tspan fill="#D4A547">&amp;</tspan> Umrah
+  </text>
+
+  <!-- Subtitle -->
+  <text x="600" y="535"
+        font-family="'Lora', 'Times New Roman', serif"
+        font-size="22" font-weight="400" font-style="italic"
+        fill="#A8B5AE"
+        text-anchor="middle">
+    Sumber rujukan haji dan umrah berbahasa Melayu
+  </text>
+
+  <!-- Domain at bottom -->
+  <text x="600" y="585"
+        font-family="'Inter', sans-serif"
+        font-size="14" font-weight="500"
+        fill="#7B8B83"
+        text-anchor="middle" letter-spacing="2">
+    PANDUANHAJIUMRAH.VERCEL.APP
+  </text>
+
+  <!-- Saffron rule bottom -->
+  <rect x="0" y="624" width="1200" height="6" fill="#D4A547"/>
+</svg>
