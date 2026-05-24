@@ -12,58 +12,18 @@
 import { defineCollection, reference, z } from "astro:content";
 import { glob, file } from "astro/loaders";
 
+import { ALLOWED_SOURCE_DOMAINS, isWhitelistedSource } from "./data/whitelist-sumber";
+
 /* ──────────────────────────────────────────────────────────────────────────
- *  WHITELIST: sources that fact-checker is allowed to cite.
- *  NOTHING outside this list passes verification.
- *  Update this list = update the only place that controls trust boundary.
+ *  WHITELIST: see src/data/whitelist-sumber.ts (PAN-5).
+ *  Validate via isWhitelistedSource — exact host match only.
  * ──────────────────────────────────────────────────────────────────────────
  */
-const ALLOWED_SOURCE_DOMAINS = [
-  // Malaysian official authorities
-  "e-smaf.islam.gov.my",          // JAKIM e-fatwa
-  "muftiwp.gov.my",                // Mufti Wilayah Persekutuan
-  "tabunghaji.gov.my",             // Tabung Haji Malaysia
-  "www.tabunghaji.gov.my",
-  "islam.gov.my",                  // JAKIM official
-  "www.islam.gov.my",
-  "muis.gov.sg",                   // MUIS Singapore (BM/EN content, conservative)
-
-  // Indonesian official authorities
-  "kemenag.go.id",                 // Kementerian Agama RI
-  "haji.kemenag.go.id",
-  "mui.or.id",                     // Majlis Ulama Indonesia
-
-  // Quran + hadis primary sources
-  "quran.com",
-  "sunnah.com",
-  "tafsirq.com",
-  "tafsirweb.com",
-
-  // Saudi official (haji logistics)
-  "haj.gov.sa",
-  "moia.gov.sa",
-] as const;
-
-/**
- * Validate URL belongs to whitelist. Used by fact-checker + CI gate.
- * Exported so tools/scripts can lint content without booting Astro.
- */
-export function isAllowedSource(url: string): boolean {
-  try {
-    const u = new URL(url);
-    const host = u.hostname.toLowerCase();
-    return ALLOWED_SOURCE_DOMAINS.some(
-      (allowed) => host === allowed || host.endsWith("." + allowed)
-    );
-  } catch {
-    return false;
-  }
-}
 
 const sourceSchema = z.object({
   label: z.string().min(3, "Source label too short").max(120),
-  url: z.string().url().refine(isAllowedSource, {
-    message: `URL must belong to whitelist. See ALLOWED_SOURCE_DOMAINS in content.config.ts`,
+  url: z.string().url().refine(isWhitelistedSource, {
+    message: `URL must belong to whitelist. See src/data/whitelist-sumber.ts`,
   }),
   accessedAt: z.coerce.date(),
   /** Optional excerpt of the cited passage, max 280 chars (tweet length) */
