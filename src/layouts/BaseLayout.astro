@@ -7,11 +7,52 @@ interface Props {
   ogType?: "website" | "article";
   publishedAt?: Date;
   updatedAt?: Date;
+  /** Schema.org structured data, JSON-serializable */
+  jsonLd?: Record<string, unknown> | Record<string, unknown>[];
+  /** Optional canonical override (defaults to current URL) */
+  canonicalUrl?: string;
 }
 
-const { title, description, ogType = "website", publishedAt, updatedAt } = Astro.props;
-const canonical = new URL(Astro.url.pathname, Astro.site ?? "https://panduanhajiumrah.vercel.app");
+const {
+  title,
+  description,
+  ogType = "website",
+  publishedAt,
+  updatedAt,
+  jsonLd,
+  canonicalUrl,
+} = Astro.props;
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const canonical = canonicalUrl
+  ? new URL(canonicalUrl, siteUrl)
+  : new URL(Astro.url.pathname, siteUrl);
 const siteName = "Panduan Haji & Umrah";
+const ogImage = new URL("/og-default.png", siteUrl).href;
+
+// Default WebSite + Organization schema
+const defaultSchema: Record<string, unknown>[] = [
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: siteName,
+    url: siteUrl.href,
+    inLanguage: "ms-MY",
+    description:
+      "Sumber rujukan haji dan umrah berbahasa Melayu — fatwa Mufti Wilayah, hadis sahih, panduan Tabung Haji.",
+  },
+  {
+    "@context": "https://schema.org",
+    "@type": "Organization",
+    name: siteName,
+    url: siteUrl.href,
+    logo: new URL("/favicon.svg", siteUrl).href,
+  },
+];
+
+const schemas = jsonLd
+  ? [...defaultSchema, ...(Array.isArray(jsonLd) ? jsonLd : [jsonLd])]
+  : defaultSchema;
 ---
 
 <!doctype html>
@@ -21,10 +62,12 @@ const siteName = "Panduan Haji & Umrah";
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0F2922" />
+    <meta name="robots" content="index, follow, max-image-preview:large" />
 
     <title>{title} | {siteName}</title>
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical.href} />
+    <link rel="sitemap" href="/sitemap-index.xml" />
 
     <!-- Brand fonts: Lora (display serif), Inter (UI sans), Amiri (Arabic) -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -41,6 +84,8 @@ const siteName = "Panduan Haji & Umrah";
     <meta property="og:url" content={canonical.href} />
     <meta property="og:site_name" content={siteName} />
     <meta property="og:locale" content="ms_MY" />
+    <meta property="og:image" content={ogImage} />
+    <meta property="og:image:alt" content={siteName} />
     {publishedAt && <meta property="article:published_time" content={publishedAt.toISOString()} />}
     {updatedAt && <meta property="article:modified_time" content={updatedAt.toISOString()} />}
 
@@ -48,8 +93,14 @@ const siteName = "Panduan Haji & Umrah";
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content={title} />
     <meta name="twitter:description" content={description} />
+    <meta name="twitter:image" content={ogImage} />
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+
+    <!-- Structured data -->
+    {schemas.map((schema) => (
+      <script type="application/ld+json" set:html={JSON.stringify(schema)} />
+    ))}
   </head>
   <body>
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]">
