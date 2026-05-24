@@ -80,7 +80,7 @@ const allArticles = await getCollection("article", ({ data }) => !data.draft);
 const relatedArticles = allArticles
   .filter((a) =>
     Array.isArray(a.data.relatedGuides) &&
-    a.data.relatedGuides.some((ref) => ref.id === entry.id || ref.slug === entry.id)
+    a.data.relatedGuides.some((ref) => ref.id === entry.id)
   )
   .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
   .slice(0, 3);
@@ -117,6 +117,25 @@ const relatedArticles = allArticles
     </p>
     <h1>{entry.data.title}</h1>
     <p class="text-lg text-stone-600 mb-6">{entry.data.description}</p>
+
+    {entry.data.factChecked && entry.data.factCheckedAt && (
+      <div class="flex items-center gap-2 mb-6 px-3 py-2 rounded-md bg-emerald-50 border border-emerald-200 text-sm text-emerald-800 w-fit">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <path d="M9 12l2 2 4-4"></path>
+          <circle cx="12" cy="12" r="10"></circle>
+        </svg>
+        <span class="font-medium">
+          Disemak fakta · {entry.data.factCheckedAt.toLocaleDateString("ms-MY", {
+            year: "numeric", month: "short", day: "numeric",
+          })}
+        </span>
+        <span class="text-emerald-600">·</span>
+        <a href="/tentang/#semakan-fakta" class="text-emerald-700 hover:text-emerald-900 underline decoration-emerald-300 underline-offset-2">
+          Bagaimana
+        </a>
+      </div>
+    )}
+
     <p class="text-sm text-stone-500 mb-8">
       Diterbitkan {entry.data.publishedAt.toLocaleDateString("ms-MY", {
         year: "numeric", month: "long", day: "numeric",
@@ -144,12 +163,6 @@ const relatedArticles = allArticles
           </li>
         ))}
       </ol>
-      {entry.data.factChecked && entry.data.factCheckedAt && (
-        <p class="mt-4 text-emerald-700">
-          ✓ Disemak fakta pada {entry.data.factCheckedAt.toLocaleDateString("ms-MY")}
-          {entry.data.factCheckedBy && ` oleh ${entry.data.factCheckedBy}`}
-        </p>
-      )}
     </div>
   </article>
 

@@ -1,0 +1,108 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const articles = await getCollection("article", ({ data }) => !data.draft);
+
+const tagCounts = new Map<string, number>();
+for (const entry of articles) {
+  for (const tag of entry.data.tags) {
+    tagCounts.set(tag, (tagCounts.get(tag) ?? 0) + 1);
+  }
+}
+
+const sortedTags = Array.from(tagCounts.entries()).sort((a, b) => {
+  if (b[1] !== a[1]) return b[1] - a[1];
+  return a[0].localeCompare(b[0]);
+});
+
+const popular = sortedTags.filter(([, c]) => c >= 2);
+const longTail = sortedTags.filter(([, c]) => c === 1);
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL("/tag/", siteUrl).href;
+
+const description =
+  "Indeks tag untuk semua artikel — cari kandungan berdasarkan topik seperti wanita, rukhsah, haid, tabung-haji, atau muzakarah-fatwa.";
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Tag", item: pageUrl },
+  ],
+};
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: "Indeks Tag",
+  description,
+  url: pageUrl,
+  inLanguage: "ms-MY",
+  isPartOf: { "@type": "WebSite", name: "Panduan Haji & Umrah", url: siteUrl.href },
+};
+---
+
+<BaseLayout
+  title="Indeks Tag"
+  description={description}
+  jsonLd={[collectionSchema, breadcrumbSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-3" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-saffron)]">Laman Utama</a>
+      <span class="mx-2">/</span>
+      <span class="text-[var(--color-ink)]">Tag</span>
+    </nav>
+
+    <h1
+      class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-4"
+      style="font-family: var(--font-serif);"
+    >
+      Indeks Tag
+    </h1>
+    <p class="text-lg text-[var(--color-stone-warm)] mb-10 leading-relaxed">{description}</p>
+
+    {popular.length > 0 && (
+      <div class="mb-12">
+        <p class="badge mb-4">Tag Popular</p>
+        <ul class="flex flex-wrap gap-3">
+          {popular.map(([tag, count]) => (
+            <li>
+              <a
+                href={`/tag/${tag}/`}
+                class="inline-flex items-center gap-2 px-3 py-1.5 bg-white border border-[var(--color-rule)] rounded-full hover:border-[var(--color-saffron)] hover:text-[var(--color-saffron)] transition-colors"
+              >
+                <span class="font-medium">#{tag}</span>
+                <span class="text-xs text-[var(--color-stone-warm)]">{count}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    )}
+
+    {longTail.length > 0 && (
+      <div>
+        <p class="badge mb-4">Tag Lain</p>
+        <ul class="flex flex-wrap gap-2">
+          {longTail.map(([tag, count]) => (
+            <li>
+              <span
+                class="inline-flex items-center gap-1.5 px-2.5 py-1 bg-stone-100 text-stone-600 rounded text-sm"
+                title={`${count} artikel`}
+              >
+                #{tag}
+              </span>
+            </li>
+          ))}
+        </ul>
+        <p class="text-xs text-[var(--color-stone-warm)] mt-3 italic">
+          Tag dengan satu artikel sahaja tidak mempunyai laman tersendiri lagi.
+        </p>
+      </div>
+    )}
+  </section>
+</BaseLayout>

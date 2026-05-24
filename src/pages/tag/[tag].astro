@@ -1,0 +1,139 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+export async function getStaticPaths() {
+  const articles = await getCollection("article", ({ data }) => !data.draft);
+
+  const tagMap = new Map<string, typeof articles>();
+  for (const entry of articles) {
+    for (const tag of entry.data.tags) {
+      if (!tagMap.has(tag)) tagMap.set(tag, []);
+      tagMap.get(tag)!.push(entry);
+    }
+  }
+
+  return Array.from(tagMap.entries())
+    .filter(([, entries]) => entries.length >= 2)
+    .map(([tag, entries]) => ({
+      params: { tag },
+      props: {
+        entries: entries.sort(
+          (a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf()
+        ),
+      },
+    }));
+}
+
+const { tag } = Astro.params;
+const { entries } = Astro.props;
+
+const tagLabel = tag
+  .split("-")
+  .map((w) => w.charAt(0).toUpperCase() + w.slice(1))
+  .join(" ");
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(`/tag/${tag}/`, siteUrl).href;
+
+const description = `Semua artikel berkaitan ${tagLabel} di Panduan Haji & Umrah — disemak fakta terhadap fatwa rasmi dan sumber whitelist.`;
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Tag: ${tagLabel}`,
+  description,
+  url: pageUrl,
+  inLanguage: "ms-MY",
+  isPartOf: { "@type": "WebSite", name: "Panduan Haji & Umrah", url: siteUrl.href },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: entries.length,
+    itemListElement: entries.map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: new URL(`/artikel/${e.data.category}/${e.id}/`, siteUrl).href,
+      name: e.data.title,
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Tag", item: new URL("/tag/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: tagLabel, item: pageUrl },
+  ],
+};
+
+const categoryLabels: Record<string, string> = {
+  persoalan: "Persoalan",
+  muzakarah: "Muzakarah",
+  berita: "Berita",
+  pengalaman: "Pengalaman",
+};
+---
+
+<BaseLayout
+  title={`#${tag}`}
+  description={description}
+  jsonLd={[collectionSchema, breadcrumbSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-3" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-saffron)]">Laman Utama</a>
+      <span class="mx-2">/</span>
+      <a href="/tag/" class="hover:text-[var(--color-saffron)]">Tag</a>
+      <span class="mx-2">/</span>
+      <span class="text-[var(--color-ink)]">{tagLabel}</span>
+    </nav>
+
+    <p class="text-xs uppercase tracking-[0.16em] text-[var(--color-stone-warm)] mb-2">Tag</p>
+    <h1
+      class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-3"
+      style="font-family: var(--font-serif);"
+    >
+      #{tag}
+    </h1>
+    <p class="text-lg text-[var(--color-stone-warm)] mb-10 leading-relaxed">
+      {entries.length} artikel berkaitan <strong>{tagLabel}</strong>.
+      Setiap kandungan disemak fakta terhadap sumber whitelist sebelum diterbitkan.
+    </p>
+
+    <ul class="space-y-4">
+      {entries.map((entry) => (
+        <li class="bg-white border border-[var(--color-rule)] rounded-lg p-5 hover:border-[var(--color-saffron)] transition-colors">
+          <p class="text-xs uppercase tracking-[0.12em] text-[var(--color-stone-warm)] mb-1">
+            Artikel / {categoryLabels[entry.data.category] ?? entry.data.category}
+          </p>
+          <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-2">
+            <a
+              href={`/artikel/${entry.data.category}/${entry.id}/`}
+              class="hover:text-[var(--color-saffron)]"
+            >
+              {entry.data.title}
+            </a>
+          </h2>
+          <p class="text-[var(--color-stone-warm)] mb-2">{entry.data.description}</p>
+          <p class="text-xs text-[var(--color-stone-warm)]">
+            {entry.data.publishedAt.toLocaleDateString("ms-MY", {
+              year: "numeric", month: "long", day: "numeric",
+            })}
+            {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
+          </p>
+        </li>
+      ))}
+    </ul>
+
+    <div class="mt-12 pt-6 border-t border-[var(--color-rule)]">
+      <p class="text-sm text-[var(--color-stone-warm)]">
+        Lihat semua tag?{" "}
+        <a href="/tag/" class="text-[var(--color-saffron)] hover:underline">
+          Indeks tag →
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

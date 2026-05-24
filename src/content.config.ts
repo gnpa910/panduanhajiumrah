@@ -115,6 +115,21 @@ const article = defineCollection({
     relatedGuides: z.array(reference("guide")).max(5).optional(),
 
     readingMinutes: z.number().int().min(1).max(60).optional(),
+
+    /**
+     * Optional FAQ entries — when present, page emits FAQPage JSON-LD
+     * for Google rich-snippet eligibility. Use for `category: persoalan`.
+     */
+    faq: z
+      .array(
+        z.object({
+          question: z.string().min(8).max(200),
+          answer: z.string().min(20).max(800),
+        })
+      )
+      .min(2)
+      .max(15)
+      .optional(),
   }),
 });
 
