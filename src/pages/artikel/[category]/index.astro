@@ -1,0 +1,131 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const categoryLabels = {
+  persoalan: "Persoalan",
+  muzakarah: "Muzakarah",
+  berita: "Berita",
+  pengalaman: "Pengalaman",
+} as const;
+
+const categoryIntros: Record<keyof typeof categoryLabels, string> = {
+  persoalan:
+    "Persoalan lazim yang dihadapi jemaah haji dan umrah dijawab dengan rujukan kepada fatwa Mufti Wilayah, kitab hadis, dan keputusan Muzakarah Jawatankuasa Fatwa Kebangsaan.",
+  muzakarah:
+    "Ringkasan keputusan Muzakarah Jawatankuasa Fatwa Kebangsaan berkaitan haji dan umrah. Setiap kandungan disokong dengan pautan ke siaran rasmi e-Fatwa JAKIM.",
+  berita:
+    "Berita terkini berkaitan kuota haji Malaysia, jadual Tabung Haji, perubahan dasar Saudi Arabia, dan pengumuman musim umrah. Kandungan disemak terhadap sumber rasmi sebelum diterbitkan.",
+  pengalaman:
+    "Panduan praktikal untuk situasi yang sering dihadapi jemaah — dari kehilangan dokumen hingga sakit semasa wukuf. Dirumus daripada nasihat petugas tabung haji dan amalan jemaah berpengalaman.",
+};
+
+export async function getStaticPaths() {
+  const categories = ["persoalan", "muzakarah", "berita", "pengalaman"];
+  return categories.map((category) => ({
+    params: { category },
+  }));
+}
+
+const { category } = Astro.params;
+const label = categoryLabels[category as keyof typeof categoryLabels];
+const intro = categoryIntros[category as keyof typeof categoryLabels];
+
+const entries = (await getCollection("article", ({ data }) => !data.draft))
+  .filter((e) => e.data.category === category)
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf());
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Artikel ${label}`,
+  description: intro,
+  url: new URL(`/artikel/${category}/`, siteUrl).href,
+  inLanguage: "ms-MY",
+  isPartOf: { "@type": "WebSite", name: "Panduan Haji & Umrah", url: siteUrl.href },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: entries.length,
+    itemListElement: entries.map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: new URL(`/artikel/${category}/${e.id}/`, siteUrl).href,
+      name: e.data.title,
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Artikel", item: new URL("/artikel/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: label, item: new URL(`/artikel/${category}/`, siteUrl).href },
+  ],
+};
+---
+
+<BaseLayout
+  title={`Artikel ${label}`}
+  description={intro}
+  jsonLd={[collectionSchema, breadcrumbSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-3" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-saffron)]">Laman Utama</a>
+      <span class="mx-2">/</span>
+      <a href="/artikel/" class="hover:text-[var(--color-saffron)]">Artikel</a>
+      <span class="mx-2">/</span>
+      <span class="text-[var(--color-ink)]">{label}</span>
+    </nav>
+
+    <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-4"
+        style="font-family: var(--font-serif);">
+      Artikel {label}
+    </h1>
+    <p class="text-lg text-[var(--color-stone-warm)] mb-10 leading-relaxed">{intro}</p>
+
+    {entries.length === 0 ? (
+      <div class="bg-stone-50 border border-[var(--color-rule)] rounded-lg p-8 text-center">
+        <p class="text-[var(--color-stone-warm)] italic mb-4">
+          Artikel kategori ini akan diterbitkan tidak lama lagi.
+        </p>
+        <a href="/artikel/" class="text-[var(--color-saffron)] hover:underline">
+          Lihat artikel terkini di kategori lain →
+        </a>
+      </div>
+    ) : (
+      <ul class="space-y-4">
+        {entries.map((entry) => (
+          <li class="bg-white border border-[var(--color-rule)] rounded-lg p-5 hover:border-[var(--color-saffron)] transition-colors">
+            <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-2">
+              <a href={`/artikel/${entry.data.category}/${entry.id}/`}
+                 class="hover:text-[var(--color-saffron)]">
+                {entry.data.title}
+              </a>
+            </h2>
+            <p class="text-[var(--color-stone-warm)] mb-2">{entry.data.description}</p>
+            <p class="text-xs text-[var(--color-stone-warm)]">
+              {entry.data.publishedAt.toLocaleDateString("ms-MY", {
+                year: "numeric", month: "long", day: "numeric",
+              })}
+              {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
+            </p>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <div class="mt-12 pt-6 border-t border-[var(--color-rule)]">
+      <p class="text-sm text-[var(--color-stone-warm)]">
+        Cari topik lain?{" "}
+        <a href="/artikel/" class="text-[var(--color-saffron)] hover:underline">
+          Kembali ke semua artikel
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

@@ -1,0 +1,130 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const sectionLabels = {
+  persiapan: "Persiapan",
+  "ihram-miqat": "Ihram & Miqat",
+  umrah: "Umrah",
+  haji: "Haji",
+  tempat: "Tempat Penting",
+  "doa-zikir": "Doa & Zikir",
+  "hukum-khas": "Hukum Khas",
+  selepas: "Selepas Pulang",
+} as const;
+
+const sectionIntros: Record<keyof typeof sectionLabels, string> = {
+  persiapan:
+    "Sebelum berangkat, jemaah perlu menyusun dokumen, kewangan, dan kesihatan dengan teliti. Bahagian ini mengumpulkan panduan penting yang perlu diselesaikan jauh sebelum tarikh penerbangan.",
+  "ihram-miqat":
+    "Ihram adalah pintu masuk ibadah haji dan umrah. Kefahaman tentang miqat makani, miqat zamani, dan larangan ihram menentukan sah atau tidaknya ibadah jemaah.",
+  umrah:
+    "Umrah merangkumi empat rukun utama: ihram, tawaf, saie, dan tahalul. Bahagian ini menerangkan setiap rukun secara berperingkat dengan rujukan dari Mufti Wilayah dan sumber rasmi.",
+  haji:
+    "Haji adalah ibadah berasaskan masa dan tempat. Bab ini meliputi tiga jenis haji (Tamattu, Ifrad, Qiran), enam rukun haji, tujuh wajib haji, serta tatacara wukuf, mabit, dan melontar jamrah.",
+  tempat:
+    "Mekah, Madinah, Mina, Arafah, dan Muzdalifah membawa kepentingan rohani dan tatacara berbeza. Bahagian ini memberikan panduan tatacara serta adab di tempat-tempat mustajab.",
+  "doa-zikir":
+    "Doa dan zikir mathur dari Sunnah memandu setiap rukun ibadah. Senarai yang dikumpulkan di sini berdasarkan kitab hadis sahih dan rujukan Mufti.",
+  "hukum-khas":
+    "Setiap jemaah berbeza keadaan. Wanita haid, lansia, pesakit kronik, dan OKU memerlukan rukhsah khusus. Panduan ini merujuk kepada keputusan Muzakarah Jawatankuasa Fatwa Kebangsaan dan Mufti Wilayah.",
+  selepas:
+    "Pulang dari Tanah Suci adalah permulaan, bukan pengakhiran. Bahagian ini membincangkan tanda haji mabrur dan adab memelihara kelebihan ibadah selepas balik ke kampung halaman.",
+};
+
+export async function getStaticPaths() {
+  const sections = ["persiapan", "ihram-miqat", "umrah", "haji", "tempat", "doa-zikir", "hukum-khas", "selepas"];
+  return sections.map((section) => ({
+    params: { section },
+  }));
+}
+
+const { section } = Astro.params;
+const label = sectionLabels[section as keyof typeof sectionLabels];
+const intro = sectionIntros[section as keyof typeof sectionLabels];
+
+const entries = (await getCollection("guide", ({ data }) => !data.draft))
+  .filter((e) => e.data.section === section)
+  .sort((a, b) => a.data.order - b.data.order);
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+
+const collectionSchema = {
+  "@context": "https://schema.org",
+  "@type": "CollectionPage",
+  name: `Panduan ${label}`,
+  description: intro,
+  url: new URL(`/panduan/${section}/`, siteUrl).href,
+  inLanguage: "ms-MY",
+  isPartOf: { "@type": "WebSite", name: "Panduan Haji & Umrah", url: siteUrl.href },
+  mainEntity: {
+    "@type": "ItemList",
+    numberOfItems: entries.length,
+    itemListElement: entries.map((e, i) => ({
+      "@type": "ListItem",
+      position: i + 1,
+      url: new URL(`/panduan/${section}/${e.id}/`, siteUrl).href,
+      name: e.data.title,
+    })),
+  },
+};
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Panduan A–Z", item: new URL("/panduan/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: label, item: new URL(`/panduan/${section}/`, siteUrl).href },
+  ],
+};
+---
+
+<BaseLayout
+  title={`Panduan ${label}`}
+  description={intro}
+  jsonLd={[collectionSchema, breadcrumbSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-3" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-saffron)]">Laman Utama</a>
+      <span class="mx-2">/</span>
+      <a href="/panduan/" class="hover:text-[var(--color-saffron)]">Panduan A–Z</a>
+      <span class="mx-2">/</span>
+      <span class="text-[var(--color-ink)]">{label}</span>
+    </nav>
+
+    <h1 class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-4"
+        style="font-family: var(--font-serif);">
+      Panduan {label}
+    </h1>
+    <p class="text-lg text-[var(--color-stone-warm)] mb-10 leading-relaxed">{intro}</p>
+
+    {entries.length === 0 ? (
+      <p class="text-stone-500 italic">Bab belum diterbitkan untuk bahagian ini.</p>
+    ) : (
+      <ul class="space-y-3">
+        {entries.map((entry) => (
+          <li class="border-l-2 border-[var(--color-saffron)] pl-4 py-1">
+            <a
+              href={`/panduan/${entry.data.section}/${entry.id}/`}
+              class="block hover:bg-stone-50 -mx-2 px-2 py-1 rounded transition-colors"
+            >
+              <h2 class="text-lg font-semibold text-[var(--color-ink)] mb-1">{entry.data.title}</h2>
+              <p class="text-sm text-[var(--color-stone-warm)]">{entry.data.description}</p>
+            </a>
+          </li>
+        ))}
+      </ul>
+    )}
+
+    <div class="mt-12 pt-6 border-t border-[var(--color-rule)]">
+      <p class="text-sm text-[var(--color-stone-warm)]">
+        Cari topik lain?{" "}
+        <a href="/panduan/" class="text-[var(--color-saffron)] hover:underline">
+          Kembali ke Panduan A–Z
+        </a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>
