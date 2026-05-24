@@ -1,25 +1,3 @@
-# Content Backlog — Panduan Haji & Umrah
-# Day 3-4 build target: 30 pieces of content (26 guides + 4 articles)
-# Generated: 2026-05-24
-#
-# Status flow: pending → researched → drafted → published | flagged
-#
-# Mapping note:
-#   `guide`   = evergreen A-Z reference, route /panduan/<section>/<slug>
-#               schema enum: persiapan, ihram-miqat, umrah, haji, tempat,
-#                            doa-zikir, hukum-khas, selepas
-#   `article` = fresh content (fatwa Q&A, berita, testimonial)
-#               schema enum: persoalan, muzakarah, berita, pengalaman
-#
-# Existing files (excluded from backlog to avoid overlap):
-#   - src/content/guide/tatacara-asas-umrah.mdx   (umrah, A-Z overview)
-#   - src/content/guide/persiapan-dokumen-kewangan.mdx (persiapan, docs+duit)
-#   - src/content/guide/doa-zikir-haji-umrah.mdx  (doa-zikir, general pack)
-#   - src/content/guide/contoh-skema.mdx          (test seed; remove later)
-#
-# Order numbers within each section are tentative — rebase if collision with
-# existing guides during Phase C.
-
 meta:
   total: 30
   high_priority: 12
@@ -27,375 +5,350 @@ meta:
   low_priority: 6
   guides: 26
   articles: 4
-
+  last_updated: '2026-05-24'
+  published_count: 20
+  pending_count: 10
 backlog:
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: persiapan (4 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: checklist-kesihatan-vaksin-haji-umrah
-    title: "Checklist Kesihatan dan Vaksin Sebelum Berangkat Haji & Umrah"
-    description: "Senarai semak vaksin meningitis ACWY, sijil kesihatan, dan persediaan ubat kronik untuk jemaah haji dan umrah Malaysia & Indonesia."
-    collection: guide
-    section: persiapan
-    order: 10
-    target_keyword: "vaksin meningitis haji"
-    priority: high
-    status: pending
-    notes: "Vaksin ACWY mandatori Saudi. Cross-ref Tabung Haji + Kemenag RI."
-
-  - slug: ilmu-asas-fardhu-ain-sebelum-haji
-    title: "Ilmu Asas Fardhu Ain yang Wajib Dikuasai Sebelum Haji"
-    description: "Refresher taharah, solat jamak-qasar, fiqh musafir, dan adab umum yang jemaah perlu kuasai sebelum berangkat ke Tanah Suci."
-    collection: guide
-    section: persiapan
-    order: 11
-    target_keyword: "fardhu ain jemaah haji"
-    priority: medium
-    status: pending
-    notes: "Foundational fiqh musafir. Source: JAKIM e-fatwa + Mufti WP."
-
-  - slug: istitaah-syarat-mampu-tunai-haji
-    title: "Istitaah: Apa Maksud 'Mampu' untuk Tunai Haji?"
-    description: "Penjelasan konsep istita'ah dari Surah Ali Imran 97 — kemampuan kewangan, fizikal, dan keselamatan perjalanan dari perspektif fiqh."
-    collection: guide
-    section: persiapan
-    order: 12
-    target_keyword: "istitaah haji maksud"
-    priority: medium
-    status: pending
-    notes: "Quran 3:97 + tafsir + Mufti WP fatwa. Pillar concept."
-
-  - slug: persediaan-fizikal-mental-jemaah-lansia
-    title: "Persediaan Fizikal dan Mental untuk Jemaah Lansia"
-    description: "Latihan fizikal, persediaan mental, dan rukhsah yang dibenarkan untuk jemaah berusia atau mempunyai keterbatasan stamina sebelum berangkat."
-    collection: guide
-    section: persiapan
-    order: 13
-    target_keyword: "persediaan haji lansia"
-    priority: low
-    status: pending
-    notes: "Niche but recurring Q. Cross-ref hukum-khas."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: ihram-miqat (3 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: miqat-makani-jemaah-asia-tenggara
-    title: "Miqat Makani: Tempat Berihram untuk Jemaah Asia Tenggara"
-    description: "Panduan lima miqat makani — Yalamlam untuk jemaah Malaysia, Qarn al-Manazil, Bir Ali, Juhfah, Zatu Irq — dengan rujukan fatwa rasmi."
-    collection: guide
-    section: ihram-miqat
-    order: 1
-    target_keyword: "miqat makani malaysia"
-    priority: high
-    status: published
-    notes: "Highly searched. Mufti WP ada fatwa khusus jemaah penerbangan."
-
-  - slug: miqat-zamani-haji-umrah-bila-mula
-    title: "Miqat Zamani: Bila Boleh Mula Niat Ihram Haji dan Umrah?"
-    description: "Penjelasan miqat zamani — Syawal hingga 10 Zulhijjah untuk haji, sepanjang tahun untuk umrah — beserta dalil dari hadis sahih."
-    collection: guide
-    section: ihram-miqat
-    order: 2
-    target_keyword: "miqat zamani haji"
-    priority: medium
-    status: pending
-    notes: "Pair with miqat-makani."
-
-  - slug: larangan-ihram-lelaki-wanita-perbezaan
-    title: "Larangan Ihram Lelaki dan Wanita: Senarai Lengkap dan Dam"
-    description: "Senarai lengkap larangan dalam ihram untuk lelaki dan wanita beserta kategori dam (denda) jika dilanggar — dari fatwa JAKIM dan Mufti WP."
-    collection: guide
-    section: ihram-miqat
-    order: 3
-    target_keyword: "larangan ihram"
-    priority: high
-    status: published
-    notes: "VERY high SV. Existing knowledge/larangan-ihram.md sudah expanded — leverage."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: umrah (4 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: tatacara-tawaf-tujuh-pusingan
-    title: "Tatacara Tawaf: Tujuh Pusingan Mengelilingi Kaabah"
-    description: "Panduan langkah demi langkah tawaf — niat, idtibaa, raml, doa setiap pusingan, dan tempat mustajab antara Rukun Yamani dan Hajar Aswad."
-    collection: guide
-    section: umrah
-    order: 5
-    target_keyword: "tatacara tawaf"
-    priority: high
-    status: published
-    notes: "Pillar piece. tatacara-asas-umrah.mdx cover briefly — ini deep dive."
-
-  - slug: tatacara-saie-safa-marwah
-    title: "Tatacara Saie: Tujuh Perjalanan antara Safa dan Marwah"
-    description: "Cara melakukan saie dengan betul — niat, doa di Safa dan Marwah, kelajuan lari kecil di antara dua tanda hijau, dan kesilapan biasa."
-    collection: guide
-    section: umrah
-    order: 6
-    target_keyword: "tatacara saie"
-    priority: high
-    status: published
-    notes: "Pillar piece. Quran 2:158 sebagai dalil."
-
-  - slug: tahalul-bercukur-vs-taqsir-pilihan
-    title: "Tahalul: Bercukur atau Taqsir, Mana Lebih Utama?"
-    description: "Beza tahalul awal dan tahalul akhir, hukum bercukur (halq) vs memendekkan rambut (taqsir), dan kelebihan halq menurut hadis sahih."
-    collection: guide
-    section: umrah
-    order: 7
-    target_keyword: "tahalul umrah"
-    priority: medium
-    status: pending
-    notes: "Hadis Bukhari/Muslim — Rasulullah doa 3x utk yg bercukur."
-
-  - slug: wajib-umrah-vs-rukun-umrah
-    title: "Wajib Umrah vs Rukun Umrah: Apa Beza dan Kesan Jika Ditinggal"
-    description: "Penjelasan perbezaan antara rukun umrah (tidak sah jika tinggal) dan wajib umrah (boleh diganti dengan dam) menurut mazhab Syafi'i."
-    collection: guide
-    section: umrah
-    order: 8
-    target_keyword: "wajib umrah rukun umrah"
-    priority: medium
-    status: pending
-    notes: "Common confusion. Cite Mufti WP."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: haji (5 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: rukun-haji-enam-perkara
-    title: "Rukun Haji: Enam Perkara Wajib yang Tidak Boleh Ditinggalkan"
-    description: "Penjelasan lengkap enam rukun haji menurut mazhab Syafi'i — ihram, wukuf, tawaf ifadah, saie, bercukur, dan tertib — beserta dalil rujukan."
-    collection: guide
-    section: haji
-    order: 1
-    target_keyword: "rukun haji"
-    priority: high
-    status: published
-    notes: "FOUNDATIONAL. Highest SV term. Existing knowledge/haji-rukun.md exists."
-
-  - slug: wajib-haji-tujuh-perkara
-    title: "Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan"
-    description: "Senarai tujuh wajib haji — ihram dari miqat, wukuf hingga maghrib, mabit, melontar, tahalul, tawaf wada — dan kategori dam yang terkena."
-    collection: guide
-    section: haji
-    order: 2
-    target_keyword: "wajib haji"
-    priority: high
-    status: published
-    notes: "Pair dengan rukun-haji. Common confusion."
-
-  - slug: jenis-haji-tamattu-ifrad-qiran
-    title: "Tiga Jenis Haji: Tamattu, Ifrad, Qiran — Mana Pilihan Anda?"
-    description: "Beza haji tamattu, ifrad, dan qiran dari segi tatacara, dam, dan kesesuaian untuk jemaah Asia Tenggara — dengan rujukan fatwa rasmi."
-    collection: guide
-    section: haji
-    order: 3
-    target_keyword: "jenis haji tamattu"
-    priority: high
-    status: published
-    notes: "Tabung Haji default = Tamattu utk jemaah MY."
-
-  - slug: tatacara-wukuf-arafah-9-zulhijjah
-    title: "Tatacara Wukuf di Arafah pada 9 Zulhijjah"
-    description: "Panduan wukuf di Arafah — masa bermula, doa Rasulullah, kelebihan hari Arafah, dan kesilapan yang boleh menjejaskan haji."
-    collection: guide
-    section: haji
-    order: 4
-    target_keyword: "wukuf arafah"
-    priority: high
-    status: published
-    notes: "Hadis 'Al-Hajju Arafah' — sangat penting."
-
-  - slug: tatacara-mabit-muzdalifah-mina-melontar
-    title: "Tatacara Mabit di Muzdalifah dan Mina serta Melontar Jamrah"
-    description: "Selepas wukuf — mabit Muzdalifah, ambil batu, mabit Mina, jadual melontar Jamrah Aqabah, Wusta, Ula sepanjang hari Tasyrik."
-    collection: guide
-    section: haji
-    order: 5
-    target_keyword: "melontar jamrah"
-    priority: medium
-    status: pending
-    notes: "Pelbagai langkah — strukturkan dengan timeline H+1 to H+3."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: tempat (3 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: tempat-mustajab-masjidil-haram
-    title: "Tempat Mustajab Doa di Masjidil Haram"
-    description: "Multazam, Hijir Ismail, Maqam Ibrahim, Bukit Safa — penjelasan tempat mustajab doa di Masjidil Haram dan adab semasa berdoa di sana."
-    collection: guide
-    section: tempat
-    order: 1
-    target_keyword: "multazam doa mustajab"
-    priority: medium
-    status: pending
-    notes: "Pair dengan doa-zikir guide existing."
-
-  - slug: raudhah-masjid-nabawi-tatacara-masuk
-    title: "Raudhah di Masjid Nabawi: Tatacara Masuk dan Doa"
-    description: "Panduan masuk Raudhah — sistem tempahan Nusuk, jadual lelaki dan wanita, doa di Raudhah, adab ziarah makam Rasulullah SAW."
-    collection: guide
-    section: tempat
-    order: 2
-    target_keyword: "raudhah masjid nabawi"
-    priority: medium
-    status: pending
-    notes: "Sistem Nusuk baru — verify with current Saudi sources."
-
-  - slug: ziarah-bersejarah-mekah-madinah
-    title: "Tempat Ziarah Bersejarah di Mekah dan Madinah"
-    description: "Jabal Nur, Jabal Uhud, Masjid Quba, Bukit Tsur — panduan ziarah bersejarah dengan adab, doa, dan amaran tentang amalan bidaah."
-    collection: guide
-    section: tempat
-    order: 3
-    target_keyword: "ziarah mekah madinah"
-    priority: low
-    status: pending
-    notes: "Penting sebut: ziarah ≠ rukun. Elak khurafat."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: doa-zikir (2 guides — deep dives)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: talbiyah-bila-bagaimana-dibaca
-    title: "Talbiyah: Bila dan Bagaimana Dibaca dengan Betul"
-    description: "Lafaz penuh talbiyah, bila mula dibaca selepas ihram, bila berhenti, kelebihan menyaringkan suara untuk lelaki, dan adab wanita."
-    collection: guide
-    section: doa-zikir
-    order: 5
-    target_keyword: "talbiyah haji"
-    priority: high
-    status: published
-    notes: "Hadis Bukhari + Muslim. Pair dengan existing doa-zikir guide."
-
-  - slug: doa-tawaf-wada-perpisahan-baitullah
-    title: "Doa Tawaf Wada: Adab Perpisahan dengan Baitullah"
-    description: "Tatacara dan doa tawaf wada sebelum meninggalkan Mekah — dalil hadis sahih, hukum bagi wanita haid, dan adab keluar Masjidil Haram."
-    collection: guide
-    section: doa-zikir
-    order: 6
-    target_keyword: "tawaf wada"
-    priority: low
-    status: pending
-    notes: "Niche. Hadis Ibnu Abbas — wanita haid dikecualikan."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: hukum-khas (4 guides)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: haji-wanita-haid-istihadhah-tatacara
-    title: "Haji Wanita Haid dan Istihadhah: Apa Boleh, Apa Tidak"
-    description: "Panduan fiqh untuk jemaah wanita yang didatangi haid atau istihadhah — boleh wukuf? boleh tawaf? Cara guna ubat penahan haid."
-    collection: guide
-    section: hukum-khas
-    order: 1
-    target_keyword: "haji wanita haid"
-    priority: high
-    status: published
-    notes: "Mufti WP ada fatwa lengkap. Sangat banyak dicari."
-
-  - slug: umrah-orang-kurang-upaya-tatacara
-    title: "Umrah untuk Orang Kurang Upaya (OKU): Tatacara dan Rukhsah"
-    description: "Cara tawaf dan saie menggunakan kerusi roda, perkhidmatan di Masjidil Haram, dan rukhsah fiqh untuk jemaah berkeperluan khas."
-    collection: guide
-    section: hukum-khas
-    order: 2
-    target_keyword: "umrah oku kerusi roda"
-    priority: medium
-    status: pending
-    notes: "Tabung Haji ada SOP. Suruhan Saudi General Presidency."
-
-  - slug: badal-haji-syarat-hukum
-    title: "Badal Haji: Syarat, Hukum, dan Siapa Layak Dilakukan"
-    description: "Penjelasan badal haji — siapa layak dibadalkan, syarat pelaku badal, hukum bayaran, dan kekeliruan yang sering berlaku menurut Mufti WP."
-    collection: guide
-    section: hukum-khas
-    order: 3
-    target_keyword: "badal haji"
-    priority: medium
-    status: pending
-    notes: "Mufti WP fatwa khusus. Common Q dari ibu bapa tua."
-
-  - slug: haji-lansia-pesakit-kronik-rukhsah
-    title: "Rukhsah Haji untuk Lansia dan Pesakit Kronik"
-    description: "Kemudahan dan keringanan fiqh untuk jemaah lansia atau pesakit — solat duduk, melontar diwakilkan, mabit di Mina, ubat dalam ihram."
-    collection: guide
-    section: hukum-khas
-    order: 4
-    target_keyword: "haji pesakit"
-    priority: low
-    status: pending
-    notes: "Pair dengan persediaan-fizikal-mental-jemaah-lansia."
-
-  # ──────────────────────────────────────────────────────────
-  # SECTION: selepas (1 guide)
-  # ──────────────────────────────────────────────────────────
-
-  - slug: tanda-haji-mabrur-cara-pelihara
-    title: "Tanda Haji Mabrur dan Cara Memeliharanya Selepas Pulang"
-    description: "Apa itu haji mabrur menurut hadis, tanda-tanda haji diterima, dan amalan pasca-haji yang membantu memelihara natijah ibadah."
-    collection: guide
-    section: selepas
-    order: 1
-    target_keyword: "haji mabrur"
-    priority: medium
-    status: pending
-    notes: "Hadis 'Al-Hajj al-mabrur laysa lahu jaza illa al-jannah'."
-
-  # ──────────────────────────────────────────────────────────
-  # ARTICLES (category: berita) — 2
-  # ──────────────────────────────────────────────────────────
-
-  - slug: persiapan-haji-2026-tabung-haji-malaysia
-    title: "Persiapan Haji 2026: Kuota, Pakej, dan Jadual Tabung Haji"
-    description: "Maklumat terkini musim haji 2026 untuk jemaah Malaysia — kuota, pakej Tabung Haji, jadual penerbangan, dan kos terkini berdasarkan pengumuman rasmi."
-    collection: article
-    category: berita
-    tags: ["haji-2026", "tabung-haji", "kuota-haji", "pakej-haji"]
-    target_keyword: "haji 2026 tabung haji"
-    priority: high
-    status: pending
-    notes: "Time-sensitive. Verify against tabunghaji.gov.my pengumuman terkini."
-
-  - slug: umrah-ramadhan-keutamaan-fadhilat
-    title: "Umrah Ramadhan: Fadhilat, Persiapan, dan Tips Jemaah"
-    description: "Hadis pahala umrah Ramadhan setara dengan haji, perbandingan kos pakej Malaysia & Indonesia, dan tips persiapan untuk umrah bulan puasa."
-    collection: article
-    category: berita
-    tags: ["umrah-ramadhan", "fadhilat-umrah", "pakej-umrah"]
-    target_keyword: "umrah ramadhan"
-    priority: medium
-    status: pending
-    notes: "Hadis Bukhari — umrah Ramadhan = pahala haji."
-
-  # ──────────────────────────────────────────────────────────
-  # ARTICLES (category: persoalan) — 2
-  # ──────────────────────────────────────────────────────────
-
-  - slug: solat-jamak-qasar-jemaah-haji-umrah
-    title: "Solat Jamak dan Qasar untuk Jemaah Haji dan Umrah"
-    description: "Persoalan biasa jemaah — bila boleh jamak qasar di Mekah dan Madinah, qaedah musafir 88 km, dan fatwa Mufti Wilayah berkenaan tempoh musafir."
-    collection: article
-    category: persoalan
-    tags: ["solat-musafir", "jamak-qasar", "fiqh-haji"]
-    target_keyword: "solat jamak qasar haji"
-    priority: medium
-    status: pending
-    notes: "Mufti WP — perbahasan tempoh 4 hari vs >4 hari."
-
-  - slug: dam-haji-kategori-kadar-tempat-bayar
-    title: "Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran"
-    description: "Empat kategori dam — nusuk, jaza', takhyir, taqdir — dengan kadar terkini, jenis pelanggaran yang terkena, dan tempat sah pembayaran dam."
-    collection: article
-    category: persoalan
-    tags: ["dam-haji", "fiqh-haji", "denda-ihram"]
-    target_keyword: "dam haji"
-    priority: low
-    status: pending
-    notes: "Reference dari Mufti WP fatwa khusus dam."
+- slug: checklist-kesihatan-vaksin-haji-umrah
+  title: Checklist Kesihatan dan Vaksin Sebelum Berangkat Haji & Umrah
+  description: Senarai semak vaksin meningitis ACWY, sijil kesihatan, dan persediaan ubat kronik untuk jemaah haji dan umrah
+    Malaysia & Indonesia.
+  collection: guide
+  section: persiapan
+  order: 10
+  target_keyword: vaksin meningitis haji
+  priority: high
+  status: published
+  notes: Vaksin ACWY mandatori Saudi. Cross-ref Tabung Haji + Kemenag RI.
+- slug: ilmu-asas-fardhu-ain-sebelum-haji
+  title: Ilmu Asas Fardhu Ain yang Wajib Dikuasai Sebelum Haji
+  description: Refresher taharah, solat jamak-qasar, fiqh musafir, dan adab umum yang jemaah perlu kuasai sebelum berangkat
+    ke Tanah Suci.
+  collection: guide
+  section: persiapan
+  order: 11
+  target_keyword: fardhu ain jemaah haji
+  priority: medium
+  status: pending
+  notes: 'Foundational fiqh musafir. Source: JAKIM e-fatwa + Mufti WP.'
+- slug: istitaah-syarat-mampu-tunai-haji
+  title: 'Istitaah: Apa Maksud ''Mampu'' untuk Tunai Haji?'
+  description: Penjelasan konsep istita'ah dari Surah Ali Imran 97 — kemampuan kewangan, fizikal, dan keselamatan perjalanan
+    dari perspektif fiqh.
+  collection: guide
+  section: persiapan
+  order: 12
+  target_keyword: istitaah haji maksud
+  priority: medium
+  status: pending
+  notes: Quran 3:97 + tafsir + Mufti WP fatwa. Pillar concept.
+- slug: persediaan-fizikal-mental-jemaah-lansia
+  title: Persediaan Fizikal dan Mental untuk Jemaah Lansia
+  description: Latihan fizikal, persediaan mental, dan rukhsah yang dibenarkan untuk jemaah berusia atau mempunyai keterbatasan
+    stamina sebelum berangkat.
+  collection: guide
+  section: persiapan
+  order: 13
+  target_keyword: persediaan haji lansia
+  priority: low
+  status: pending
+  notes: Niche but recurring Q. Cross-ref hukum-khas.
+- slug: miqat-makani-jemaah-asia-tenggara
+  title: 'Miqat Makani: Tempat Berihram untuk Jemaah Asia Tenggara'
+  description: Panduan lima miqat makani — Yalamlam untuk jemaah Malaysia, Qarn al-Manazil, Bir Ali, Juhfah, Zatu Irq — dengan
+    rujukan fatwa rasmi.
+  collection: guide
+  section: ihram-miqat
+  order: 1
+  target_keyword: miqat makani malaysia
+  priority: high
+  status: published
+  notes: Highly searched. Mufti WP ada fatwa khusus jemaah penerbangan.
+- slug: miqat-zamani-haji-umrah-bila-mula
+  title: 'Miqat Zamani: Bila Boleh Mula Niat Ihram Haji dan Umrah?'
+  description: Penjelasan miqat zamani — Syawal hingga 10 Zulhijjah untuk haji, sepanjang tahun untuk umrah — beserta dalil
+    dari hadis sahih.
+  collection: guide
+  section: ihram-miqat
+  order: 2
+  target_keyword: miqat zamani haji
+  priority: medium
+  status: published
+  notes: Pair with miqat-makani.
+- slug: larangan-ihram-lelaki-wanita-perbezaan
+  title: 'Larangan Ihram Lelaki dan Wanita: Senarai Lengkap dan Dam'
+  description: Senarai lengkap larangan dalam ihram untuk lelaki dan wanita beserta kategori dam (denda) jika dilanggar —
+    dari fatwa JAKIM dan Mufti WP.
+  collection: guide
+  section: ihram-miqat
+  order: 3
+  target_keyword: larangan ihram
+  priority: high
+  status: published
+  notes: VERY high SV. Existing knowledge/larangan-ihram.md sudah expanded — leverage.
+- slug: tatacara-tawaf-tujuh-pusingan
+  title: 'Tatacara Tawaf: Tujuh Pusingan Mengelilingi Kaabah'
+  description: Panduan langkah demi langkah tawaf — niat, idtibaa, raml, doa setiap pusingan, dan tempat mustajab antara Rukun
+    Yamani dan Hajar Aswad.
+  collection: guide
+  section: umrah
+  order: 5
+  target_keyword: tatacara tawaf
+  priority: high
+  status: published
+  notes: Pillar piece. tatacara-asas-umrah.mdx cover briefly — ini deep dive.
+- slug: tatacara-saie-safa-marwah
+  title: 'Tatacara Saie: Tujuh Perjalanan antara Safa dan Marwah'
+  description: Cara melakukan saie dengan betul — niat, doa di Safa dan Marwah, kelajuan lari kecil di antara dua tanda hijau,
+    dan kesilapan biasa.
+  collection: guide
+  section: umrah
+  order: 6
+  target_keyword: tatacara saie
+  priority: high
+  status: published
+  notes: Pillar piece. Quran 2:158 sebagai dalil.
+- slug: tahalul-bercukur-vs-taqsir-pilihan
+  title: 'Tahalul: Bercukur atau Taqsir, Mana Lebih Utama?'
+  description: Beza tahalul awal dan tahalul akhir, hukum bercukur (halq) vs memendekkan rambut (taqsir), dan kelebihan halq
+    menurut hadis sahih.
+  collection: guide
+  section: umrah
+  order: 7
+  target_keyword: tahalul umrah
+  priority: medium
+  status: published
+  notes: Hadis Bukhari/Muslim — Rasulullah doa 3x utk yg bercukur.
+- slug: wajib-umrah-vs-rukun-umrah
+  title: 'Wajib Umrah vs Rukun Umrah: Apa Beza dan Kesan Jika Ditinggal'
+  description: Penjelasan perbezaan antara rukun umrah (tidak sah jika tinggal) dan wajib umrah (boleh diganti dengan dam)
+    menurut mazhab Syafi'i.
+  collection: guide
+  section: umrah
+  order: 8
+  target_keyword: wajib umrah rukun umrah
+  priority: medium
+  status: pending
+  notes: Common confusion. Cite Mufti WP.
+- slug: rukun-haji-enam-perkara
+  title: 'Rukun Haji: Enam Perkara Wajib yang Tidak Boleh Ditinggalkan'
+  description: Penjelasan lengkap enam rukun haji menurut mazhab Syafi'i — ihram, wukuf, tawaf ifadah, saie, bercukur, dan
+    tertib — beserta dalil rujukan.
+  collection: guide
+  section: haji
+  order: 1
+  target_keyword: rukun haji
+  priority: high
+  status: published
+  notes: FOUNDATIONAL. Highest SV term. Existing knowledge/haji-rukun.md exists.
+- slug: wajib-haji-tujuh-perkara
+  title: 'Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan'
+  description: Senarai tujuh wajib haji — ihram dari miqat, wukuf hingga maghrib, mabit, melontar, tahalul, tawaf wada — dan
+    kategori dam yang terkena.
+  collection: guide
+  section: haji
+  order: 2
+  target_keyword: wajib haji
+  priority: high
+  status: published
+  notes: Pair dengan rukun-haji. Common confusion.
+- slug: jenis-haji-tamattu-ifrad-qiran
+  title: 'Tiga Jenis Haji: Tamattu, Ifrad, Qiran — Mana Pilihan Anda?'
+  description: Beza haji tamattu, ifrad, dan qiran dari segi tatacara, dam, dan kesesuaian untuk jemaah Asia Tenggara — dengan
+    rujukan fatwa rasmi.
+  collection: guide
+  section: haji
+  order: 3
+  target_keyword: jenis haji tamattu
+  priority: high
+  status: published
+  notes: Tabung Haji default = Tamattu utk jemaah MY.
+- slug: tatacara-wukuf-arafah-9-zulhijjah
+  title: Tatacara Wukuf di Arafah pada 9 Zulhijjah
+  description: Panduan wukuf di Arafah — masa bermula, doa Rasulullah, kelebihan hari Arafah, dan kesilapan yang boleh menjejaskan
+    haji.
+  collection: guide
+  section: haji
+  order: 4
+  target_keyword: wukuf arafah
+  priority: high
+  status: published
+  notes: Hadis 'Al-Hajju Arafah' — sangat penting.
+- slug: tatacara-mabit-muzdalifah-mina-melontar
+  title: Tatacara Mabit di Muzdalifah dan Mina serta Melontar Jamrah
+  description: Selepas wukuf — mabit Muzdalifah, ambil batu, mabit Mina, jadual melontar Jamrah Aqabah, Wusta, Ula sepanjang
+    hari Tasyrik.
+  collection: guide
+  section: haji
+  order: 5
+  target_keyword: melontar jamrah
+  priority: medium
+  status: published
+  notes: Pelbagai langkah — strukturkan dengan timeline H+1 to H+3.
+- slug: tempat-mustajab-masjidil-haram
+  title: Tempat Mustajab Doa di Masjidil Haram
+  description: Multazam, Hijir Ismail, Maqam Ibrahim, Bukit Safa — penjelasan tempat mustajab doa di Masjidil Haram dan adab
+    semasa berdoa di sana.
+  collection: guide
+  section: tempat
+  order: 1
+  target_keyword: multazam doa mustajab
+  priority: medium
+  status: published
+  notes: Pair dengan doa-zikir guide existing.
+- slug: raudhah-masjid-nabawi-tatacara-masuk
+  title: 'Raudhah di Masjid Nabawi: Tatacara Masuk dan Doa'
+  description: Panduan masuk Raudhah — sistem tempahan Nusuk, jadual lelaki dan wanita, doa di Raudhah, adab ziarah makam
+    Rasulullah SAW.
+  collection: guide
+  section: tempat
+  order: 2
+  target_keyword: raudhah masjid nabawi
+  priority: medium
+  status: published
+  notes: Sistem Nusuk baru — verify with current Saudi sources.
+- slug: ziarah-bersejarah-mekah-madinah
+  title: Tempat Ziarah Bersejarah di Mekah dan Madinah
+  description: Jabal Nur, Jabal Uhud, Masjid Quba, Bukit Tsur — panduan ziarah bersejarah dengan adab, doa, dan amaran tentang
+    amalan bidaah.
+  collection: guide
+  section: tempat
+  order: 3
+  target_keyword: ziarah mekah madinah
+  priority: low
+  status: pending
+  notes: 'Penting sebut: ziarah ≠ rukun. Elak khurafat.'
+- slug: talbiyah-bila-bagaimana-dibaca
+  title: 'Talbiyah: Bila dan Bagaimana Dibaca dengan Betul'
+  description: Lafaz penuh talbiyah, bila mula dibaca selepas ihram, bila berhenti, kelebihan menyaringkan suara untuk lelaki,
+    dan adab wanita.
+  collection: guide
+  section: doa-zikir
+  order: 5
+  target_keyword: talbiyah haji
+  priority: high
+  status: published
+  notes: Hadis Bukhari + Muslim. Pair dengan existing doa-zikir guide.
+- slug: doa-tawaf-wada-perpisahan-baitullah
+  title: 'Doa Tawaf Wada: Adab Perpisahan dengan Baitullah'
+  description: Tatacara dan doa tawaf wada sebelum meninggalkan Mekah — dalil hadis sahih, hukum bagi wanita haid, dan adab
+    keluar Masjidil Haram.
+  collection: guide
+  section: doa-zikir
+  order: 6
+  target_keyword: tawaf wada
+  priority: low
+  status: pending
+  notes: Niche. Hadis Ibnu Abbas — wanita haid dikecualikan.
+- slug: haji-wanita-haid-istihadhah-tatacara
+  title: 'Haji Wanita Haid dan Istihadhah: Apa Boleh, Apa Tidak'
+  description: Panduan fiqh untuk jemaah wanita yang didatangi haid atau istihadhah — boleh wukuf? boleh tawaf? Cara guna
+    ubat penahan haid.
+  collection: guide
+  section: hukum-khas
+  order: 1
+  target_keyword: haji wanita haid
+  priority: high
+  status: published
+  notes: Mufti WP ada fatwa lengkap. Sangat banyak dicari.
+- slug: umrah-orang-kurang-upaya-tatacara
+  title: 'Umrah untuk Orang Kurang Upaya (OKU): Tatacara dan Rukhsah'
+  description: Cara tawaf dan saie menggunakan kerusi roda, perkhidmatan di Masjidil Haram, dan rukhsah fiqh untuk jemaah
+    berkeperluan khas.
+  collection: guide
+  section: hukum-khas
+  order: 2
+  target_keyword: umrah oku kerusi roda
+  priority: medium
+  status: published
+  notes: Tabung Haji ada SOP. Suruhan Saudi General Presidency.
+- slug: badal-haji-syarat-hukum
+  title: 'Badal Haji: Syarat, Hukum, dan Siapa Layak Dilakukan'
+  description: Penjelasan badal haji — siapa layak dibadalkan, syarat pelaku badal, hukum bayaran, dan kekeliruan yang sering
+    berlaku menurut Mufti WP.
+  collection: guide
+  section: hukum-khas
+  order: 3
+  target_keyword: badal haji
+  priority: medium
+  status: published
+  notes: Mufti WP fatwa khusus. Common Q dari ibu bapa tua.
+- slug: haji-lansia-pesakit-kronik-rukhsah
+  title: Rukhsah Haji untuk Lansia dan Pesakit Kronik
+  description: Kemudahan dan keringanan fiqh untuk jemaah lansia atau pesakit — solat duduk, melontar diwakilkan, mabit di
+    Mina, ubat dalam ihram.
+  collection: guide
+  section: hukum-khas
+  order: 4
+  target_keyword: haji pesakit
+  priority: low
+  status: pending
+  notes: Pair dengan persediaan-fizikal-mental-jemaah-lansia.
+- slug: tanda-haji-mabrur-cara-pelihara
+  title: Tanda Haji Mabrur dan Cara Memeliharanya Selepas Pulang
+  description: Apa itu haji mabrur menurut hadis, tanda-tanda haji diterima, dan amalan pasca-haji yang membantu memelihara
+    natijah ibadah.
+  collection: guide
+  section: selepas
+  order: 1
+  target_keyword: haji mabrur
+  priority: medium
+  status: published
+  notes: Hadis 'Al-Hajj al-mabrur laysa lahu jaza illa al-jannah'.
+- slug: persiapan-haji-2026-tabung-haji-malaysia
+  title: 'Persiapan Haji 2026: Kuota, Pakej, dan Jadual Tabung Haji'
+  description: Maklumat terkini musim haji 2026 untuk jemaah Malaysia — kuota, pakej Tabung Haji, jadual penerbangan, dan
+    kos terkini berdasarkan pengumuman rasmi.
+  collection: article
+  category: berita
+  tags:
+  - haji-2026
+  - tabung-haji
+  - kuota-haji
+  - pakej-haji
+  target_keyword: haji 2026 tabung haji
+  priority: high
+  status: published
+  notes: Time-sensitive. Verify against tabunghaji.gov.my pengumuman terkini.
+- slug: umrah-ramadhan-keutamaan-fadhilat
+  title: 'Umrah Ramadhan: Fadhilat, Persiapan, dan Tips Jemaah'
+  description: Hadis pahala umrah Ramadhan setara dengan haji, perbandingan kos pakej Malaysia & Indonesia, dan tips persiapan
+    untuk umrah bulan puasa.
+  collection: article
+  category: berita
+  tags:
+  - umrah-ramadhan
+  - fadhilat-umrah
+  - pakej-umrah
+  target_keyword: umrah ramadhan
+  priority: medium
+  status: pending
+  notes: Hadis Bukhari — umrah Ramadhan = pahala haji.
+- slug: solat-jamak-qasar-jemaah-haji-umrah
+  title: Solat Jamak dan Qasar untuk Jemaah Haji dan Umrah
+  description: Persoalan biasa jemaah — bila boleh jamak qasar di Mekah dan Madinah, qaedah musafir 88 km, dan fatwa Mufti
+    Wilayah berkenaan tempoh musafir.
+  collection: article
+  category: persoalan
+  tags:
+  - solat-musafir
+  - jamak-qasar
+  - fiqh-haji
+  target_keyword: solat jamak qasar haji
+  priority: medium
+  status: pending
+  notes: Mufti WP — perbahasan tempoh 4 hari vs >4 hari.
+- slug: dam-haji-kategori-kadar-tempat-bayar
+  title: 'Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran'
+  description: Empat kategori dam — nusuk, jaza', takhyir, taqdir — dengan kadar terkini, jenis pelanggaran yang terkena,
+    dan tempat sah pembayaran dam.
+  collection: article
+  category: persoalan
+  tags:
+  - dam-haji
+  - fiqh-haji
+  - denda-ihram
+  target_keyword: dam haji
+  priority: low
+  status: pending
+  notes: Reference dari Mufti WP fatwa khusus dam.
