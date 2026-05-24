@@ -1,5 +1,79 @@
 @import "tailwindcss";
 
+/* Self-hosted fonts — only latin + arabic (Amiri) subsets shipped.
+   Drops ~600KB of unused cyrillic/greek/vietnamese/symbols subsets that
+   @fontsource ships by default. Files in public/fonts/ → served from CDN. */
+
+/* Lora Variable — display serif (latin only) */
+@font-face {
+  font-family: "Lora Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/lora-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Lora Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/lora-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+@font-face {
+  font-family: "Lora Variable";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/lora-latin-wght-italic.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Lora Variable";
+  font-style: italic;
+  font-display: swap;
+  font-weight: 400 700;
+  src: url("/fonts/lora-latin-ext-wght-italic.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* Inter Variable — UI sans (latin only) */
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/inter-latin-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0000-00FF,U+0131,U+0152-0153,U+02BB-02BC,U+02C6,U+02DA,U+02DC,U+0304,U+0308,U+0329,U+2000-206F,U+20AC,U+2122,U+2191,U+2193,U+2212,U+2215,U+FEFF,U+FFFD;
+}
+@font-face {
+  font-family: "Inter Variable";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 100 900;
+  src: url("/fonts/inter-latin-ext-wght-normal.woff2") format("woff2-variations");
+  unicode-range: U+0100-02BA,U+02BD-02C5,U+02C7-02CC,U+02CE-02D7,U+02DD-02FF,U+0304,U+0308,U+0329,U+1D00-1DBF,U+1E00-1E9F,U+1EF2-1EFF,U+2020,U+20A0-20AB,U+20AD-20C0,U+2113,U+2C60-2C7F,U+A720-A7FF;
+}
+
+/* Amiri — Arabic body for verses (only loads on pages with [lang="ar"] / .arabic) */
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 400;
+  src: url("/fonts/amiri-arabic-400-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF;
+}
+@font-face {
+  font-family: "Amiri";
+  font-style: normal;
+  font-display: swap;
+  font-weight: 700;
+  src: url("/fonts/amiri-arabic-700-normal.woff2") format("woff2");
+  unicode-range: U+0600-06FF,U+0750-077F,U+08A0-08FF,U+FB50-FDFF,U+FE70-FEFF;
+}
+
 /* ─────────────────────────────────────────────────────────────
    DESIGN.md tokens — Madinah ink, Tabari teal, saffron illumination, paper cream.
    Inspired by quran.com / sunnah.com canonical Islamic-web accent (teal as trust,
@@ -7,8 +81,8 @@
    ───────────────────────────────────────────────────────────── */
 
 @theme {
-  --font-serif: "Lora", "Source Serif Pro", Georgia, "Times New Roman", serif;
-  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-serif: "Lora Variable", "Lora", Georgia, "Times New Roman", serif;
+  --font-sans: "Inter Variable", "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
   --font-arabic: "Amiri", "Scheherazade New", "Traditional Arabic", serif;
 
   --color-ink: #0F2922;
@@ -65,6 +139,26 @@
     line-height: 2.2;
     direction: rtl;
     color: var(--color-ink);
+  }
+
+  /* Skip-link for keyboard / screen-reader users — invisible until focused */
+  .skip-link {
+    position: absolute;
+    top: -40px;
+    left: 0.5rem;
+    z-index: 100;
+    padding: 0.5rem 1rem;
+    background: var(--color-ink);
+    color: var(--color-on-ink);
+    border-radius: var(--radius-sm);
+    font-size: 0.875rem;
+    font-weight: 600;
+    transition: top 0.15s ease;
+  }
+  .skip-link:focus {
+    top: 0.5rem;
+    outline: 2px solid var(--color-saffron);
+    outline-offset: 2px;
   }
 }
 

@@ -69,13 +69,10 @@ const schemas = jsonLd
     <link rel="canonical" href={canonical.href} />
     <link rel="sitemap" href="/sitemap-index.xml" />
 
-    <!-- Brand fonts: Lora (display serif), Inter (UI sans), Amiri (Arabic) -->
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      rel="stylesheet"
-      href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&family=Amiri:wght@400;700&display=swap"
-    />
+    <!-- Brand fonts: self-hosted via /fonts/ — see src/styles/global.css -->
+    <!-- Preload LCP-critical font subsets (latin only). Cuts FOUT delay on first paint. -->
+    <link rel="preload" href="/fonts/inter-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/fonts/lora-latin-wght-normal.woff2" as="font" type="font/woff2" crossorigin />
 
     <!-- Open Graph -->
     <meta property="og:title" content={title} />
@@ -103,9 +100,10 @@ const schemas = jsonLd
     ))}
   </head>
   <body>
+    <a href="#main" class="skip-link">Lompat ke kandungan utama</a>
     <header class="border-b border-[var(--color-rule)] bg-[var(--color-paper)]">
       <nav
-        class="max-w-5xl mx-auto px-4 py-5 flex items-center justify-between"
+        class="max-w-5xl mx-auto px-4 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-3 md:gap-0"
         aria-label="Utama"
       >
         <a
@@ -127,23 +125,23 @@ const schemas = jsonLd
             Panduan Haji <span class="text-[var(--color-saffron)]">&amp;</span> Umrah
           </span>
         </a>
-        <ul class="hidden md:flex gap-8 text-sm font-medium text-[var(--color-stone-warm)]">
+        <ul class="flex flex-wrap gap-x-6 gap-y-2 md:gap-8 text-sm font-medium text-[var(--color-stone-warm)] -mx-1 md:mx-0">
           <li>
             <a
               href="/panduan"
-              class="hover:text-[var(--color-teal-deep)] transition-colors"
+              class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
             >Panduan A–Z</a>
           </li>
           <li>
             <a
               href="/artikel"
-              class="hover:text-[var(--color-teal-deep)] transition-colors"
+              class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
             >Artikel</a>
           </li>
           <li>
             <a
               href="/tentang"
-              class="hover:text-[var(--color-teal-deep)] transition-colors"
+              class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
             >Tentang</a>
           </li>
         </ul>
@@ -151,7 +149,7 @@ const schemas = jsonLd
       <hr class="rule-saffron" />
     </header>
 
-    <main>
+    <main id="main">
       <slot />
     </main>
 
