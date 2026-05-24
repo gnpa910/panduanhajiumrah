@@ -6,8 +6,8 @@ meta:
   guides: 26
   articles: 4
   last_updated: '2026-05-24'
-  published_count: 20
-  pending_count: 10
+  published_count: 30
+  pending_count: 0
 backlog:
 - slug: checklist-kesihatan-vaksin-haji-umrah
   title: Checklist Kesihatan dan Vaksin Sebelum Berangkat Haji & Umrah
@@ -29,7 +29,7 @@ backlog:
   order: 11
   target_keyword: fardhu ain jemaah haji
   priority: medium
-  status: pending
+  status: published
   notes: 'Foundational fiqh musafir. Source: JAKIM e-fatwa + Mufti WP.'
 - slug: istitaah-syarat-mampu-tunai-haji
   title: 'Istitaah: Apa Maksud ''Mampu'' untuk Tunai Haji?'
@@ -40,7 +40,7 @@ backlog:
   order: 12
   target_keyword: istitaah haji maksud
   priority: medium
-  status: pending
+  status: published
   notes: Quran 3:97 + tafsir + Mufti WP fatwa. Pillar concept.
 - slug: persediaan-fizikal-mental-jemaah-lansia
   title: Persediaan Fizikal dan Mental untuk Jemaah Lansia
@@ -51,7 +51,7 @@ backlog:
   order: 13
   target_keyword: persediaan haji lansia
   priority: low
-  status: pending
+  status: published
   notes: Niche but recurring Q. Cross-ref hukum-khas.
 - slug: miqat-makani-jemaah-asia-tenggara
   title: 'Miqat Makani: Tempat Berihram untuk Jemaah Asia Tenggara'
@@ -128,7 +128,7 @@ backlog:
   order: 8
   target_keyword: wajib umrah rukun umrah
   priority: medium
-  status: pending
+  status: published
   notes: Common confusion. Cite Mufti WP.
 - slug: rukun-haji-enam-perkara
   title: 'Rukun Haji: Enam Perkara Wajib yang Tidak Boleh Ditinggalkan'
@@ -216,7 +216,7 @@ backlog:
   order: 3
   target_keyword: ziarah mekah madinah
   priority: low
-  status: pending
+  status: published
   notes: 'Penting sebut: ziarah ≠ rukun. Elak khurafat.'
 - slug: talbiyah-bila-bagaimana-dibaca
   title: 'Talbiyah: Bila dan Bagaimana Dibaca dengan Betul'
@@ -238,7 +238,7 @@ backlog:
   order: 6
   target_keyword: tawaf wada
   priority: low
-  status: pending
+  status: published
   notes: Niche. Hadis Ibnu Abbas — wanita haid dikecualikan.
 - slug: haji-wanita-haid-istihadhah-tatacara
   title: 'Haji Wanita Haid dan Istihadhah: Apa Boleh, Apa Tidak'
@@ -282,7 +282,7 @@ backlog:
   order: 4
   target_keyword: haji pesakit
   priority: low
-  status: pending
+  status: published
   notes: Pair dengan persediaan-fizikal-mental-jemaah-lansia.
 - slug: tanda-haji-mabrur-cara-pelihara
   title: Tanda Haji Mabrur dan Cara Memeliharanya Selepas Pulang
@@ -322,7 +322,7 @@ backlog:
   - pakej-umrah
   target_keyword: umrah ramadhan
   priority: medium
-  status: pending
+  status: published
   notes: Hadis Bukhari — umrah Ramadhan = pahala haji.
 - slug: solat-jamak-qasar-jemaah-haji-umrah
   title: Solat Jamak dan Qasar untuk Jemaah Haji dan Umrah
@@ -336,7 +336,7 @@ backlog:
   - fiqh-haji
   target_keyword: solat jamak qasar haji
   priority: medium
-  status: pending
+  status: published
   notes: Mufti WP — perbahasan tempoh 4 hari vs >4 hari.
 - slug: dam-haji-kategori-kadar-tempat-bayar
   title: 'Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran'
@@ -350,5 +350,5 @@ backlog:
   - denda-ihram
   target_keyword: dam haji
   priority: low
-  status: pending
+  status: published
   notes: Reference dari Mufti WP fatwa khusus dam.
