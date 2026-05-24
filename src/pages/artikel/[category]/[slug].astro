@@ -65,6 +65,23 @@ const breadcrumbSchema = {
     { "@type": "ListItem", position: 4, name: entry.data.title, item: pageUrl },
   ],
 };
+
+// Related articles — same category, exclude self, 3 most recent
+const allArticles = await getCollection("article", ({ data }) => !data.draft);
+const relatedSameCategory = allArticles
+  .filter((a) => a.data.category === entry.data.category && a.id !== entry.id)
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
+
+// Related guides — from frontmatter relatedGuides[]
+const relatedGuideEntries = entry.data.relatedGuides
+  ? await Promise.all(
+      entry.data.relatedGuides.map((ref) => getEntry(ref).catch(() => null))
+    )
+  : [];
+const validRelatedGuides = relatedGuideEntries.filter(
+  (g): g is NonNullable<typeof g> => g !== null && !g.data.draft
+);
 ---
 
 <BaseLayout
@@ -75,6 +92,23 @@ const breadcrumbSchema = {
   updatedAt={entry.data.updatedAt}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
+  {/* Visible breadcrumb */}
+  <nav class="max-w-5xl mx-auto px-4 pt-6 text-sm text-[var(--color-stone-warm)]" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-x-1 gap-y-1">
+      <li><a href="/" class="hover:text-[var(--color-saffron)] hover:underline">Laman Utama</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/artikel/" class="hover:text-[var(--color-saffron)] hover:underline">Artikel</a></li>
+      <li aria-hidden="true">/</li>
+      <li>
+        <a href={`/artikel/${entry.data.category}/`} class="hover:text-[var(--color-saffron)] hover:underline">
+          {categoryLabel}
+        </a>
+      </li>
+      <li aria-hidden="true">/</li>
+      <li class="text-[var(--color-ink)] truncate max-w-[16rem]" aria-current="page">{entry.data.title}</li>
+    </ol>
+  </nav>
+
   <article class="prose-haji">
     <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
       Artikel / {categoryLabels[entry.data.category] ?? entry.data.category}
@@ -124,4 +158,60 @@ const breadcrumbSchema = {
       )}
     </div>
   </article>
+
+  {/* Related: guide chapters from frontmatter */}
+  {validRelatedGuides.length > 0 && (
+    <section class="max-w-5xl mx-auto px-4 mt-16">
+      <div class="border-t border-[var(--color-rule)] pt-10">
+        <p class="badge badge-teal mb-4">Panduan Berkaitan</p>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {validRelatedGuides.map((g) => (
+            <li>
+              <a
+                href={`/panduan/${g.data.section}/${g.id}/`}
+                class="block p-5 border border-[var(--color-rule)] rounded-lg hover:border-[var(--color-saffron)] transition-colors"
+              >
+                <p class="text-xs uppercase tracking-[0.12em] text-[var(--color-stone-warm)] mb-1">
+                  Panduan / {g.data.section.replace("-", " ")}
+                </p>
+                <p class="font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
+                  {g.data.title}
+                </p>
+                <p class="text-sm text-[var(--color-stone-warm)] line-clamp-2">{g.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {/* Related: more from same category */}
+  {relatedSameCategory.length > 0 && (
+    <section class="max-w-5xl mx-auto px-4 mt-12 pb-16">
+      <div class="border-t border-[var(--color-rule)] pt-10">
+        <div class="flex items-baseline justify-between mb-6 gap-4 flex-wrap">
+          <p class="badge badge-teal">Lagi {categoryLabel}</p>
+          <a href={`/artikel/${entry.data.category}/`} class="text-sm font-semibold text-[var(--color-teal-deep)] hover:text-[var(--color-saffron)] uppercase tracking-[0.12em]">
+            Semua →
+          </a>
+        </div>
+        <ul class="space-y-4">
+          {relatedSameCategory.map((rel) => (
+            <li>
+              <a
+                href={`/artikel/${rel.data.category}/${rel.id}/`}
+                class="block py-3 border-b border-[var(--color-rule)] hover:bg-stone-50 transition-colors -mx-2 px-2 rounded"
+              >
+                <h3 class="font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
+                  {rel.data.title}
+                </h3>
+                <p class="text-sm text-[var(--color-stone-warm)] line-clamp-2">{rel.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 </BaseLayout>

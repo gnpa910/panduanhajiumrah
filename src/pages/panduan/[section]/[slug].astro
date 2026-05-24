@@ -46,15 +46,44 @@ const articleSchema = {
   })),
 };
 
+const sectionLabels: Record<string, string> = {
+  persiapan: "Persiapan",
+  "ihram-miqat": "Ihram & Miqat",
+  umrah: "Umrah",
+  haji: "Haji",
+  tempat: "Tempat Penting",
+  "doa-zikir": "Doa & Zikir",
+  "hukum-khas": "Hukum Khas",
+  selepas: "Selepas Pulang",
+};
+const sectionLabel = sectionLabels[entry.data.section] ?? entry.data.section;
+
 const breadcrumbSchema = {
   "@context": "https://schema.org",
   "@type": "BreadcrumbList",
   itemListElement: [
     { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
     { "@type": "ListItem", position: 2, name: "Panduan", item: new URL("/panduan/", siteUrl).href },
-    { "@type": "ListItem", position: 3, name: entry.data.title, item: pageUrl },
+    { "@type": "ListItem", position: 3, name: sectionLabel, item: new URL(`/panduan/${entry.data.section}/`, siteUrl).href },
+    { "@type": "ListItem", position: 4, name: entry.data.title, item: pageUrl },
   ],
 };
+
+// Related: same-section guides (excl self), in order. Pick 3 closest by order.
+const sectionGuides = (await getCollection("guide", ({ data }) => !data.draft))
+  .filter((g) => g.data.section === entry.data.section && g.id !== entry.id)
+  .sort((a, b) => Math.abs(a.data.order - entry.data.order) - Math.abs(b.data.order - entry.data.order))
+  .slice(0, 3);
+
+// Related: articles tagged with this guide via relatedGuides[]
+const allArticles = await getCollection("article", ({ data }) => !data.draft);
+const relatedArticles = allArticles
+  .filter((a) =>
+    Array.isArray(a.data.relatedGuides) &&
+    a.data.relatedGuides.some((ref) => ref.id === entry.id || ref.slug === entry.id)
+  )
+  .sort((a, b) => b.data.publishedAt.valueOf() - a.data.publishedAt.valueOf())
+  .slice(0, 3);
 ---
 
 <BaseLayout
@@ -65,6 +94,23 @@ const breadcrumbSchema = {
   updatedAt={entry.data.updatedAt}
   jsonLd={[articleSchema, breadcrumbSchema]}
 >
+  {/* Visible breadcrumb */}
+  <nav class="max-w-5xl mx-auto px-4 pt-6 text-sm text-[var(--color-stone-warm)]" aria-label="Breadcrumb">
+    <ol class="flex flex-wrap items-center gap-x-1 gap-y-1">
+      <li><a href="/" class="hover:text-[var(--color-saffron)] hover:underline">Laman Utama</a></li>
+      <li aria-hidden="true">/</li>
+      <li><a href="/panduan/" class="hover:text-[var(--color-saffron)] hover:underline">Panduan</a></li>
+      <li aria-hidden="true">/</li>
+      <li>
+        <a href={`/panduan/${entry.data.section}/`} class="hover:text-[var(--color-saffron)] hover:underline">
+          {sectionLabel}
+        </a>
+      </li>
+      <li aria-hidden="true">/</li>
+      <li class="text-[var(--color-ink)] truncate max-w-[16rem]" aria-current="page">{entry.data.title}</li>
+    </ol>
+  </nav>
+
   <article class="prose-haji">
     <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
       Panduan / {entry.data.section.replace("-", " ")}
@@ -106,4 +152,60 @@ const breadcrumbSchema = {
       )}
     </div>
   </article>
+
+  {/* Related articles citing this guide */}
+  {relatedArticles.length > 0 && (
+    <section class="max-w-5xl mx-auto px-4 mt-16">
+      <div class="border-t border-[var(--color-rule)] pt-10">
+        <p class="badge badge-teal mb-4">Artikel Berkaitan</p>
+        <ul class="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {relatedArticles.map((rel) => (
+            <li>
+              <a
+                href={`/artikel/${rel.data.category}/${rel.id}/`}
+                class="block p-5 border border-[var(--color-rule)] rounded-lg hover:border-[var(--color-saffron)] transition-colors"
+              >
+                <p class="text-xs uppercase tracking-[0.12em] text-[var(--color-stone-warm)] mb-1">
+                  Artikel / {rel.data.category}
+                </p>
+                <p class="font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
+                  {rel.data.title}
+                </p>
+                <p class="text-sm text-[var(--color-stone-warm)] line-clamp-2">{rel.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
+
+  {/* Same-section guides */}
+  {sectionGuides.length > 0 && (
+    <section class="max-w-5xl mx-auto px-4 mt-12 pb-16">
+      <div class="border-t border-[var(--color-rule)] pt-10">
+        <div class="flex items-baseline justify-between mb-6 gap-4 flex-wrap">
+          <p class="badge badge-teal">Lagi dalam {sectionLabel}</p>
+          <a href={`/panduan/${entry.data.section}/`} class="text-sm font-semibold text-[var(--color-teal-deep)] hover:text-[var(--color-saffron)] uppercase tracking-[0.12em]">
+            Semua →
+          </a>
+        </div>
+        <ul class="space-y-4">
+          {sectionGuides.map((g) => (
+            <li>
+              <a
+                href={`/panduan/${g.data.section}/${g.id}/`}
+                class="block py-3 border-b border-[var(--color-rule)] hover:bg-stone-50 transition-colors -mx-2 px-2 rounded"
+              >
+                <h3 class="font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
+                  {g.data.title}
+                </h3>
+                <p class="text-sm text-[var(--color-stone-warm)] line-clamp-2">{g.data.description}</p>
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </section>
+  )}
 </BaseLayout>
