@@ -10,7 +10,10 @@
     "build": "astro build",
     "preview": "astro preview",
     "astro": "astro",
-    "check": "astro check"
+    "check": "astro check",
+    "lint:citations": "tsx tools/citation-linter.ts --no-live",
+    "lint:citations:live": "tsx tools/citation-linter.ts",
+    "lint:citations:flip": "tsx tools/citation-linter.ts --flip --no-live -v"
   },
   "dependencies": {
     "@astrojs/mdx": "^5.0.6",
@@ -20,6 +23,7 @@
   },
   "devDependencies": {
     "@astrojs/check": "^0.9.9",
+    "tsx": "^4.22.3",
     "typescript": "^6.0.3"
   }
 }
