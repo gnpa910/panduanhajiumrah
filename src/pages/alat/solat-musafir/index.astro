@@ -1,0 +1,386 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Panduan Solat Musafir", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Panduan Solat Musafir — Jamak & Qasar",
+  description:
+    "Kira cara solat jamak dan qasar untuk musafir haji & umrah — berasaskan mazhab Syafi'i, jarak 80km, dengan panduan visual dan senario biasa.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+---
+
+<BaseLayout
+  title="Panduan Solat Musafir — Jamak & Qasar"
+  description="Kalkulator solat musafir: semak layak jamak & qasar mengikut mazhab Syafi'i, jarak 80km (2 marhalah), dengan panduan visual untuk jemaah haji & umrah."
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Solat Musafir</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Alat Interaktif · Mazhab Syafi'i</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Panduan Solat Musafir
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Semak sama ada anda layak jamak dan qasar mengikut mazhab Syafi'i.
+        Masukkan maklumat perjalanan, kalkulator akan tunjukkan solat mana
+        yang boleh dipendekkan atau digabungkan — lengkap dengan garis masa
+        visual.
+      </p>
+    </header>
+
+    {/* ─────── INPUT ─────── */}
+    <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+      <div class="grid md:grid-cols-2 gap-6">
+        {/* Days */}
+        <div>
+          <label for="travel-days" class="block text-sm font-semibold text-emerald-900 mb-2">
+            Berapa hari dalam perjalanan?
+          </label>
+          <input
+            type="number"
+            id="travel-days"
+            min="1"
+            max="60"
+            value="5"
+            class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          />
+          <p class="text-xs text-stone-500 mt-1">Termasuk hari pergi & balik</p>
+        </div>
+
+        {/* Destination */}
+        <div>
+          <label for="destination" class="block text-sm font-semibold text-emerald-900 mb-2">
+            Destinasi
+          </label>
+          <select
+            id="destination"
+            class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          >
+            <option value="mekah">Mekah</option>
+            <option value="madinah">Madinah</option>
+            <option value="jeddah">Jeddah</option>
+            <option value="lain">Lain-lain (turun di lapangan terbang)</option>
+          </select>
+        </div>
+
+        {/* Stay type */}
+        <div class="md:col-span-2">
+          <label class="block text-sm font-semibold text-emerald-900 mb-2">
+            Adakah perjalanan berterusan atau berhenti di satu tempat?
+          </label>
+          <div class="flex flex-wrap gap-3">
+            <label class="flex items-center gap-2 cursor-pointer border border-stone-300 rounded-md px-4 py-2 hover:border-emerald-700 has-[:checked]:border-emerald-700 has-[:checked]:bg-emerald-50 transition-colors">
+              <input type="radio" name="stay-type" value="single" checked class="accent-emerald-700" />
+              <span class="text-sm">Berhenti di satu tempat</span>
+            </label>
+            <label class="flex items-center gap-2 cursor-pointer border border-stone-300 rounded-md px-4 py-2 hover:border-emerald-700 has-[:checked]:border-emerald-700 has-[:checked]:bg-emerald-50 transition-colors">
+              <input type="radio" name="stay-type" value="continuous" class="accent-emerald-700" />
+              <span class="text-sm">Perjalanan berterusan (berpindah-pindah)</span>
+            </label>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    {/* ─────── RESULT ─────── */}
+    <div id="musafir-result">
+      {/* Status card */}
+      <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+        <div class="flex items-baseline gap-3 mb-3 flex-wrap">
+          <span class="badge badge-teal text-xs">Hukum Solat</span>
+          <span id="musafir-status-label" class="text-sm text-stone-600">Berdasarkan input anda</span>
+        </div>
+        <h2 id="musafir-headline" class="text-2xl font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+          Anda Layak Qasar & Jamak
+        </h2>
+        <p id="musafir-explanation" class="text-stone-700 mb-5"></p>
+
+        {/* Solat detail cards */}
+        <div id="solat-cards" class="grid grid-cols-1 sm:grid-cols-5 gap-3 mb-6"></div>
+
+        {/* Timeline */}
+        <div class="mb-6">
+          <h3 class="text-sm font-semibold text-emerald-900 mb-3">Garis Masa Solat</h3>
+          <div id="timeline" class="space-y-2"></div>
+        </div>
+      </div>
+
+      {/* Day counter */}
+      <div id="day-counter-section" class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+          📅 Bilangan Hari & Status Qasar
+        </h3>
+        <div id="day-grid" class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2"></div>
+      </div>
+
+      {/* Common scenarios */}
+      <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+          ✈️ Senario Biasa Jemaah Haji & Umrah
+        </h3>
+        <div class="space-y-4">
+          <div class="border-l-4 border-emerald-500 pl-4">
+            <p class="font-medium text-stone-900">Flight KL → Jeddah (8 jam)</p>
+            <p class="text-sm text-stone-600">Boleh qasar + jamak dalam kapal terbang. Jamak Zuhur+Asar atau Maghrib+Isya ikut waktu tanah yang dilalui. Qasar Zuhur/Asar/Isya kepada 2 rakaat.</p>
+            <span class="badge badge-teal text-xs mt-1">✅ Qasar + Jamak</span>
+          </div>
+          <div class="border-l-4 border-emerald-500 pl-4">
+            <p class="font-medium text-stone-900">Di Mekah 5 hari</p>
+            <p class="text-sm text-stone-600">Boleh qasar sepanjang 5 hari. Waktu Zuhur+Asar boleh digabung (jamak taqdim di Zuhur atau taakhir di Asar). Maghrib+Isya juga boleh digabung.</p>
+            <span class="badge badge-teal text-xs mt-1">✅ Qasar Sepanjang Stay</span>
+          </div>
+          <div class="border-l-4 border-stone-300 pl-4">
+            <p class="font-medium text-stone-900">Transit KLIA 4 jam</p>
+            <p class="text-sm text-stone-600">Belum musafir — solat penuh 4 rakaat. Qasar/jamak hanya mula selepas bertolak dari tempat asal (berlepas dari KLIA selepas check-in).</p>
+            <span class="badge text-xs mt-1" style="background: var(--color-stone-warm, #f5f5f4);">⏳ Solat Biasa</span>
+          </div>
+        </div>
+      </div>
+
+      {/* Rules summary */}
+      <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+        <h3 class="text-lg font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+          📖 Ringkasan Hukum Jamak & Qasar (Mazhab Syafi'i)
+        </h3>
+        <div class="grid md:grid-cols-2 gap-6 text-sm text-stone-700">
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-2">Syarat Layak Qasar</h4>
+            <ul class="space-y-1 list-disc list-inside">
+              <li>Jarak ≥ 80 km (≈ 2 marhalah / 48 batu)</li>
+              <li>Niat musafir sebelum keluar dari sempadan bandar</li>
+              <li>Perjalanan bukan untuk maksiat</li>
+              <li>Hanya 4 rakaat → 2 rakaat: <strong>Zuhur, Asar, Isya</strong></li>
+              <li>Subuh (2 rakaat) & Maghrib (3 rakaat) — <strong>wajib penuh</strong></li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-2">Syarat Layak Jamak</h4>
+            <ul class="space-y-1 list-disc list-inside">
+              <li>Musafir ≥ 80 km</li>
+              <li><strong>Jamak Taqdim:</strong> solat awal di waktu awal (Zuhur+Asar di waktu Zuhur)</li>
+              <li><strong>Jamak Takhir:</strong> solat lewat di waktu akhir (Zuhur+Asar di waktu Asar)</li>
+              <li>Pasangan: Zuhur+Asar sahaja, Maghrib+Isya sahaja</li>
+              <li>Subuh tidak boleh dijamak dengan mana-mana</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-2">Bila Henti Qasar?</h4>
+            <ul class="space-y-1 list-disc list-inside">
+              <li>Sampai di rumah / destinasi akhir</li>
+              <li>Berniat menetap ≥ 4 hari (tidak termasuk hari masuk & keluar)</li>
+              <li>Batal niat musafir</li>
+            </ul>
+          </div>
+          <div>
+            <h4 class="font-semibold text-stone-900 mb-2">Konteks TH & Muassasah</h4>
+            <ul class="space-y-1 list-disc list-inside">
+              <li>Jemaah TH: ikut imam, solat penuh di Masjidil Haram & Masjid Nabawi</li>
+              <li>Jika terpisah dari kumpulan, qasar + jamak dibenarkan</li>
+              <li>Muassasah: ikut arahan mutawwif, tetapi hukum tetap terpakai</li>
+            </ul>
+          </div>
+        </div>
+
+        <details class="mt-6 text-sm">
+          <summary class="cursor-pointer text-emerald-700 font-medium">Sumber rujukan</summary>
+          <ul class="mt-2 space-y-1 list-disc list-inside text-stone-700">
+            <li><a href="https://muftiwp.gov.my/" rel="noopener" class="text-emerald-700 underline">Mufti Wilayah Persekutuan</a> — Irsyad & Bayan Haji</li>
+            <li>Sahih Muslim, Kitab Salat al-Musafirin (hadis #686–704)</li>
+            <li>Al-Majmu' Syarah al-Muhazzab — Imam Nawawi</li>
+            <li>Fath al-Mu'in — al-Malibari (mazhab Syafi'i)</li>
+          </ul>
+        </details>
+      </div>
+
+      {/* Disclaimer */}
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-stone-700">
+        <p class="font-medium text-stone-900 mb-1">⚠️ Disclaimer penting</p>
+        <p>
+          Panduan ini berdasarkan mazhab Syafi'i. Mazhab lain (Hanafi, Maliki, Hanbali) mungkin
+          mempunyai syarat berbeza. Untuk kes khusus, rujuk pegawai agama, imam, atau hubungi
+          Mufti WP secara langsung.
+        </p>
+      </div>
+    </div>
+
+    {/* ─────── FOOTER LINKS ─────── */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+        Bacaan lanjut
+      </h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>
+          →
+          <a href="/alat/kalkulator-dam/" class="text-emerald-700 underline">
+            Kalkulator Dam Haji & Umrah
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/solat-musafir/" class="text-emerald-700 underline">
+            Panduan Lengkap Solat Musafir
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/ihram-miqat/larangan-ihram-lelaki-wanita-perbezaan/" class="text-emerald-700 underline">
+            Larangan Ihram Lelaki dan Wanita
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    const QASAR_PRAYERS = ["Subuh", "Zuhur", "Asar", "Maghrib", "Isya"];
+    const QASAR_RAKAAT  = [2, 2, 2, 3, 2]; // Zuhur, Asar, Isya qasared; Subuh & Maghrib stay
+    const FULL_RAKAAT   = [2, 4, 4, 3, 4];
+    const JAMAK_PAIRS   = [
+      { label: "Zuhur + Asar", prayers: [1, 2] },
+      { label: "Maghrib + Isya", prayers: [3, 4] },
+    ];
+
+    const daysEl    = document.getElementById("travel-days");
+    const destEl    = document.getElementById("destination");
+    const stayRadios = document.querySelectorAll('input[name="stay-type"]');
+
+    function getStayType() {
+      const checked = document.querySelector('input[name="stay-type"]:checked');
+      return checked ? checked.value : "single";
+    }
+
+    function update() {
+      const days = Math.max(1, Math.min(60, parseInt(daysEl.value) || 1));
+      const dest = destEl.value;
+      const stay = getStayType();
+
+      // All destinations from Malaysia are >80km
+      const isMusafir = true; // haji/umrah always musafir
+      const canQasar = isMusafir;
+      const canJamak = isMusafir;
+
+      // Headline
+      const headline = document.getElementById("musafir-headline");
+      headline.textContent = canQasar && canJamak
+        ? "Anda Layak Qasar & Jamak"
+        : canQasar
+          ? "Anda Layak Qasar Sahaja"
+          : "Solat Penuh (Bukan Musafir)";
+
+      // Explanation
+      const explanation = document.getElementById("musafir-explanation");
+      const destLabel = { mekah: "Mekah", madinah: "Madinah", jeddah: "Jeddah", lain: "destinasi anda" }[dest];
+      explanation.textContent = canQasar
+        ? `Perjalanan ke ${destLabel} melebihi 80 km — anda layak qasar (pendekkan) solat 4 rakaat kepada 2 rakaat, dan jamak (gabung) solat mengikut pasangan yang dibenarkan. Status ini berterusan sepanjang ${days} hari perjalanan.`
+        : "Jarak perjalanan anda kurang dari 80 km. Solat wajib dilakukan secara penuh.";
+
+      // Solat cards
+      const cardsEl = document.getElementById("solat-cards");
+      cardsEl.innerHTML = QASAR_PRAYERS.map((name, i) => {
+        const full = FULL_RAKAAT[i];
+        const qasar = QASAR_RAKAAT[i];
+        const canPendek = canQasar && full > 2;
+        const color = canPendek ? "bg-emerald-100 border-emerald-300" : "bg-stone-50 border-stone-200";
+        const icon = canPendek ? "🟢" : "⚪";
+        const label = canPendek ? `2 rakaat` : `${full} rakaat`;
+        const sub = canPendek ? `penuh ${full} → qasar 2` : "wajib penuh";
+        return `<div class="${color} border rounded-lg p-3 text-center">
+          <div class="text-lg mb-1">${icon}</div>
+          <div class="text-sm font-semibold text-stone-900">${name}</div>
+          <div class="text-lg font-bold text-emerald-900">${label}</div>
+          <div class="text-xs text-stone-500">${sub}</div>
+        </div>`;
+      }).join("");
+
+      // Timeline
+      const timeline = document.getElementById("timeline");
+      const timeNames = ["Subuh", "Zuhur", "Asar", "Maghrib", "Isya"];
+      const timePeriods = ["5:00 – 6:30", "12:00 – 15:00", "15:30 – 18:00", "18:30 – 20:00", "20:00 – 23:30"];
+      timeline.innerHTML = timeNames.map((name, i) => {
+        const full = FULL_RAKAAT[i];
+        const q = QASAR_RAKAAT[i];
+        const canPendek = canQasar && full > 2;
+
+        // Jamak info
+        let jamakNote = "";
+        if (canJamak) {
+          if (i === 1) jamakNote = " • Jamak dengan Asar";
+          if (i === 2) jamakNote = " • Jamak dengan Zuhur";
+          if (i === 3) jamakNote = " • Jamak dengan Isya";
+          if (i === 4) jamakNote = " • Jamak dengan Maghrib";
+        }
+
+        const barColor = canPendek
+          ? "bg-emerald-500"
+          : i === 0 || i === 3
+            ? "bg-stone-400"
+            : "bg-yellow-400";
+        const statusText = canPendek
+          ? `Qasar ${q} rakaat`
+          : `${full} rakaat (penuh)`;
+
+        return `<div class="flex items-center gap-3 text-sm">
+          <span class="w-16 text-right text-stone-600 font-medium shrink-0">${timePeriods[i].split(" – ")[0]}</span>
+          <div class="flex-1 bg-stone-100 rounded-full h-6 relative overflow-hidden">
+            <div class="${barColor} h-full rounded-full" style="width: ${canPendek ? 50 : 100}%"></div>
+            <span class="absolute inset-0 flex items-center px-3 text-xs font-medium ${canPendek ? 'text-emerald-900' : 'text-stone-700'}">${name} — ${statusText}${jamakNote}</span>
+          </div>
+          <span class="w-16 text-stone-500 text-xs shrink-0">${timePeriods[i].split(" – ")[1]}</span>
+        </div>`;
+      }).join("");
+
+      // Day grid
+      const dayGrid = document.getElementById("day-grid");
+      dayGrid.innerHTML = Array.from({ length: days }, (_, i) => {
+        const dayNum = i + 1;
+        const lastDay = dayNum === days;
+        const bg = lastDay ? "bg-yellow-50 border-yellow-300" : "bg-emerald-50 border-emerald-300";
+        const status = lastDay ? "Hari akhir" : "Qasar + Jamak";
+        const icon = lastDay ? "⚠️" : "✅";
+        return `<div class="${bg} border rounded-lg p-2 text-center">
+          <div class="text-xs font-bold text-stone-900">Hari ${dayNum}</div>
+          <div class="text-xs text-stone-600">${icon} ${status}</div>
+        </div>`;
+      }).join("");
+    }
+
+    daysEl.addEventListener("input", update);
+    destEl.addEventListener("change", update);
+    stayRadios.forEach(r => r.addEventListener("change", update));
+
+    // Initial render
+    update();
+  </script>
+</BaseLayout>

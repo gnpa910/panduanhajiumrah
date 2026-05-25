@@ -58,6 +58,27 @@ const tools = [
       "Tentukan arah kiblat dari lokasi semasa anda menggunakan GPS dan kompas peranti. Termasuk arah kiblat bandar utama Asia Tenggara.",
     icon: "🧭",
   },
+  {
+    href: "/alat/zikir-counter/",
+    title: "Zikir Counter",
+    description:
+      "Tasbih digital — hitung zikir Subhanallah, Alhamdulillah, Allahu Akbar dengan sasaran 33/34. Haptic feedback & progress ring.",
+    icon: "📿",
+  },
+  {
+    href: "/alat/solat-musafir/",
+    title: "Solat Musafir",
+    description:
+      "Panduan solat jamak & qasar untuk jemaah musafir — kira hari, destinasi, dan tatacara mengikut mazhab Syafi'i.",
+    icon: "🕋",
+  },
+  {
+    href: "/alat/kiblat-map/",
+    title: "Peta Kiblat",
+    description:
+      "Arah kiblat untuk 30+ bandar seluruh dunia — dari Kuala Lumpur ke London. Dengan jarak & kompas mini.",
+    icon: "🗺️",
+  },
 ];
 ---
 
@@ -80,7 +101,7 @@ const tools = [
       </p>
     </header>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       {tools.map((t) => (
         <a
           href={t.href}

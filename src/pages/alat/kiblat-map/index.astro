@@ -1,0 +1,337 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Peta Kiblat", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Peta Kiblat — Arah Kiblat 30+ Bandar",
+  description:
+    "Rujukan arah kiblat (bearing Qibla) untuk 30+ bandar utama seluruh dunia — dikira menggunakan formula great-circle dengan Kaabah sebagai titik pusat.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+
+// ─── Great-circle bearing calculation ───
+const KAABAH_LAT = 21.4225;
+const KAABAH_LNG = 39.8262;
+const DEG2RAD = Math.PI / 180;
+const RAD2DEG = 180 / Math.PI;
+
+function toBearing(deg: number): number {
+  return ((deg % 360) + 360) % 360;
+}
+
+function calcBearing(lat: number, lng: number): number {
+  const φ1 = lat * DEG2RAD;
+  const φ2 = KAABAH_LAT * DEG2RAD;
+  const Δλ = (KAABAH_LNG - lng) * DEG2RAD;
+  const y = Math.sin(Δλ) * Math.cos(φ2);
+  const x =
+    Math.cos(φ1) * Math.sin(φ2) -
+    Math.sin(φ1) * Math.cos(φ2) * Math.cos(Δλ);
+  return toBearing(Math.atan2(y, x) * RAD2DEG);
+}
+
+function haversine(lat: number, lng: number): number {
+  const R = 6371;
+  const φ1 = lat * DEG2RAD;
+  const φ2 = KAABAH_LAT * DEG2RAD;
+  const Δφ = (KAABAH_LAT - lat) * DEG2RAD;
+  const Δλ = (KAABAH_LNG - lng) * DEG2RAD;
+  const a =
+    Math.sin(Δφ / 2) ** 2 +
+    Math.cos(φ1) * Math.cos(φ2) * Math.sin(Δλ / 2) ** 2;
+  return Math.round(R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a)));
+}
+
+function bearingLabel(b: number): string {
+  const dirs = [
+    "Utara", "Utara Timur Laut", "Timur Laut", "Timur Timur Laut",
+    "Timur", "Timur Tenggara", "Tenggara", "Selatan Tenggara",
+    "Selatan", "Selatan Barat Daya", "Barat Daya", "Barat Barat Daya",
+    "Barat", "Barat Barat Laut", "Barat Laut", "Utara Barat Laut",
+  ];
+  return dirs[Math.round(b / 22.5) % 16];
+}
+
+interface City {
+  name: string;
+  country: string;
+  lat: number;
+  lng: number;
+  region: string;
+  bearing: number;
+  bearingRound: number;
+  label: string;
+  dist: number;
+}
+
+const rawCities: { name: string; country: string; lat: number; lng: number; region: string }[] = [
+  // Malaysia
+  { name: "Kuala Lumpur", country: "Malaysia", lat: 3.139, lng: 101.6869, region: "Malaysia" },
+  { name: "Johor Bahru", country: "Malaysia", lat: 1.4927, lng: 103.7414, region: "Malaysia" },
+  { name: "George Town (Penang)", country: "Malaysia", lat: 5.4141, lng: 100.3288, region: "Malaysia" },
+  { name: "Kota Kinabalu", country: "Malaysia", lat: 5.9804, lng: 116.0735, region: "Malaysia" },
+  { name: "Kuching", country: "Malaysia", lat: 1.5535, lng: 110.3593, region: "Malaysia" },
+  { name: "Kuala Terengganu", country: "Malaysia", lat: 5.3302, lng: 103.1408, region: "Malaysia" },
+  { name: "Kota Bharu", country: "Malaysia", lat: 6.1254, lng: 102.2381, region: "Malaysia" },
+  { name: "Melaka", country: "Malaysia", lat: 2.1896, lng: 102.2501, region: "Malaysia" },
+  // Indonesia
+  { name: "Jakarta", country: "Indonesia", lat: -6.2088, lng: 106.8456, region: "Indonesia" },
+  { name: "Surabaya", country: "Indonesia", lat: -7.2575, lng: 112.7521, region: "Indonesia" },
+  { name: "Medan", country: "Indonesia", lat: 3.5952, lng: 98.6722, region: "Indonesia" },
+  { name: "Makassar", country: "Indonesia", lat: -5.1477, lng: 119.4327, region: "Indonesia" },
+  { name: "Yogyakarta", country: "Indonesia", lat: -7.7956, lng: 110.3695, region: "Indonesia" },
+  // ASEAN
+  { name: "Singapura", country: "Singapura", lat: 1.3521, lng: 103.8198, region: "ASEAN" },
+  { name: "Bangkok", country: "Thailand", lat: 13.7563, lng: 100.5018, region: "ASEAN" },
+  { name: "Manila", country: "Filipina", lat: 14.5995, lng: 120.9842, region: "ASEAN" },
+  { name: "Ho Chi Minh", country: "Vietnam", lat: 10.8231, lng: 106.6297, region: "ASEAN" },
+  { name: "Bandar Seri Begawan", country: "Brunei", lat: 4.9031, lng: 114.9398, region: "ASEAN" },
+  // Timur Tengah
+  { name: "Dubai", country: "UAE", lat: 25.2048, lng: 55.2708, region: "Timur Tengah" },
+  { name: "Istanbul", country: "Turkiye", lat: 41.0082, lng: 28.9784, region: "Timur Tengah" },
+  { name: "Kaherah", country: "Mesir", lat: 30.0444, lng: 31.2357, region: "Timur Tengah" },
+  { name: "Amman", country: "Jordan", lat: 31.9454, lng: 35.9284, region: "Timur Tengah" },
+  // Asia lain
+  { name: "Delhi", country: "India", lat: 28.7041, lng: 77.1025, region: "Asia Lain" },
+  { name: "Karachi", country: "Pakistan", lat: 24.8607, lng: 67.0011, region: "Asia Lain" },
+  { name: "Dhaka", country: "Bangladesh", lat: 23.8103, lng: 90.4125, region: "Asia Lain" },
+  { name: "Beijing", country: "China", lat: 39.9042, lng: 116.4074, region: "Asia Lain" },
+  // Eropah / Amerika / Oceania
+  { name: "London", country: "UK", lat: 51.5074, lng: -0.1278, region: "Eropah & Amerika" },
+  { name: "Paris", country: "Perancis", lat: 48.8566, lng: 2.3522, region: "Eropah & Amerika" },
+  { name: "New York", country: "USA", lat: 40.7128, lng: -74.006, region: "Eropah & Amerika" },
+  { name: "Melbourne", country: "Australia", lat: -37.8136, lng: 144.9631, region: "Eropah & Amerika" },
+];
+
+const cities: City[] = rawCities.map((c) => {
+  const b = calcBearing(c.lat, c.lng);
+  return {
+    ...c,
+    bearing: Math.round(b * 10) / 10,
+    bearingRound: Math.round(b),
+    label: bearingLabel(b),
+    dist: haversine(c.lat, c.lng),
+  };
+});
+
+const regions = [...new Set(cities.map((c) => c.region))];
+---
+
+<BaseLayout
+  title="Peta Kiblat — Arah Kiblat 30+ Bandar Dunia"
+  description="Rujukan arah kiblat (Qibla direction) untuk lebih 30 bandar utama di Malaysia, Indonesia, ASEAN, Timur Tengah, dan seluruh dunia — dikira secara great-circle ke Kaabah."
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-5xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Peta Kiblat</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Rujukan Statik · Great-Circle</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Peta Kiblat
+      </h1>
+      <p class="text-lg text-stone-700 max-w-3xl">
+        Arah kiblat untuk <strong>30+ bandar</strong> di seluruh dunia, dikira menggunakan
+        formula <em>great-circle</em> dengan Kaabah (21.4225°N, 39.8262°E) sebagai titik tujuan.
+        Data ini boleh diakses secara luar talian — sesuai sebagai rujukan pantas.
+      </p>
+    </header>
+
+    {/* ─── Simplified SVG World Map ─── */}
+    <div class="bg-white border border-stone-200 rounded-lg p-4 md:p-6 mb-8 shadow-sm">
+      <h2 class="text-lg font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+        Peta Ringkas Dunia
+      </h2>
+      <div class="overflow-x-auto">
+        <svg viewBox="-180 -90 360 180" class="w-full h-auto max-h-64" aria-label="Peta dunia ringkas dengan lokasi Kaabah">
+          {/* Ocean background */}
+          <rect x="-180" y="-90" width="360" height="180" fill="#e8f4f8" />
+          {/* Simplified continents as rough shapes */}
+          {/* Africa */}
+          <path d="M-17,-35 L-17,-5 L5,-5 L15,5 L20,15 L18,35 L10,35 L5,25 L-5,20 L-10,10 L-15,0 L-20,-10 L-17,-35 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* Europe */}
+          <path d="M-10,35 L-10,55 L0,60 L10,58 L20,55 L30,55 L35,50 L30,40 L20,38 L10,35 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* Asia */}
+          <path d="M30,55 L40,55 L50,60 L60,55 L70,55 L80,50 L90,45 L100,35 L110,25 L120,35 L130,40 L140,50 L145,55 L150,55 L155,45 L145,35 L135,25 L130,15 L120,10 L110,15 L100,20 L90,25 L80,30 L70,35 L60,35 L50,35 L40,40 L35,45 L30,55 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* North America */}
+          <path d="M-160,25 L-160,55 L-150,60 L-130,65 L-120,60 L-110,55 L-100,50 L-90,45 L-80,40 L-75,35 L-80,25 L-90,20 L-100,15 L-120,10 L-140,15 L-155,20 L-160,25 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* South America */}
+          <path d="M-80,10 L-75,0 L-70,-10 L-65,-20 L-60,-30 L-55,-40 L-50,-50 L-55,-55 L-65,-50 L-70,-40 L-75,-30 L-80,-20 L-80,-10 L-80,0 L-80,10 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* Australia */}
+          <path d="M110,-15 L120,-15 L135,-20 L145,-25 L150,-30 L150,-38 L145,-40 L135,-38 L125,-35 L115,-30 L110,-25 L110,-15 Z" fill="#d4c5a9" stroke="#b8a88a" stroke-width="0.3" />
+          {/* Kaabah marker */}
+          <circle cx="39.8" cy="-21.4" r="2.5" fill="#0d9488" stroke="#fff" stroke-width="0.5" />
+          <text x="39.8" y="-25" text-anchor="middle" font-size="4" fill="#0d9488" font-weight="bold">Kaabah</text>
+          {/* City dots */}
+          {cities.map((c) => (
+            <circle cx={c.lng} cy={-c.lat} r="1.2" fill="#f59e0b" stroke="#fff" stroke-width="0.3" >
+              <title>{c.name} — {c.bearing}°</title>
+            </circle>
+          ))}
+        </svg>
+      </div>
+      <p class="text-xs text-stone-500 mt-2">Titik emas menunjukkan lokasi bandar rujukan. Hijau = Kaabah.</p>
+    </div>
+
+    {/* ─── Search ─── */}
+    <div class="mb-6">
+      <input
+        type="text"
+        id="city-search"
+        placeholder="Cari bandar atau negara..."
+        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+      />
+    </div>
+
+    {/* ─── City Cards by Region ─── */}
+    {regions.map((region) => (
+      <div class="region-group mb-8" data-region={region}>
+        <h2
+          class="text-xl font-semibold text-emerald-900 mb-4 flex items-center gap-2"
+          style="font-family: var(--font-serif);"
+        >
+          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
+          {region}
+        </h2>
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+          {cities
+            .filter((c) => c.region === region)
+            .map((c) => (
+              <div
+                class="city-card bg-white border border-stone-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                data-city={c.name.toLowerCase()}
+                data-country={c.country.toLowerCase()}
+              >
+                <div class="flex items-start gap-3">
+                  {/* Mini compass SVG */}
+                  <svg
+                    width="48"
+                    height="48"
+                    viewBox="0 0 48 48"
+                    class="flex-shrink-0"
+                    aria-label={`Arah kiblat ${c.bearing}°`}
+                  >
+                    <circle cx="24" cy="24" r="22" fill="none" stroke="#e7e5e4" stroke-width="1.5" />
+                    <circle cx="24" cy="24" r="18" fill="none" stroke="#d6d3d1" stroke-width="0.5" />
+                    {/* Cardinal ticks */}
+                    <line x1="24" y1="3" x2="24" y2="7" stroke="#a8a29e" stroke-width="1" />
+                    <line x1="24" y1="41" x2="24" y2="45" stroke="#a8a29e" stroke-width="1" />
+                    <line x1="3" y1="24" x2="7" y2="24" stroke="#a8a29e" stroke-width="1" />
+                    <line x1="41" y1="24" x2="45" y2="24" stroke="#a8a29e" stroke-width="1" />
+                    {/* Arrow pointing to Qibla */}
+                    <g transform={`rotate(${c.bearingRound}, 24, 24)`}>
+                      <line x1="24" y1="8" x2="24" y2="36" stroke="#0d9488" stroke-width="2" stroke-linecap="round" />
+                      <polygon points="24,6 21,14 27,14" fill="#0d9488" />
+                    </g>
+                    <circle cx="24" cy="24" r="2" fill="#f59e0b" />
+                  </svg>
+                  <div class="min-w-0">
+                    <h3 class="font-semibold text-stone-900 text-sm leading-tight">{c.name}</h3>
+                    <p class="text-xs text-stone-500 mb-1">{c.country}</p>
+                    <p class="text-emerald-800 font-mono text-sm font-bold">{c.bearing}°</p>
+                    <p class="text-xs text-stone-600">{c.label}</p>
+                    <p class="text-xs text-stone-400 mt-1">{c.dist.toLocaleString()} km ke Kaabah</p>
+                  </div>
+                </div>
+              </div>
+            ))}
+        </div>
+      </div>
+    ))}
+
+    {/* no-results message */}
+    <p id="no-results" class="hidden text-center text-stone-500 py-8">
+      Tiada bandar ditemui. Cuba carian lain.
+    </p>
+
+    {/* ─── Info Card ─── */}
+    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mt-8">
+      <h2 class="text-lg font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+        Bagaimana Arah Kiblat Dikira?
+      </h2>
+      <p class="text-stone-700 text-sm mb-3">
+        Arah kiblat ditentukan menggunakan <strong>formula great-circle</strong> — iaitu jarak
+        terpendek di permukaan bumi dari lokasi anda ke Kaabah (21.4225°N, 39.8262°E) di Makkah.
+        Bearing diukut dalam darjah dari Utara (0°) mengikut arah jam.
+      </p>
+      <p class="text-stone-700 text-sm mb-3">
+        <strong>Formula:</strong><br />
+        <code class="text-xs bg-white px-2 py-1 rounded border border-stone-200 inline-block mt-1">
+          bearing = atan2(sin(Δλ)·cos(φ₂), cos(φ₁)·sin(φ₂) − sin(φ₁)·cos(φ₂)·cos(Δλ))
+        </code>
+      </p>
+      <p class="text-stone-700 text-sm">
+        Data di halaman ini adalah <strong>anggaran statik</strong> berdasarkan koordinat pusat bandar.
+        Untuk arah kiblat yang lebih tepat dari lokasi tepat anda:
+      </p>
+      <a
+        href="/alat/qibla/"
+        class="inline-block mt-3 px-5 py-2.5 bg-emerald-700 text-white text-sm font-semibold rounded-md hover:bg-emerald-800 transition-colors"
+      >
+        🧭 Gunakan Kompas Kiblat GPS
+      </a>
+    </div>
+
+    <p class="text-xs text-stone-400 text-center mt-6">
+      Nota: Bearing dikira berdasarkan koordinat pusat bandar. Nilai mungkin berbeza beberapa darjah
+      bergantung pada lokasi tepat anda dalam bandar tersebut.
+    </p>
+  </section>
+
+  {/* ─── Client-side search ─── */}
+  <script>
+    const input = document.getElementById("city-search") as HTMLInputElement;
+    const cards = document.querySelectorAll<HTMLElement>(".city-card");
+    const groups = document.querySelectorAll<HTMLElement>(".region-group");
+    const noResults = document.getElementById("no-results")!;
+
+    input?.addEventListener("input", () => {
+      const q = input.value.toLowerCase().trim();
+      let anyVisible = false;
+
+      cards.forEach((card) => {
+        const city = card.dataset.city ?? "";
+        const country = card.dataset.country ?? "";
+        const match = !q || city.includes(q) || country.includes(q);
+        card.style.display = match ? "" : "none";
+        if (match) anyVisible = true;
+      });
+
+      groups.forEach((g) => {
+        const visibleCards = g.querySelectorAll<HTMLElement>(".city-card:not([style*='display: none'])");
+        g.style.display = visibleCards.length > 0 ? "" : "none";
+      });
+
+      noResults.style.display = anyVisible ? "none" : "";
+    });
+  </script>
+</BaseLayout>
