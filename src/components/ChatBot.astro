@@ -1,6 +1,6 @@
 ---
 // ChatBot.astro — floating AI chat widget for panduanhajiumrah
-// v2: memory, context-aware, typing indicator, tools, disclaimer, offline fallback
+// v3: feedback, voice, analytics, multi-language
 ---
 
 <!-- Disclaimer banner (first open) -->
@@ -87,6 +87,7 @@
   var inp=document.getElementById("chatbot-input"),snd=document.getElementById("chatbot-send"),clrBtn=document.getElementById("chatbot-clear");
   var open=false,load=false,lt=0;
   var msgs=[];
+  var msgIdx=0;
   var langSel=document.getElementById("chatbot-lang"),micBtn=document.getElementById("chatbot-mic");
   var lang="ms";
   function track(ev,d){try{var a=JSON.parse(localStorage.getItem("phu-analytics")||"{}");if(!a.e)a.e=[];a.e.push({ev:ev,d:d,t:Date.now()});if(a.e.length>200)a.e=a.e.slice(-100);localStorage.setItem("phu-analytics",JSON.stringify(a))}catch(e){}}
@@ -118,6 +119,7 @@
 
   function addTyping(){var w=document.createElement("div");w.className="flex gap-2 items-start chatbot-typing";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 text-[var(--color-ink)] dark:text-stone-200"><div class="flex gap-1 items-center"><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:300ms"></span></div></div>';mc.appendChild(w);mc.scrollTop=mc.scrollHeight;return w}
   function rmTyping(){var t=mc.querySelector(".chatbot-typing");if(t)t.remove()}
+  function addFeedback(bubble,idx){var fw=document.createElement("div");fw.className="flex gap-1 mt-1 pl-9";var u=document.createElement("button");u.className="text-xs px-2 py-0.5 rounded hover:bg-stone-200 dark:hover:bg-stone-700 transition opacity-50 hover:opacity-100";u.textContent="\ud83d\udc4d";u.title="Baik";var d=document.createElement("button");d.className="text-xs px-2 py-0.5 rounded hover:bg-stone-200 dark:hover:bg-stone-700 transition opacity-50 hover:opacity-100";d.textContent="\ud83d\udc4e";d.title="Tak tepat";u.addEventListener("click",function(){u.style.opacity="1";d.style.opacity="0.3";u.style.fontWeight="bold";track("feedback",{i:idx,r:"up"})});d.addEventListener("click",function(){d.style.opacity="1";u.style.opacity="0.3";d.style.fontWeight="bold";track("feedback",{i:idx,r:"down"})});fw.appendChild(u);fw.appendChild(d);mc.appendChild(fw)}
 
   function addMsg(role,content,streaming){
     streaming=streaming||false;

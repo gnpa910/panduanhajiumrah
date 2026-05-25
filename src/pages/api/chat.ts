@@ -67,6 +67,7 @@ export const POST: APIRoute = async ({ request }) => {
     const body = await request.json();
     const messages = body.messages;
     const pageUrl = body.pageUrl || "";
+    const lang = body.lang || "ms";
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return new Response(JSON.stringify({ error: "Messages required" }), {
@@ -79,9 +80,15 @@ export const POST: APIRoute = async ({ request }) => {
     const recentMessages = messages.slice(-10);
 
     // Build system prompt with page context
+    // Build system prompt with page context + language
     let systemPrompt = SYSTEM_PROMPT;
     if (pageUrl) {
       systemPrompt += `\n\nKONTEKS HALAMAN: User di halaman "${pageUrl}". Rujuk kandungan jika relevan.`;
+    }
+    if (lang === "en") {
+      systemPrompt += `\n\nLANGUAGE: Reply in English. Keep tool/page links in Malay (they link to Malay pages).`;
+    } else if (lang === "ar") {
+      systemPrompt += `\n\nLANGUAGE: Reply in Arabic. Keep tool/page links in Malay.`;
     }
 
     // LLM config from env vars (set in Vercel dashboard)
@@ -115,6 +122,21 @@ export const POST: APIRoute = async ({ request }) => {
 
     if (!llmResponse.ok) {
       const errText = await llmResponse.text().catch(() => "Unknown error");
+      // FAQ fallback for common questions
+      const lastMsg = (messages[messages.length - 1]?.content || "").toLowerCase();
+      const FAQ: Record<string, string> = {
+        rukun: "Rukun Haji ada 5:\n1️⃣ Ihram\n2️⃣ Wukuf di Arafah\n3️⃣ Tawaf\n4️⃣ Saie\n5️⃣ Bercukur\n\n📖 [Baca](/panduan/haji/rukun-haji/)",
+        umrah: "Rukun Umrah ada 5:\n1️⃣ Ihram\n2️⃣ Tawaf\n3️⃣ Saie\n4️⃣ Bercukur\n5️⃣ Tertib\n\n📖 [Baca](/panduan/umrah/tatacara-asas-umrah/)",
+        solat: "Solat musafir: jarak >80km boleh qasar & jamak.\n\n🔧 [Kalkulator](/alat/solat-musafir/)",
+        kos: "Kos umrah: RM5k–RM15k bergantung pakej.\n\n🔧 [Kalkulator](/alat/kalkulator-kos/)",
+      };
+      for (const [key, faq] of Object.entries(FAQ)) {
+        if (lastMsg.includes(key)) {
+          return new Response(JSON.stringify({ choices: [{ message: { content: faq } }] }), {
+            status: 200, headers: { "Content-Type": "application/json" },
+          });
+        }
+      }
       console.error(`LLM error ${llmResponse.status}: ${errText}`);
       return new Response(
         JSON.stringify({
