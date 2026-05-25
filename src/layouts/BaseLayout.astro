@@ -222,8 +222,47 @@ const schemas = jsonLd
       </div>
     </footer>
   <BackToTop />
+
+  <!-- Custom Modal (replaces alert/confirm) -->
+  <div id="site-modal" class="modal-overlay" onclick="if(event.target===this){this.classList.remove('show');if(_modalResolve)_modalResolve(false);}">
+    <div class="modal-box">
+      <div id="modal-icon" class="modal-icon"></div>
+      <div id="modal-title" class="modal-title"></div>
+      <div id="modal-msg" class="modal-msg"></div>
+      <div id="modal-btns" class="modal-btns"></div>
+    </div>
+  </div>
+
   <script is:inline>
     if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+
+    let _modalResolve = null;
+    function siteModal({icon, title, msg, buttons}) {
+      const overlay = document.getElementById('site-modal');
+      document.getElementById('modal-icon').textContent = icon || '';
+      document.getElementById('modal-title').textContent = title || '';
+      document.getElementById('modal-msg').textContent = msg || '';
+      const btnsEl = document.getElementById('modal-btns');
+      btnsEl.innerHTML = '';
+      buttons.forEach(b => {
+        const btn = document.createElement('button');
+        btn.className = 'modal-btn ' + (b.cls || '');
+        btn.textContent = b.text;
+        btn.onclick = () => { overlay.classList.remove('show'); _modalResolve(b.value); };
+        btnsEl.appendChild(btn);
+      });
+      overlay.classList.add('show');
+      return new Promise(r => { _modalResolve = r; });
+    }
+    function siteAlert(msg, title) {
+      return siteModal({ icon: '\u2139\ufe0f', title: title || 'Perhatian', msg, buttons: [{text:'OK', value:true, cls:'modal-btn-primary'}] });
+    }
+    function siteConfirm(msg, title) {
+      return siteModal({ icon: '\u26a0\ufe0f', title: title || 'Pengesahan', msg, buttons: [{text:'Batal', value:false, cls:''}, {text:'Ya, teruskan', value:true, cls:'modal-btn-primary'}] });
+    }
+    function siteConfirmDanger(msg, title) {
+      return siteModal({ icon: '\ud83d\uddd1\ufe0f', title: title || 'Padam?', msg, buttons: [{text:'Batal', value:false, cls:''}, {text:'Ya, padam', value:true, cls:'modal-btn-danger'}] });
+    }
   </script>
   </body>
 </html>
