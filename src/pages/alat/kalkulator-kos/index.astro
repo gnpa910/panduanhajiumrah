@@ -36,36 +36,36 @@ const webAppSchema = {
 >
   <section class="max-w-4xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Kalkulator Kos Haji</span>
+      <span class="text-[var(--color-ink)]">Kalkulator Kos Haji</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Alat Interaktif · Anggaran 2026</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Kalkulator Kos Haji 2026
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Anggarkan keseluruhan kos haji anda — pilih jenis pakej, bilangan tanggungan, dan kos sampingan. Bandingkan TH Muassasah, TH Private, dan pakej swasta secara langsung.
       </p>
     </header>
 
     {/* ─────── INPUT SECTION ─────── */}
-    <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+    <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm">
       {/* Package Type */}
-      <label for="package-type" class="block text-sm font-semibold text-emerald-900 mb-2">
+      <label for="package-type" class="block text-sm font-semibold text-[var(--color-ink)] mb-2">
         Jenis pakej haji
       </label>
       <select
         id="package-type"
-        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 mb-5"
+        class="w-full px-4 py-3 border border-[var(--color-rule)] rounded-md text-base bg-[var(--color-surface)] focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30 mb-5"
       >
         <option value="">— Pilih pakej —</option>
         <option value="muassasah">TH Muassasah (≈ RM11,450)</option>
@@ -75,7 +75,7 @@ const webAppSchema = {
 
       {/* Custom price for swasta */}
       <div id="custom-price-wrap" class="hidden mb-5">
-        <label for="custom-price" class="block text-sm font-semibold text-emerald-900 mb-2">
+        <label for="custom-price" class="block text-sm font-semibold text-[var(--color-ink)] mb-2">
           Harga pakej swasta (RM)
         </label>
         <input
@@ -84,14 +84,14 @@ const webAppSchema = {
           min="0"
           step="100"
           placeholder="cth: 30000"
-          class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          class="w-full px-4 py-3 border border-[var(--color-rule)] rounded-md text-base bg-[var(--color-surface)] focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
         />
       </div>
 
       {/* TH Private range slider */}
       <div id="th-private-wrap" class="hidden mb-5">
-        <label for="th-private-range" class="block text-sm font-semibold text-emerald-900 mb-2">
-          Anggaran harga TH Private (RM): <span id="th-private-val" class="text-emerald-700">35,000</span>
+        <label for="th-private-range" class="block text-sm font-semibold text-[var(--color-ink)] mb-2">
+          Anggaran harga TH Private (RM): <span id="th-private-val" class="text-[var(--color-teal)]">35,000</span>
         </label>
         <input
           type="range"
@@ -100,16 +100,16 @@ const webAppSchema = {
           max="45000"
           step="500"
           value="35000"
-          class="w-full accent-emerald-700"
+          class="w-full accent-[var(--color-teal)]"
         />
-        <div class="flex justify-between text-xs text-stone-500 mt-1">
+        <div class="flex justify-between text-xs text-[var(--color-stone-warm)] mt-1">
           <span>RM25,000</span>
           <span>RM45,000</span>
         </div>
       </div>
 
       {/* Dependents */}
-      <label for="dependents" class="block text-sm font-semibold text-emerald-900 mb-2">
+      <label for="dependents" class="block text-sm font-semibold text-[var(--color-ink)] mb-2">
         Bilangan tanggungan (anak / ibu bapa)
       </label>
       <input
@@ -118,26 +118,26 @@ const webAppSchema = {
         min="0"
         max="10"
         value="0"
-        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 mb-5"
+        class="w-full px-4 py-3 border border-[var(--color-rule)] rounded-md text-base bg-[var(--color-surface)] focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30 mb-5"
       />
 
       {/* Additional Costs Checkboxes */}
       <fieldset class="mb-4">
-        <legend class="block text-sm font-semibold text-emerald-900 mb-3">
+        <legend class="block text-sm font-semibold text-[var(--color-ink)] mb-3">
           Kos sampingan (pilih yang berkenaan)
         </legend>
         <div class="space-y-3">
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="cost-dam" class="mt-1 accent-emerald-700 w-5 h-5" />
-            <span class="text-stone-700">
+            <input type="checkbox" id="cost-dam" class="mt-1 accent-[var(--color-teal)] w-5 h-5" />
+            <span class="text-[var(--color-ink)]">
               <span class="font-medium">Dam Tamattu'</span> — RM810/seekor kibas (kadar ADAHI 2026)
             </span>
           </label>
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="cost-shopping" class="mt-1 accent-emerald-700 w-5 h-5" />
-            <span class="text-stone-700">
+            <input type="checkbox" id="cost-shopping" class="mt-1 accent-[var(--color-teal)] w-5 h-5" />
+            <span class="text-[var(--color-ink)]">
               <span class="font-medium">Beli-belah / cenderamata</span> — anggaran:
-              <select id="shopping-range" class="ml-1 px-2 py-1 border border-stone-300 rounded text-sm" disabled>
+              <select id="shopping-range" class="ml-1 px-2 py-1 border border-[var(--color-rule)] rounded text-sm" disabled>
                 <option value="2000">RM2,000</option>
                 <option value="3000" selected>RM3,000</option>
                 <option value="5000">RM5,000</option>
@@ -145,14 +145,14 @@ const webAppSchema = {
             </span>
           </label>
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="cost-baggage" class="mt-1 accent-emerald-700 w-5 h-5" />
-            <span class="text-stone-700">
+            <input type="checkbox" id="cost-baggage" class="mt-1 accent-[var(--color-teal)] w-5 h-5" />
+            <span class="text-[var(--color-ink)]">
               <span class="font-medium">Bagasi tambahan</span> — anggaran RM400 (30kg+)
             </span>
           </label>
           <label class="flex items-start gap-3 cursor-pointer">
-            <input type="checkbox" id="cost-ziarah" class="mt-1 accent-emerald-700 w-5 h-5" />
-            <span class="text-stone-700">
+            <input type="checkbox" id="cost-ziarah" class="mt-1 accent-[var(--color-teal)] w-5 h-5" />
+            <span class="text-[var(--color-ink)]">
               <span class="font-medium">Lawatan ziarah tambahan</span> — anggaran RM300
             </span>
           </label>
@@ -165,56 +165,56 @@ const webAppSchema = {
       {/* Summary Cards */}
       <div class="grid md:grid-cols-2 gap-4 mb-6">
         {/* Muassasah Card */}
-        <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-5">
+        <div class="bg-[var(--color-teal-soft)] border-l-4 border-[var(--color-teal)] rounded-r-lg p-5">
           <span class="badge badge-teal text-xs mb-2">Muassasah</span>
-          <h3 class="text-xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">
+          <h3 class="text-xl font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
             TH Muassasah
           </h3>
-          <p id="muassasah-total" class="text-2xl font-bold text-emerald-700 mb-2">RM 0</p>
-          <p class="text-sm text-stone-600">Pakej paling mampu milik oleh Tabung Haji</p>
+          <p id="muassasah-total" class="text-2xl font-bold text-[var(--color-teal)] mb-2">RM 0</p>
+          <p class="text-sm text-[var(--color-stone-warm)]">Pakej paling mampu milik oleh Tabung Haji</p>
         </div>
         {/* Private Card */}
-        <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-5">
+        <div class="bg-[var(--color-teal-soft)] border-l-4 border-[var(--color-teal)] rounded-r-lg p-5">
           <span class="badge badge-teal text-xs mb-2">Private</span>
-          <h3 class="text-xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">
+          <h3 class="text-xl font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">
             <span id="private-label">TH Private</span>
           </h3>
-          <p id="private-total" class="text-2xl font-bold text-emerald-700 mb-2">RM 0</p>
-          <p class="text-sm text-stone-600">Lebih fleksibel — hotel & penerbangan lebih selesa</p>
+          <p id="private-total" class="text-2xl font-bold text-[var(--color-teal)] mb-2">RM 0</p>
+          <p class="text-sm text-[var(--color-stone-warm)]">Lebih fleksibel — hotel & penerbangan lebih selesa</p>
         </div>
       </div>
 
       {/* Breakdown Table */}
-      <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm" id="print-area">
-        <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+      <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm" id="print-area">
+        <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4" style="font-family: var(--font-serif);">
           Perincian Kos
         </h2>
         <div id="breakdown-list" class="space-y-3"></div>
-        <hr class="my-4 border-stone-200" />
+        <hr class="my-4 border-[var(--color-rule)]" />
         <div class="flex justify-between items-baseline">
-          <span class="text-lg font-semibold text-emerald-900">Jumlah Anggaran</span>
-          <span id="grand-total" class="text-2xl font-bold text-emerald-700"></span>
+          <span class="text-lg font-semibold text-[var(--color-ink)]">Jumlah Anggaran</span>
+          <span id="grand-total" class="text-2xl font-bold text-[var(--color-teal)]"></span>
         </div>
         <div class="flex justify-between items-baseline mt-1">
-          <span class="text-sm text-stone-600">Jumlah per tanggungan</span>
-          <span id="per-dependent" class="text-sm font-medium text-stone-700"></span>
+          <span class="text-sm text-[var(--color-stone-warm)]">Jumlah per tanggungan</span>
+          <span id="per-dependent" class="text-sm font-medium text-[var(--color-ink)]"></span>
         </div>
       </div>
 
       {/* Financing Notes */}
-      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 mb-6 text-sm text-stone-700">
-        <p class="font-medium text-stone-900 mb-2">💡 Pilihan Pembiayaan Haji</p>
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 mb-6 text-sm text-[var(--color-ink)]">
+        <p class="font-medium text-[var(--color-ink)] mb-2">💡 Pilihan Pembiayaan Haji</p>
         <ul class="space-y-2 list-disc list-inside">
           <li>
             <span class="font-medium">THiJARI Pembiayaan Haji</span> — pinjaman tanpa faedah khas pendeposit TH. Permohonan melalui aplikasi THiJARI.
           </li>
           <li>
             <span class="font-medium">Subsidi B40</span> — kerajaan kadang-kadang menawarkan subsidi haji kepada golongan B40. Semak pengumuman terkini di
-            <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-emerald-700 underline">tabunghaji.gov.my</a>.
+            <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-[var(--color-teal)] underline">tabunghaji.gov.my</a>.
           </li>
           <li>
             <span class="font-medium">Haji dengan wang anak-anak</span> — dibenarkan menurut Mufti WP (Bayan Siri 10). Lihat
-            <a href="https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/716-bayan-li-al-haj-siri-10-hukum-melaksanakan-haji-menggunakan-bantuan-perbelanjaan-daripada-anak-anak" rel="noopener" class="text-emerald-700 underline">Bayan Li al-Haj Siri 10</a>.
+            <a href="https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/716-bayan-li-al-haj-siri-10-hukum-melaksanakan-haji-menggunakan-bantuan-perbelanjaan-daripada-anak-anak" rel="noopener" class="text-[var(--color-teal)] underline">Bayan Li al-Haj Siri 10</a>.
           </li>
           <li>
             <span class="font-medium">Wang KWSP / simpanan</span> — pengeluaran khas haji dari Akaun 2 KWSP boleh dipohon.
@@ -223,11 +223,11 @@ const webAppSchema = {
       </div>
 
       {/* Disclaimer */}
-      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-stone-700 mb-6">
-        <p class="font-medium text-stone-900 mb-1">⚠️ Penafian</p>
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-[var(--color-ink)] mb-6">
+        <p class="font-medium text-[var(--color-ink)] mb-1">⚠️ Penafian</p>
         <p>
           Kalkulator ini memberi anggaran sahaja berdasarkan kadar 2026. Harga sebenar bergantung pada pakej yang dipilih dan pengumuman rasmi Tabung Haji. Sila sahkan dengan
-          <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-emerald-700 underline">Tabung Haji</a> atau ejen pelancongan berlesen.
+          <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-[var(--color-teal)] underline">Tabung Haji</a> atau ejen pelancongan berlesen.
         </p>
       </div>
 
@@ -235,13 +235,13 @@ const webAppSchema = {
       <div class="flex gap-3 mb-6">
         <button
           id="btn-print"
-          class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 text-white rounded-md text-sm font-medium hover:bg-emerald-800 transition"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-[var(--color-teal-deep)] text-white rounded-md text-sm font-medium hover:bg-[var(--color-teal)] transition"
         >
           🖨️ Cetak / Simpan PDF
         </button>
         <button
           id="btn-reset"
-          class="inline-flex items-center gap-2 px-5 py-2.5 border border-stone-300 text-stone-700 rounded-md text-sm font-medium hover:bg-stone-50 transition"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-[var(--color-rule)] text-[var(--color-ink)] rounded-md text-sm font-medium hover:bg-stone-50 transition"
         >
           🔄 Kira Semula
         </button>
@@ -249,29 +249,29 @@ const webAppSchema = {
     </div>
 
     {/* ─────── FOOTER LINKS ─────── */}
-    <div class="mt-12 pt-8 border-t border-stone-200">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">
         Bacaan lanjut
       </h2>
-      <ul class="space-y-2 text-stone-700">
+      <ul class="space-y-2 text-[var(--color-ink)]">
         <li>
           →
           <a href="https://www.tabunghaji.gov.my" rel="noopener"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Tabung Haji — Kos & Pakej Haji Rasmi
           </a>
         </li>
         <li>
           →
           <a href="https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/716-bayan-li-al-haj-siri-10-hukum-melaksanakan-haji-menggunakan-bantuan-perbelanjaan-daripada-anak-anak" rel="noopener"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Mufti WP — Haji dengan Bantuan Wang Anak (Bayan Siri 10)
           </a>
         </li>
         <li>
           →
           <a href="/alat/kalkulator-dam/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Kalkulator Dam Haji & Umrah
           </a>
         </li>
@@ -398,17 +398,17 @@ const webAppSchema = {
       }
 
       breakdownList.innerHTML = rows.map((r) =>
-        `<div class="flex justify-between items-baseline py-2 border-b border-stone-100 last:border-0">
-          <span class="text-stone-700 text-sm">${r.label}</span>
+        `<div class="flex justify-between items-baseline py-2 border-b border-[var(--color-rule)] last:border-0">
+          <span class="text-[var(--color-ink)] text-sm">${r.label}</span>
           <div class="flex gap-4 text-sm">
-            <span class="text-stone-500 w-28 text-right">${r.muassasah}</span>
-            <span class="text-emerald-700 font-medium w-28 text-right">${r.chosen}</span>
+            <span class="text-[var(--color-stone-warm)] w-28 text-right">${r.muassasah}</span>
+            <span class="text-[var(--color-teal)] font-medium w-28 text-right">${r.chosen}</span>
           </div>
         </div>`
       ).join("") +
       `<div class="flex justify-between items-baseline py-2">
-        <span class="text-xs text-stone-500"></span>
-        <div class="flex gap-4 text-xs text-stone-500">
+        <span class="text-xs text-[var(--color-stone-warm)]"></span>
+        <div class="flex gap-4 text-xs text-[var(--color-stone-warm)]">
           <span class="w-28 text-right">Muassasah</span>
           <span class="w-28 text-right">${privateLabelText}</span>
         </div>

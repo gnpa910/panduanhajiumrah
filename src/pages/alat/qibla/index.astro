@@ -60,23 +60,23 @@ const seaCities = [
 >
   <section class="max-w-4xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Kompas Kiblat</span>
+      <span class="text-[var(--color-ink)]">Kompas Kiblat</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Alat Interaktif · GPS & Kompas</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Kompas Kiblat
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Tentukan arah Kiblat dari lokasi semasa anda. Gunakan GPS dan kompas
         peranti untuk ketepatan terbaik.
       </p>
@@ -85,25 +85,25 @@ const seaCities = [
     {/* ─────── PERMISSION REQUEST ─────── */}
     <div
       id="permission-card"
-      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center"
+      class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center"
     >
-      <p class="text-stone-700 mb-4">
+      <p class="text-[var(--color-ink)] mb-4">
         Alat ini memerlukan akses ke lokasi dan kompas peranti anda untuk
         mengira arah kiblat yang tepat.
       </p>
       <button
         id="btn-enable"
-        class="inline-block bg-emerald-700 text-white px-6 py-3 rounded-md text-base font-medium hover:bg-emerald-800 transition-colors"
+        class="inline-block bg-[var(--color-teal-deep)] text-white px-6 py-3 rounded-md text-base font-medium hover:bg-[var(--color-teal)] transition-colors"
       >
         🧭 Aktifkan Kompas Kiblat
       </button>
-      <p id="permission-error" class="text-sm text-red-600 mt-3 hidden"></p>
+      <p id="permission-error" class="text-sm text-red-500 mt-3 hidden"></p>
     </div>
 
     {/* ─────── COMPASS DISPLAY ─────── */}
     <div
       id="compass-card"
-      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center hidden"
+      class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center hidden"
     >
       <div class="relative inline-block mb-6">
         {/* Compass SVG */}
@@ -145,15 +145,15 @@ const seaCities = [
 
       {/* Info readout */}
       <div class="space-y-2">
-        <p class="text-sm text-stone-500 uppercase tracking-wider">Arah Kiblat</p>
-        <p id="qibla-bearing" class="text-3xl font-bold text-emerald-900" style="font-family: var(--font-serif);">
+        <p class="text-sm text-[var(--color-stone-warm)] uppercase tracking-wider">Arah Kiblat</p>
+        <p id="qibla-bearing" class="text-3xl font-bold text-[var(--color-ink)]" style="font-family: var(--font-serif);">
           --°
         </p>
-        <p id="qibla-direction" class="text-lg text-stone-600">--</p>
-        <p id="qibla-distance" class="text-sm text-stone-500"></p>
+        <p id="qibla-direction" class="text-lg text-[var(--color-stone-warm)]">--</p>
+        <p id="qibla-distance" class="text-sm text-[var(--color-stone-warm)]"></p>
       </div>
 
-      <div class="mt-4 text-xs text-stone-400">
+      <div class="mt-4 text-xs text-[var(--color-stone-warm)]">
         <p id="compass-note">📍 Menunggu data lokasi...</p>
       </div>
     </div>
@@ -161,67 +161,67 @@ const seaCities = [
     {/* ─────── STATIC CALCULATOR FALLBACK ─────── */}
     <div
       id="static-calc"
-      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm hidden"
+      class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm hidden"
     >
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4" style="font-family: var(--font-serif);">
         Kira Arah Kiblat Manual
       </h2>
-      <p class="text-sm text-stone-600 mb-4">
+      <p class="text-sm text-[var(--color-stone-warm)] mb-4">
         Masukkan koordinat lokasi anda untuk mengira arah kiblat.
       </p>
       <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
         <div>
-          <label for="manual-lat" class="block text-sm font-medium text-stone-700 mb-1">Latitud</label>
+          <label for="manual-lat" class="block text-sm font-medium text-[var(--color-ink)] mb-1">Latitud</label>
           <input
             type="number"
             id="manual-lat"
             step="0.001"
             placeholder="3.139"
-            class="w-full px-4 py-2 border border-stone-300 rounded-md focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+            class="w-full px-4 py-2 border border-[var(--color-rule)] rounded-md focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
           />
         </div>
         <div>
-          <label for="manual-lng" class="block text-sm font-medium text-stone-700 mb-1">Longitud</label>
+          <label for="manual-lng" class="block text-sm font-medium text-[var(--color-ink)] mb-1">Longitud</label>
           <input
             type="number"
             id="manual-lng"
             step="0.001"
             placeholder="101.687"
-            class="w-full px-4 py-2 border border-stone-300 rounded-md focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+            class="w-full px-4 py-2 border border-[var(--color-rule)] rounded-md focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
           />
         </div>
       </div>
       <button
         id="btn-manual-calc"
-        class="inline-block bg-emerald-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-emerald-800 transition-colors"
+        class="inline-block bg-[var(--color-teal-deep)] text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-[var(--color-teal)] transition-colors"
       >
         Kira Arah Kiblat
       </button>
       <div id="manual-result" class="mt-4 hidden">
-        <p class="text-lg font-semibold text-emerald-900">
-          Arah Kiblat: <span id="manual-bearing" class="text-emerald-700"></span>
+        <p class="text-lg font-semibold text-[var(--color-ink)]">
+          Arah Kiblat: <span id="manual-bearing" class="text-[var(--color-teal)]"></span>
         </p>
       </div>
     </div>
 
     {/* ─────── SEA CITIES TABLE ─────── */}
-    <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+    <div class="bg-[var(--color-teal-soft)] border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4" style="font-family: var(--font-serif);">
         Arah Kiblat Bandar Utama Asia Tenggara
       </h2>
-      <p class="text-sm text-stone-600 mb-4">
+      <p class="text-sm text-[var(--color-stone-warm)] mb-4">
         Anggaran arah kiblat dari bandar-bandar utama. Arah sebenar mungkin
         sedikit berbeza bergantung pada lokasi tepat anda.
       </p>
       <div class="space-y-3">
         {seaCities.map((c) => (
-          <div class="flex items-center justify-between py-2 border-b border-emerald-100 last:border-0">
+          <div class="flex items-center justify-between py-2 border-b border-[var(--color-teal-soft)] last:border-0">
             <div>
-              <span class="font-medium text-emerald-900">{c.name}</span>
+              <span class="font-medium text-[var(--color-ink)]">{c.name}</span>
             </div>
             <div class="text-right">
-              <span class="text-lg font-semibold text-emerald-800">{c.bearing}°</span>
-              <span class="text-sm text-stone-500 ml-2">{getDirectionLabel(c.bearing)}</span>
+              <span class="text-lg font-semibold text-[var(--color-teal)]">{c.bearing}°</span>
+              <span class="text-sm text-[var(--color-stone-warm)] ml-2">{getDirectionLabel(c.bearing)}</span>
             </div>
           </div>
         ))}
@@ -229,17 +229,17 @@ const seaCities = [
     </div>
 
     {/* ─────── INFO CARD ─────── */}
-    <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+    <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-3" style="font-family: var(--font-serif);">
         Tentang Arah Kiblat
       </h2>
-      <p class="text-stone-700 mb-3">
+      <p class="text-[var(--color-ink)] mb-3">
         Kiblat ialah arah menghadap Kaabah di Masjidil Haram, Mekah
         (21.4225°N, 39.8262°E). Setiap Muslim menghadap kiblat semasa solat.
         Arah kiblat dikira berdasarkan bulatan besar (<em>great circle</em>)
         dari lokasi anda ke Kaabah.
       </p>
-      <p class="text-stone-700">
+      <p class="text-[var(--color-ink)]">
         Dari Asia Tenggara, arah kiblat umumnya ke Barat Laut (NW). Namun,
         kerana bentuk bumi, arah tepat berbeza mengikut lokasi — contohnya,
         dari Kuala Lumpur ia 292° manakala dari Bangkok ia 282°.
@@ -247,29 +247,29 @@ const seaCities = [
     </div>
 
     {/* ─────── FOOTER LINKS ─────── */}
-    <div class="mt-12 pt-8 border-t border-stone-200">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">
         Bacaan lanjut
       </h2>
-      <ul class="space-y-2 text-stone-700">
+      <ul class="space-y-2 text-[var(--color-ink)]">
         <li>
           →
           <a href="/artikel/persoalan/solat-jamak-qasar-jemaah-haji-umrah/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Solat Jamak & Qasar Jemaah Haji & Umrah
           </a>
         </li>
         <li>
           →
           <a href="/alat/doa-harian/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Panduan Doa Harian untuk Musafir
           </a>
         </li>
         <li>
           →
           <a href="/alat/jadual-haji/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Jadual Haji 2026
           </a>
         </li>

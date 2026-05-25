@@ -143,23 +143,23 @@ const regions = [...new Set(cities.map((c) => c.region))];
 >
   <section class="max-w-5xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Peta Kiblat</span>
+      <span class="text-[var(--color-ink)]">Peta Kiblat</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Rujukan Statik · Great-Circle</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Peta Kiblat
       </h1>
-      <p class="text-lg text-stone-700 max-w-3xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-3xl">
         Arah kiblat untuk <strong>30+ bandar</strong> di seluruh dunia, dikira menggunakan
         formula <em>great-circle</em> dengan Kaabah (21.4225°N, 39.8262°E) sebagai titik tujuan.
         Data ini boleh diakses secara luar talian — sesuai sebagai rujukan pantas.
@@ -167,8 +167,8 @@ const regions = [...new Set(cities.map((c) => c.region))];
     </header>
 
     {/* ─── Simplified SVG World Map ─── */}
-    <div class="bg-white border border-stone-200 rounded-lg p-4 md:p-6 mb-8 shadow-sm">
-      <h2 class="text-lg font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+    <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-4 md:p-6 mb-8 shadow-sm">
+      <h2 class="text-lg font-semibold text-[var(--color-ink)] mb-3" style="font-family: var(--font-serif);">
         Peta Ringkas Dunia
       </h2>
       <div class="overflow-x-auto">
@@ -199,7 +199,7 @@ const regions = [...new Set(cities.map((c) => c.region))];
           ))}
         </svg>
       </div>
-      <p class="text-xs text-stone-500 mt-2">Titik emas menunjukkan lokasi bandar rujukan. Hijau = Kaabah.</p>
+      <p class="text-xs text-[var(--color-stone-warm)] mt-2">Titik emas menunjukkan lokasi bandar rujukan. Hijau = Kaabah.</p>
     </div>
 
     {/* ─── Search ─── */}
@@ -208,7 +208,7 @@ const regions = [...new Set(cities.map((c) => c.region))];
         type="text"
         id="city-search"
         placeholder="Cari bandar atau negara..."
-        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+        class="w-full px-4 py-3 border border-[var(--color-rule)] rounded-md text-base bg-[var(--color-surface)] focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
       />
     </div>
 
@@ -216,10 +216,10 @@ const regions = [...new Set(cities.map((c) => c.region))];
     {regions.map((region) => (
       <div class="region-group mb-8" data-region={region}>
         <h2
-          class="text-xl font-semibold text-emerald-900 mb-4 flex items-center gap-2"
+          class="text-xl font-semibold text-[var(--color-ink)] mb-4 flex items-center gap-2"
           style="font-family: var(--font-serif);"
         >
-          <span class="inline-block w-2 h-2 rounded-full bg-emerald-600"></span>
+          <span class="inline-block w-2 h-2 rounded-full bg-[var(--color-teal)]"></span>
           {region}
         </h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -227,7 +227,7 @@ const regions = [...new Set(cities.map((c) => c.region))];
             .filter((c) => c.region === region)
             .map((c) => (
               <div
-                class="city-card bg-white border border-stone-200 rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
+                class="city-card bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-4 shadow-sm hover:shadow-md transition-shadow"
                 data-city={c.name.toLowerCase()}
                 data-country={c.country.toLowerCase()}
               >
@@ -255,11 +255,11 @@ const regions = [...new Set(cities.map((c) => c.region))];
                     <circle cx="24" cy="24" r="2" fill="#f59e0b" />
                   </svg>
                   <div class="min-w-0">
-                    <h3 class="font-semibold text-stone-900 text-sm leading-tight">{c.name}</h3>
-                    <p class="text-xs text-stone-500 mb-1">{c.country}</p>
-                    <p class="text-emerald-800 font-mono text-sm font-bold">{c.bearing}°</p>
-                    <p class="text-xs text-stone-600">{c.label}</p>
-                    <p class="text-xs text-stone-400 mt-1">{c.dist.toLocaleString()} km ke Kaabah</p>
+                    <h3 class="font-semibold text-[var(--color-ink)] text-sm leading-tight">{c.name}</h3>
+                    <p class="text-xs text-[var(--color-stone-warm)] mb-1">{c.country}</p>
+                    <p class="text-[var(--color-teal)] font-mono text-sm font-bold">{c.bearing}°</p>
+                    <p class="text-xs text-[var(--color-stone-warm)]">{c.label}</p>
+                    <p class="text-xs text-[var(--color-stone-warm)] mt-1">{c.dist.toLocaleString()} km ke Kaabah</p>
                   </div>
                 </div>
               </div>
@@ -269,39 +269,39 @@ const regions = [...new Set(cities.map((c) => c.region))];
     ))}
 
     {/* no-results message */}
-    <p id="no-results" class="hidden text-center text-stone-500 py-8">
+    <p id="no-results" class="hidden text-center text-[var(--color-stone-warm)] py-8">
       Tiada bandar ditemui. Cuba carian lain.
     </p>
 
     {/* ─── Info Card ─── */}
-    <div class="bg-emerald-50 border border-emerald-200 rounded-lg p-6 md:p-8 mt-8">
-      <h2 class="text-lg font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+    <div class="bg-[var(--color-teal-soft)] border border-[var(--color-teal)] rounded-lg p-6 md:p-8 mt-8">
+      <h2 class="text-lg font-semibold text-[var(--color-ink)] mb-3" style="font-family: var(--font-serif);">
         Bagaimana Arah Kiblat Dikira?
       </h2>
-      <p class="text-stone-700 text-sm mb-3">
+      <p class="text-[var(--color-ink)] text-sm mb-3">
         Arah kiblat ditentukan menggunakan <strong>formula great-circle</strong> — iaitu jarak
         terpendek di permukaan bumi dari lokasi anda ke Kaabah (21.4225°N, 39.8262°E) di Makkah.
         Bearing diukut dalam darjah dari Utara (0°) mengikut arah jam.
       </p>
-      <p class="text-stone-700 text-sm mb-3">
+      <p class="text-[var(--color-ink)] text-sm mb-3">
         <strong>Formula:</strong><br />
-        <code class="text-xs bg-white px-2 py-1 rounded border border-stone-200 inline-block mt-1">
+        <code class="text-xs bg-[var(--color-surface)] px-2 py-1 rounded border border-[var(--color-rule)] inline-block mt-1">
           bearing = atan2(sin(Δλ)·cos(φ₂), cos(φ₁)·sin(φ₂) − sin(φ₁)·cos(φ₂)·cos(Δλ))
         </code>
       </p>
-      <p class="text-stone-700 text-sm">
+      <p class="text-[var(--color-ink)] text-sm">
         Data di halaman ini adalah <strong>anggaran statik</strong> berdasarkan koordinat pusat bandar.
         Untuk arah kiblat yang lebih tepat dari lokasi tepat anda:
       </p>
       <a
         href="/alat/qibla/"
-        class="inline-block mt-3 px-5 py-2.5 bg-emerald-700 text-white text-sm font-semibold rounded-md hover:bg-emerald-800 transition-colors"
+        class="inline-block mt-3 px-5 py-2.5 bg-[var(--color-teal-deep)] text-white text-sm font-semibold rounded-md hover:bg-[var(--color-teal)] transition-colors"
       >
         🧭 Gunakan Kompas Kiblat GPS
       </a>
     </div>
 
-    <p class="text-xs text-stone-400 text-center mt-6">
+    <p class="text-xs text-[var(--color-stone-warm)] text-center mt-6">
       Nota: Bearing dikira berdasarkan koordinat pusat bandar. Nilai mungkin berbeza beberapa darjah
       bergantung pada lokasi tepat anda dalam bandar tersebut.
     </p>

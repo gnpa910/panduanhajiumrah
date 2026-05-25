@@ -114,38 +114,38 @@ const days = [
   jsonLd={breadcrumbSchema}
 >
   <section class="max-w-4xl mx-auto px-4 py-10">
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Jadual Ibadah Haji</span>
+      <span class="text-[var(--color-ink)]">Jadual Ibadah Haji</span>
     </nav>
 
     <header class="mb-10">
       <p class="badge badge-teal mb-4">Alat Interaktif · Timeline</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Jadual Ibadah Haji 8–13 Zulhijjah
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl mb-4">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl mb-4">
         Timeline lengkap: dari hari Tarwiyah ke tawaf wada. Klik hari untuk
         terangkan amalan, dengan link ke panduan terperinci setiap rukun.
       </p>
       <div class="flex flex-wrap gap-2">
         <button
           id="expand-all"
-          class="text-sm px-4 py-2 border border-emerald-700 text-emerald-700 rounded hover:bg-emerald-50"
+          class="text-sm px-4 py-2 border border-[var(--color-teal)] text-[var(--color-teal)] rounded hover:bg-[var(--color-teal-soft)]"
         >Buka Semua</button>
         <button
           id="collapse-all"
-          class="text-sm px-4 py-2 border border-stone-300 text-stone-600 rounded hover:bg-stone-50"
+          class="text-sm px-4 py-2 border border-[var(--color-rule)] text-[var(--color-stone-warm)] rounded hover:bg-stone-50"
         >Tutup Semua</button>
         <button
           id="print-btn"
-          class="text-sm px-4 py-2 border border-stone-300 text-stone-600 rounded hover:bg-stone-50"
+          class="text-sm px-4 py-2 border border-[var(--color-rule)] text-[var(--color-stone-warm)] rounded hover:bg-stone-50"
         >🖨 Cetak</button>
       </div>
     </header>
@@ -153,35 +153,35 @@ const days = [
     <ol class="space-y-3">
       {days.map((d, i) => (
         <li class="timeline-day">
-          <details class="bg-white border border-stone-200 rounded-lg overflow-hidden hover:border-emerald-700 transition-colors" {...(i < 2 ? { open: true } : {})}>
+          <details class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg overflow-hidden hover:border-[var(--color-teal)] transition-colors" {...(i < 2 ? { open: true } : {})}>
             <summary class="cursor-pointer p-5 md:p-6 list-none">
               <div class="flex items-start gap-4">
-                <div class="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-lg">
+                <div class="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-[var(--color-teal-deep)] text-white flex items-center justify-center font-bold text-lg">
                   {i + 1}
                 </div>
                 <div class="flex-1">
                   <div class="text-xs uppercase tracking-wider text-saffron-700 font-semibold mb-1">{d.date}</div>
-                  <h2 class="text-xl md:text-2xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">{d.title}</h2>
-                  <p class="text-sm text-stone-600">{d.pre}</p>
+                  <h2 class="text-xl md:text-2xl font-semibold text-[var(--color-ink)] mb-1" style="font-family: var(--font-serif);">{d.title}</h2>
+                  <p class="text-sm text-[var(--color-stone-warm)]">{d.pre}</p>
                 </div>
-                <div class="flex-shrink-0 text-stone-400 transition-transform">▾</div>
+                <div class="flex-shrink-0 text-[var(--color-stone-warm)] transition-transform">▾</div>
               </div>
             </summary>
-            <div class="px-5 md:px-6 pb-6 pt-2 border-t border-stone-100">
+            <div class="px-5 md:px-6 pb-6 pt-2 border-t border-[var(--color-rule)]">
               <ul class="space-y-3 mb-4">
                 {d.activities.map((a) => (
                   <li class="flex gap-3 items-start">
-                    {a.time && <span class="flex-shrink-0 text-xs font-mono px-2 py-1 bg-stone-100 rounded text-stone-700 mt-0.5 min-w-[90px] text-center">{a.time}</span>}
-                    <span class="text-stone-700 flex-1">{a.action}</span>
+                    {a.time && <span class="flex-shrink-0 text-xs font-mono px-2 py-1 bg-stone-100 rounded text-[var(--color-ink)] mt-0.5 min-w-[90px] text-center">{a.time}</span>}
+                    <span class="text-[var(--color-ink)] flex-1">{a.action}</span>
                   </li>
                 ))}
               </ul>
-              <div class="bg-saffron-50 border-l-4 border-saffron-400 p-3 text-sm text-stone-700 mb-3">
+              <div class="bg-saffron-50 border-l-4 border-saffron-400 p-3 text-sm text-[var(--color-ink)] mb-3">
                 <strong class="text-saffron-900">Nota:</strong> {d.note}
               </div>
               <a
                 href={d.link}
-                class="inline-flex items-center text-sm text-emerald-700 underline hover:text-emerald-900"
+                class="inline-flex items-center text-sm text-[var(--color-teal)] underline hover:text-[var(--color-ink)]"
               >
                 → Panduan terperinci
               </a>
@@ -192,13 +192,13 @@ const days = [
     </ol>
 
     {/* CTA links */}
-    <div class="mt-12 pt-8 border-t border-stone-200">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">Bacaan lanjut</h2>
-      <ul class="space-y-2 text-stone-700">
-        <li>→ <a href="/panduan/haji/rukun-haji-enam-perkara/" class="text-emerald-700 underline">Rukun Haji: Enam Perkara Wajib</a></li>
-        <li>→ <a href="/panduan/haji/wajib-haji-tujuh-perkara/" class="text-emerald-700 underline">Wajib Haji: Tujuh Perkara dan Dam</a></li>
-        <li>→ <a href="/alat/kalkulator-dam/" class="text-emerald-700 underline">Kalkulator Dam</a></li>
-        <li>→ <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/" class="text-emerald-700 underline">Dam Haji: Kategori, Kadar, Tempat Bayar</a></li>
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">Bacaan lanjut</h2>
+      <ul class="space-y-2 text-[var(--color-ink)]">
+        <li>→ <a href="/panduan/haji/rukun-haji-enam-perkara/" class="text-[var(--color-teal)] underline">Rukun Haji: Enam Perkara Wajib</a></li>
+        <li>→ <a href="/panduan/haji/wajib-haji-tujuh-perkara/" class="text-[var(--color-teal)] underline">Wajib Haji: Tujuh Perkara dan Dam</a></li>
+        <li>→ <a href="/alat/kalkulator-dam/" class="text-[var(--color-teal)] underline">Kalkulator Dam</a></li>
+        <li>→ <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/" class="text-[var(--color-teal)] underline">Dam Haji: Kategori, Kadar, Tempat Bayar</a></li>
       </ul>
     </div>
   </section>

@@ -90,12 +90,12 @@ const tools = [
     <header class="mb-10">
       <p class="badge badge-teal mb-4">Alat Interaktif</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Alat Untuk Jemaah
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Alat ringkas, percuma, tanpa pendaftaran. Setiap output disokong
         rujukan rasmi.
       </p>
@@ -105,19 +105,19 @@ const tools = [
       {tools.map((t) => (
         <a
           href={t.href}
-          class="block bg-white border border-stone-200 rounded-lg p-6 hover:border-emerald-700 hover:shadow-md transition-all"
+          class="block bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 hover:border-emerald-700 hover:shadow-md transition-all"
         >
           <div class="text-4xl mb-3">{t.icon}</div>
-          <h2 class="text-xl font-semibold text-emerald-900 mb-2">{t.title}</h2>
-          <p class="text-stone-600 text-sm">{t.description}</p>
+          <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-2">{t.title}</h2>
+          <p class="text-[var(--color-stone-warm)] text-sm">{t.description}</p>
         </a>
       ))}
     </div>
 
-    <div class="mt-10 text-sm text-stone-500">
+    <div class="mt-10 text-sm text-[var(--color-stone-warm)]">
       <p>
         Lebih banyak alat dalam pembangunan. Ada cadangan?
-        <a href="mailto:info@panduanhajiumrah.com" class="text-emerald-700 underline">Hubungi kami</a>.
+        <a href="mailto:info@panduanhajiumrah.com" class="text-[var(--color-teal)] underline">Hubungi kami</a>.
       </p>
     </div>
   </section>

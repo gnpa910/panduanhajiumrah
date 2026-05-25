@@ -36,97 +36,97 @@ const webAppSchema = {
 >
   <section class="max-w-2xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6 print:hidden" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6 print:hidden" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Zikir Counter</span>
+      <span class="text-[var(--color-ink)]">Zikir Counter</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Alat Interaktif · Tasbih Digital</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Zikir Counter
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Tekan butang besar di bawah untuk menghitung zikir. Pilih zikir sasaran atau tetapkan sasaran sendiri. Alat ini menggunakan getaran haptik dan simpanan tempatan (localStorage).
       </p>
     </header>
 
     {/* ─────── PRESET ZIKIR BUTTONS ─────── */}
-    <div class="bg-white border border-stone-200 rounded-lg p-6 mb-6 shadow-sm print:hidden">
-      <h2 class="text-sm font-semibold text-emerald-900 mb-3">Pilih Zikir</h2>
+    <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 mb-6 shadow-sm print:hidden">
+      <h2 class="text-sm font-semibold text-[var(--color-ink)] mb-3">Pilih Zikir</h2>
       <div id="preset-grid" class="grid grid-cols-2 md:grid-cols-3 gap-2">
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="subhanallah"
           data-arabic="سُبْحَانَ اللَّهِ"
           data-target="33"
         >
-          <span class="block font-medium text-stone-900">Subhanallah</span>
-          <span class="block text-xs text-stone-500 mt-0.5" dir="rtl">سُبْحَانَ اللَّهِ · 33×</span>
+          <span class="block font-medium text-[var(--color-ink)]">Subhanallah</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5" dir="rtl">سُبْحَانَ اللَّهِ · 33×</span>
         </button>
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="alhamdulillah"
           data-arabic="الْحَمْدُ لِلَّهِ"
           data-target="34"
         >
-          <span class="block font-medium text-stone-900">Alhamdulillah</span>
-          <span class="block text-xs text-stone-500 mt-0.5" dir="rtl">الْحَمْدُ لِلَّهِ · 34×</span>
+          <span class="block font-medium text-[var(--color-ink)]">Alhamdulillah</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5" dir="rtl">الْحَمْدُ لِلَّهِ · 34×</span>
         </button>
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="allahu-akbar"
           data-arabic="اللَّهُ أَكْبَرُ"
           data-target="34"
         >
-          <span class="block font-medium text-stone-900">Allahu Akbar</span>
-          <span class="block text-xs text-stone-500 mt-0.5" dir="rtl">اللَّهُ أَكْبَرُ · 34×</span>
+          <span class="block font-medium text-[var(--color-ink)]">Allahu Akbar</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5" dir="rtl">اللَّهُ أَكْبَرُ · 34×</span>
         </button>
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="la-ilaha"
           data-arabic="لَا إِلَٰهَ إِلَّا اللَّهُ"
           data-target="0"
         >
-          <span class="block font-medium text-stone-900">La ilaha illallah</span>
-          <span class="block text-xs text-stone-500 mt-0.5" dir="rtl">لَا إِلَٰهَ إِلَّا اللَّهُ · ∞</span>
+          <span class="block font-medium text-[var(--color-ink)]">La ilaha illallah</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5" dir="rtl">لَا إِلَٰهَ إِلَّا اللَّهُ · ∞</span>
         </button>
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="astaghfirullah"
           data-arabic="أَسْتَغْفِرُ اللَّهَ"
           data-target="0"
         >
-          <span class="block font-medium text-stone-900">Astaghfirullah</span>
-          <span class="block text-xs text-stone-500 mt-0.5" dir="rtl">أَسْتَغْفِرُ اللَّهَ · ∞</span>
+          <span class="block font-medium text-[var(--color-ink)]">Astaghfirullah</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5" dir="rtl">أَسْتَغْفِرُ اللَّهَ · ∞</span>
         </button>
         <button
-          class="preset-btn text-left px-3 py-2.5 rounded-md border border-stone-200 hover:border-emerald-700 hover:bg-emerald-50 transition text-sm"
+          class="preset-btn text-left px-3 py-2.5 rounded-md border border-[var(--color-rule)] hover:border-[var(--color-teal)] hover:bg-[var(--color-teal-soft)] transition text-sm"
           data-zikir="custom"
           data-arabic=""
           data-target="0"
         >
-          <span class="block font-medium text-stone-900">Custom</span>
-          <span class="block text-xs text-stone-500 mt-0.5">Tetapkan sasaran sendiri</span>
+          <span class="block font-medium text-[var(--color-ink)]">Custom</span>
+          <span class="block text-xs text-[var(--color-stone-warm)] mt-0.5">Tetapkan sasaran sendiri</span>
         </button>
       </div>
 
       {/* Custom target input — hidden by default */}
       <div id="custom-target-wrap" class="hidden mt-3">
-        <label for="custom-target" class="block text-xs font-medium text-stone-600 mb-1">Sasaran (bilangan)</label>
+        <label for="custom-target" class="block text-xs font-medium text-[var(--color-stone-warm)] mb-1">Sasaran (bilangan)</label>
         <input
           id="custom-target"
           type="number"
           min="1"
           max="99999"
           placeholder="cth: 100"
-          class="w-40 px-3 py-2 border border-stone-300 rounded-md text-sm focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          class="w-40 px-3 py-2 border border-[var(--color-rule)] rounded-md text-sm focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
         />
       </div>
     </div>
@@ -134,10 +134,10 @@ const webAppSchema = {
     {/* ─────── COUNTER DISPLAY ─────── */}
     <div id="counter-area" class="print:hidden">
       {/* Zikir name */}
-      <p id="active-zikir-label" class="text-center text-sm text-stone-500 mb-2">
+      <p id="active-zikir-label" class="text-center text-sm text-[var(--color-stone-warm)] mb-2">
         Pilih zikir di atas, kemudian tekan di bawah
       </p>
-      <p id="active-arabic" class="text-center text-2xl text-emerald-900 mb-6" dir="rtl" style="font-family: var(--font-serif);"></p>
+      <p id="active-arabic" class="text-center text-2xl text-[var(--color-ink)] mb-6" dir="rtl" style="font-family: var(--font-serif);"></p>
 
       {/* Progress ring + count */}
       <div class="flex justify-center mb-6">
@@ -161,37 +161,37 @@ const webAppSchema = {
           </svg>
           {/* Count text */}
           <div class="absolute inset-0 flex flex-col items-center justify-center">
-            <span id="count-display" class="text-6xl md:text-7xl font-bold text-emerald-900" style="font-family: var(--font-serif);">0</span>
-            <span id="target-display" class="text-xs text-stone-400 mt-1"></span>
+            <span id="count-display" class="text-6xl md:text-7xl font-bold text-[var(--color-ink)]" style="font-family: var(--font-serif);">0</span>
+            <span id="target-display" class="text-xs text-[var(--color-stone-warm)] mt-1"></span>
           </div>
         </div>
       </div>
 
       {/* Tap instruction */}
-      <p class="text-center text-xs text-stone-400 mb-6">Tekan bulatan atau di mana-mana sahaja</p>
+      <p class="text-center text-xs text-[var(--color-stone-warm)] mb-6">Tekan bulatan atau di mana-mana sahaja</p>
 
       {/* Action buttons */}
       <div class="flex justify-center gap-3 mb-8">
-        <button id="undo-btn" class="px-4 py-2 rounded-md border border-stone-300 text-sm font-medium text-stone-700 hover:bg-stone-100 transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
+        <button id="undo-btn" class="px-4 py-2 rounded-md border border-[var(--color-rule)] text-sm font-medium text-[var(--color-ink)] hover:bg-stone-100 transition disabled:opacity-40 disabled:cursor-not-allowed" disabled>
           ↩ Undo
         </button>
-        <button id="reset-btn" class="px-4 py-2 rounded-md border border-stone-300 text-sm font-medium text-stone-700 hover:bg-stone-100 transition">
+        <button id="reset-btn" class="px-4 py-2 rounded-md border border-[var(--color-rule)] text-sm font-medium text-[var(--color-ink)] hover:bg-stone-100 transition">
           ✕ Reset
         </button>
       </div>
     </div>
 
     {/* ─────── SESSION STATS ─────── */}
-    <div class="bg-white border border-stone-200 rounded-lg p-6 mb-6 shadow-sm">
-      <h2 class="text-sm font-semibold text-emerald-900 mb-3">📊 Statistik Hari Ini</h2>
+    <div class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 mb-6 shadow-sm">
+      <h2 class="text-sm font-semibold text-[var(--color-ink)] mb-3">📊 Statistik Hari Ini</h2>
       <div class="grid grid-cols-2 gap-4 text-center">
         <div>
-          <p id="stat-total" class="text-3xl font-bold text-emerald-800" style="font-family: var(--font-serif);">0</p>
-          <p class="text-xs text-stone-500">Jumlah zikir hari ini</p>
+          <p id="stat-total" class="text-3xl font-bold text-[var(--color-teal)]" style="font-family: var(--font-serif);">0</p>
+          <p class="text-xs text-[var(--color-stone-warm)]">Jumlah zikir hari ini</p>
         </div>
         <div>
-          <p id="stat-sessions" class="text-3xl font-bold text-emerald-800" style="font-family: var(--font-serif);">0</p>
-          <p class="text-xs text-stone-500">Sesi selesai</p>
+          <p id="stat-sessions" class="text-3xl font-bold text-[var(--color-teal)]" style="font-family: var(--font-serif);">0</p>
+          <p class="text-xs text-[var(--color-stone-warm)]">Sesi selesai</p>
         </div>
       </div>
     </div>
@@ -204,8 +204,8 @@ const webAppSchema = {
     </div>
 
     {/* ─────── INFO ─────── */}
-    <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-5 text-sm text-stone-700 mb-6">
-      <p class="font-medium text-emerald-900 mb-1">ℹ️ Tentang Zikir Tasbih</p>
+    <div class="bg-[var(--color-teal-soft)] border-l-4 border-[var(--color-teal)] rounded-r-lg p-5 text-sm text-[var(--color-ink)] mb-6">
+      <p class="font-medium text-[var(--color-ink)] mb-1">ℹ️ Tentang Zikir Tasbih</p>
       <p>
         Selepas solat fardhu, disunatkan membaca <strong>Subhanallah</strong> (33×),
         <strong>Alhamdulillah</strong> (34×), dan <strong>Allahu Akbar</strong> (34×)
@@ -215,22 +215,22 @@ const webAppSchema = {
     </div>
 
     {/* ─────── FOOTER LINKS ─────── */}
-    <div class="mt-12 pt-8 border-t border-stone-200 print:hidden">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)] print:hidden">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">
         Bacaan lanjut
       </h2>
-      <ul class="space-y-2 text-stone-700">
+      <ul class="space-y-2 text-[var(--color-ink)]">
         <li>
           →
           <a href="/artikel/amalan/zikir-selepas-solat/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Zikir Selepas Solat: Bilangan dan Lafaz
           </a>
         </li>
         <li>
           →
           <a href="/alat/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Senarai Alat Interaktif
           </a>
         </li>

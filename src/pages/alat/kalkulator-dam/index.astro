@@ -36,23 +36,23 @@ const webAppSchema = {
 >
   <section class="max-w-4xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Kalkulator Dam</span>
+      <span class="text-[var(--color-ink)]">Kalkulator Dam</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Alat Interaktif · Berasaskan Fatwa</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Kalkulator Dam
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Pilih jenis dam atau pelanggaran ihram, kalkulator akan tunjukkan
         kategori, pilihan bayaran, dan kadar wajar mengikut fatwa Mufti
         Wilayah Persekutuan dan kadar ADAHI semasa.
@@ -61,17 +61,17 @@ const webAppSchema = {
 
     {/* ─────── INPUT ─────── */}
     <div
-      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm"
+      class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-6 md:p-8 mb-6 shadow-sm"
     >
       <label
         for="dam-type"
-        class="block text-sm font-semibold text-emerald-900 mb-2"
+        class="block text-sm font-semibold text-[var(--color-ink)] mb-2"
       >
         Pilih situasi
       </label>
       <select
         id="dam-type"
-        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+        class="w-full px-4 py-3 border border-[var(--color-rule)] rounded-md text-base bg-[var(--color-surface)] focus:border-[var(--color-teal)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)]/30"
       >
         <option value="">— Pilih situasi anda —</option>
         <optgroup label="Dam Wajib (Tamattu/Qiran)">
@@ -103,41 +103,41 @@ const webAppSchema = {
         </optgroup>
       </select>
 
-      <p class="text-xs text-stone-500 mt-3">
+      <p class="text-xs text-[var(--color-stone-warm)] mt-3">
         Tidak nampak situasi anda? Rujuk
         <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/"
-           class="text-emerald-700 underline">artikel lengkap dam</a>
+           class="text-[var(--color-teal)] underline">artikel lengkap dam</a>
         atau
         <a href="https://muftiwp.gov.my/" rel="noopener"
-           class="text-emerald-700 underline">Mufti WP</a>.
+           class="text-[var(--color-teal)] underline">Mufti WP</a>.
       </p>
     </div>
 
     {/* ─────── OUTPUT ─────── */}
     <div id="dam-result" class="hidden">
-      <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+      <div class="bg-[var(--color-teal-soft)] border-l-4 border-[var(--color-teal)] rounded-r-lg p-6 md:p-8 mb-6">
         <div class="flex items-baseline gap-3 mb-3 flex-wrap">
           <span id="dam-category-pill" class="badge badge-teal text-xs"></span>
-          <span id="dam-type-label" class="text-sm text-stone-600"></span>
+          <span id="dam-type-label" class="text-sm text-[var(--color-stone-warm)]"></span>
         </div>
-        <h2 id="dam-headline" class="text-2xl font-semibold text-emerald-900 mb-3"
+        <h2 id="dam-headline" class="text-2xl font-semibold text-[var(--color-ink)] mb-3"
             style="font-family: var(--font-serif);"></h2>
-        <p id="dam-explanation" class="text-stone-700 mb-4"></p>
+        <p id="dam-explanation" class="text-[var(--color-ink)] mb-4"></p>
 
         <div id="dam-options" class="space-y-3 mb-4"></div>
 
-        <div id="dam-amount" class="text-lg font-medium text-emerald-900 mb-4"></div>
+        <div id="dam-amount" class="text-lg font-medium text-[var(--color-ink)] mb-4"></div>
 
         <details class="text-sm">
-          <summary class="cursor-pointer text-emerald-700 font-medium">
+          <summary class="cursor-pointer text-[var(--color-teal)] font-medium">
             Sumber rujukan
           </summary>
-          <ul id="dam-sources" class="mt-2 space-y-1 list-disc list-inside text-stone-700"></ul>
+          <ul id="dam-sources" class="mt-2 space-y-1 list-disc list-inside text-[var(--color-ink)]"></ul>
         </details>
       </div>
 
-      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-stone-700">
-        <p class="font-medium text-stone-900 mb-1">⚠ Disclaimer penting</p>
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-[var(--color-ink)]">
+        <p class="font-medium text-[var(--color-ink)] mb-1">⚠ Disclaimer penting</p>
         <p>
           Kalkulator ini panduan umum. Untuk kes khusus (uzur kesihatan,
           kekangan kewangan, kombinasi pelanggaran), rujuk pegawai Tabung
@@ -148,36 +148,36 @@ const webAppSchema = {
     </div>
 
     {/* ─────── FOOTER LINKS ─────── */}
-    <div class="mt-12 pt-8 border-t border-stone-200">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">
         Bacaan lanjut
       </h2>
-      <ul class="space-y-2 text-stone-700">
+      <ul class="space-y-2 text-[var(--color-ink)]">
         <li>
           →
           <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran
           </a>
         </li>
         <li>
           →
           <a href="/panduan/ihram-miqat/larangan-ihram-lelaki-wanita-perbezaan/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Senarai Lengkap Larangan Ihram Lelaki dan Wanita
           </a>
         </li>
         <li>
           →
           <a href="/panduan/haji/wajib-haji-tujuh-perkara/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan
           </a>
         </li>
         <li>
           →
           <a href="/panduan/ihram-miqat/ihram-pampers-sanitizer-payung-hukum/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Pampers, Sanitizer, dan Payung Semasa Ihram: Halal atau Dam
           </a>
         </li>
@@ -496,16 +496,16 @@ const webAppSchema = {
       optionsEl.innerHTML = d.options
         .map(
           (o) =>
-            `<div class="flex items-start gap-2 text-stone-700"><span>${o}</span></div>`
+            `<div class="flex items-start gap-2 text-[var(--color-ink)]"><span>${o}</span></div>`
         )
         .join("");
 
-      amount.innerHTML = `💰 <span class="text-emerald-700">Anggaran:</span> ${d.amount}`;
+      amount.innerHTML = `💰 <span class="text-[var(--color-teal)]">Anggaran:</span> ${d.amount}`;
 
       sourcesEl.innerHTML = d.sources
         .map(
           ([label, url]) =>
-            `<li><a href="${url}" rel="noopener" class="text-emerald-700 underline">${label}</a></li>`
+            `<li><a href="${url}" rel="noopener" class="text-[var(--color-teal)] underline">${label}</a></li>`
         )
         .join("");
 

@@ -174,13 +174,13 @@ const doas = [
         type="text"
         id="doa-search"
         placeholder="Cari doa..."
-        class="flex-1 px-4 py-2.5 border border-stone-200 rounded-lg text-sm text-[var(--color-ink)] placeholder:text-[var(--color-stone-warm)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:border-transparent bg-white"
+        class="flex-1 px-4 py-2.5 border border-[var(--color-rule)] rounded-lg text-sm text-[var(--color-ink)] placeholder:text-[var(--color-stone-warm)] focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:border-transparent bg-[var(--color-surface)]"
       />
       <div class="action-bar flex gap-2">
         <button
           id="btn-print"
           type="button"
-          class="px-4 py-2.5 text-sm font-medium border border-stone-200 rounded-lg text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors no-print"
+          class="px-4 py-2.5 text-sm font-medium border border-[var(--color-rule)] rounded-lg text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors no-print"
           title="Cetak semua doa"
         >
           🖨️ Cetak
@@ -188,7 +188,7 @@ const doas = [
         <button
           id="btn-expand-all"
           type="button"
-          class="px-4 py-2.5 text-sm font-medium border border-stone-200 rounded-lg text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors no-print"
+          class="px-4 py-2.5 text-sm font-medium border border-[var(--color-rule)] rounded-lg text-[var(--color-ink)] hover:bg-[var(--color-surface)] transition-colors no-print"
         >
           Buka/Tutup Semua
         </button>
@@ -199,7 +199,7 @@ const doas = [
     <div class="filter-bar flex flex-wrap gap-2 mb-8">
       <button
         type="button"
-        class="category-tab active px-3.5 py-1.5 text-sm font-medium rounded-full border border-stone-200 text-[var(--color-ink)] hover:border-[var(--color-teal)] hover:text-[var(--color-teal)] transition-colors bg-[var(--color-teal)] text-white border-[var(--color-teal)]"
+        class="category-tab active px-3.5 py-1.5 text-sm font-medium rounded-full border border-[var(--color-rule)] text-[var(--color-ink)] hover:border-[var(--color-teal)] hover:text-[var(--color-teal)] transition-colors bg-[var(--color-teal)] text-white border-[var(--color-teal)]"
         data-category="all"
       >
         Semua
@@ -207,7 +207,7 @@ const doas = [
       {categories.map((cat) => (
         <button
           type="button"
-          class="category-tab px-3.5 py-1.5 text-sm font-medium rounded-full border border-stone-200 text-[var(--color-ink)] hover:border-[var(--color-teal)] hover:text-[var(--color-teal)] transition-colors"
+          class="category-tab px-3.5 py-1.5 text-sm font-medium rounded-full border border-[var(--color-rule)] text-[var(--color-ink)] hover:border-[var(--color-teal)] hover:text-[var(--color-teal)] transition-colors"
           data-category={cat.id}
         >
           {cat.icon} {cat.label}
@@ -231,7 +231,7 @@ const doas = [
         </h2>
         <div class="space-y-4">
           {doas.filter(d => d.category === cat.id).map((doa) => (
-            <div class="doa-card bg-white border border-stone-200 rounded-lg p-5 hover:shadow-md transition-shadow" data-category={doa.category} data-title={doa.title.toLowerCase()}>
+            <div class="doa-card bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-5 hover:shadow-md transition-shadow" data-category={doa.category} data-title={doa.title.toLowerCase()}>
               <div class="flex items-start justify-between mb-3">
                 <h3 class="font-semibold text-[var(--color-ink)]" style="font-family: var(--font-serif);">
                   {doa.title}

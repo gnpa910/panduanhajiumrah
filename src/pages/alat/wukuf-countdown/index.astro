@@ -36,23 +36,23 @@ const webAppSchema = {
 >
   <section class="max-w-4xl mx-auto px-4 py-10">
     {/* breadcrumb */}
-    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
-      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+    <nav class="text-sm text-[var(--color-stone-warm)] mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-[var(--color-teal)]">Laman Utama</a>
       <span class="mx-2">›</span>
-      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <a href="/alat/" class="hover:text-[var(--color-teal)]">Alat</a>
       <span class="mx-2">›</span>
-      <span class="text-stone-900">Wukuf Countdown</span>
+      <span class="text-[var(--color-ink)]">Wukuf Countdown</span>
     </nav>
 
     <header class="mb-8">
       <p class="badge badge-teal mb-4">Alat Interaktif · Kira Masa</p>
       <h1
-        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        class="text-4xl md:text-5xl font-semibold text-[var(--color-ink)] mb-4"
         style="font-family: var(--font-serif);"
       >
         Wukuf Countdown
       </h1>
-      <p class="text-lg text-stone-700 max-w-2xl">
+      <p class="text-lg text-[var(--color-ink)] max-w-2xl">
         Kira detik menuju Hari Wukuf Arafah — rukun haji yang paling besar.
         Tiada wukuf, tiada haji.
       </p>
@@ -60,13 +60,13 @@ const webAppSchema = {
 
     {/* ─────── COUNTDOWN DISPLAY ─────── */}
     <div
-      class="bg-white border border-stone-200 rounded-lg p-8 md:p-12 mb-6 shadow-sm text-center"
+      class="bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg p-8 md:p-12 mb-6 shadow-sm text-center"
       id="countdown-card"
     >
-      <p class="text-sm text-stone-500 mb-2 uppercase tracking-wider">
+      <p class="text-sm text-[var(--color-stone-warm)] mb-2 uppercase tracking-wider">
         9 Zulhijjah 1447H · Jumaat
       </p>
-      <p class="text-lg text-emerald-900 font-medium mb-6" style="font-family: var(--font-serif);">
+      <p class="text-lg text-[var(--color-ink)] font-medium mb-6" style="font-family: var(--font-serif);">
         5 Jun 2026 Masihi
       </p>
 
@@ -98,20 +98,20 @@ const webAppSchema = {
     </div>
 
     {/* ─────── INFO CARD ─────── */}
-    <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+    <div class="bg-[var(--color-teal-soft)] border-l-4 border-[var(--color-teal)] rounded-r-lg p-6 md:p-8 mb-6">
       <h2
-        class="text-xl font-semibold text-emerald-900 mb-3"
+        class="text-xl font-semibold text-[var(--color-ink)] mb-3"
         style="font-family: var(--font-serif);"
       >
         Apa itu Wukuf?
       </h2>
-      <p class="text-stone-700 mb-3">
+      <p class="text-[var(--color-ink)] mb-3">
         Wukuf ialah rukun haji yang paling utama — berdiri di Padang Arafah
         pada 9 Zulhijjah dari tergelincir matahari hingga terbit fajar 10
         Zulhijjah. Nabi SAW bersabda: <em>"Al-hajju Arafah"</em> (Haji itu
         ialah Arafah). Tanpa wukuf, haji tidak sah.
       </p>
-      <p class="text-stone-700">
+      <p class="text-[var(--color-ink)]">
         Hari Wukuf jatuh pada <strong>9 Zulhijjah</strong>, iaitu hari paling
         mulia dalam setahun. Ia juga hari yang digunakan untuk mengira tarikh
         Aidiladha dan ibadah korban.
@@ -119,36 +119,36 @@ const webAppSchema = {
     </div>
 
     {/* ─────── FOOTER LINKS ─────── */}
-    <div class="mt-12 pt-8 border-t border-stone-200">
-      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+    <div class="mt-12 pt-8 border-t border-[var(--color-rule)]">
+      <h2 class="text-xl font-semibold text-[var(--color-ink)] mb-4">
         Bacaan lanjut
       </h2>
-      <ul class="space-y-2 text-stone-700">
+      <ul class="space-y-2 text-[var(--color-ink)]">
         <li>
           →
           <a href="/panduan/haji/tatacara-wukuf-arafah-9-zulhijjah/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Tatacara Wukuf Arafah — Panduan Lengkap 9 Zulhijjah
           </a>
         </li>
         <li>
           →
           <a href="/artikel/persoalan/sakit-dan-dehidrasi-semasa-wukuf/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Sakit dan Dehidrasi Semasa Wukuf: Panduan Kecemasan
           </a>
         </li>
         <li>
           →
           <a href="/alat/jadual-haji/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Jadual Haji 2026 — Timeline Lengkap Hari-Hari Haji
           </a>
         </li>
         <li>
           →
           <a href="/panduan/haji/wajib-haji-tujuh-perkara/"
-             class="text-emerald-700 underline">
+             class="text-[var(--color-teal)] underline">
             Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan
           </a>
         </li>
@@ -189,8 +189,8 @@ const webAppSchema = {
           elStatus.classList.remove("hidden");
           elStatus.innerHTML =
             '<div class="text-6xl mb-4">🕋</div>' +
-            '<p class="text-2xl md:text-3xl font-semibold text-emerald-900 mb-2" style="font-family: var(--font-serif);">Hari Wukuf!</p>' +
-            '<p class="text-stone-700">Semoga Allah terima wukuf dan haji kita. Amin.</p>';
+            '<p class="text-2xl md:text-3xl font-semibold text-[var(--color-ink)] mb-2" style="font-family: var(--font-serif);">Hari Wukuf!</p>' +
+            '<p class="text-[var(--color-ink)]">Semoga Allah terima wukuf dan haji kita. Amin.</p>';
           return;
         }
 
@@ -200,9 +200,9 @@ const webAppSchema = {
           elStatus.classList.remove("hidden");
           elStatus.innerHTML =
             '<div class="text-5xl mb-4">✅</div>' +
-            '<p class="text-2xl font-semibold text-emerald-900 mb-2" style="font-family: var(--font-serif);">Wukuf telah berlalu</p>' +
-            '<p class="text-stone-700 mb-4">Semoga haji kita mabrur. Teruskan ibadah selepas wukuf.</p>' +
-            '<a href="/alat/jadual-haji/" class="inline-block bg-emerald-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-emerald-800 transition-colors">Lihat Jadual Hari-Hari Haji →</a>';
+            '<p class="text-2xl font-semibold text-[var(--color-ink)] mb-2" style="font-family: var(--font-serif);">Wukuf telah berlalu</p>' +
+            '<p class="text-[var(--color-ink)] mb-4">Semoga haji kita mabrur. Teruskan ibadah selepas wukuf.</p>' +
+            '<a href="/alat/jadual-haji/" class="inline-block bg-[var(--color-teal-deep)] text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-[var(--color-teal)] transition-colors">Lihat Jadual Hari-Hari Haji →</a>';
           return;
         }
 
