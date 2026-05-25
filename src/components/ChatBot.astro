@@ -30,6 +30,7 @@
       </div>
     </div>
     <div class="flex items-center gap-1">
+      <select id="chatbot-lang" class="text-[10px] bg-white/20 text-white rounded px-1 py-0.5 border-0 outline-none cursor-pointer"><option value="ms" class="text-[var(--color-ink)]">🇲🇾 BM</option><option value="en" class="text-[var(--color-ink)]">🇬🇧 EN</option><option value="ar" class="text-[var(--color-ink)]">🇸🇦 AR</option></select>
       <button id="chatbot-clear" aria-label="Padam sejarah" title="Padam sejarah" class="p-1 rounded hover:bg-white/20 transition">
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
       </button>
@@ -67,6 +68,7 @@
 
   <div class="shrink-0 border-t border-stone-200 dark:border-stone-700 px-3 py-2 bg-white dark:bg-[var(--color-ink)]">
     <div class="flex gap-2 items-end">
+      <button id="chatbot-mic" aria-label="Suarakan" title="Suarakan" class="shrink-0 w-9 h-9 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-400 dark:text-stone-500 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-700 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg></button>
       <textarea id="chatbot-input" rows="1" placeholder="Taip soalan anda..." class="flex-1 resize-none rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 px-3 py-2 text-sm text-[var(--color-ink)] dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#0d7377] dark:focus:ring-teal-400 max-h-24 leading-relaxed"></textarea>
       <button id="chatbot-send" aria-label="Hantar" class="shrink-0 w-9 h-9 rounded-xl bg-[#0d7377] text-white flex items-center justify-center hover:bg-[#095e61] disabled:opacity-40 disabled:cursor-not-allowed transition" disabled>
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
@@ -85,13 +87,17 @@
   var inp=document.getElementById("chatbot-input"),snd=document.getElementById("chatbot-send"),clrBtn=document.getElementById("chatbot-clear");
   var open=false,load=false,lt=0;
   var msgs=[];
+  var langSel=document.getElementById("chatbot-lang"),micBtn=document.getElementById("chatbot-mic");
+  var lang="ms";
+  function track(ev,d){try{var a=JSON.parse(localStorage.getItem("phu-analytics")||"{}");if(!a.e)a.e=[];a.e.push({ev:ev,d:d,t:Date.now()});if(a.e.length>200)a.e=a.e.slice(-100);localStorage.setItem("phu-analytics",JSON.stringify(a))}catch(e){}}
 
-  function save(){try{localStorage.setItem(SK,JSON.stringify({messages:msgs.slice(-MX),t:Date.now()}))}catch(e){}}
-  function loadH(){try{var r=localStorage.getItem(SK);if(!r)return[];var d=JSON.parse(r);if((Date.now()-(d.t||0))/(36e5*EX)>1){localStorage.removeItem(SK);return[]}return Array.isArray(d.messages)?d.messages:[]}catch(e){return[]}}
+  function save(){try{localStorage.setItem(SK,JSON.stringify({messages:msgs.slice(-MX),t:Date.now(),lang:lang}))}catch(e){}}
+  function loadH(){try{var r=localStorage.getItem(SK);if(!r)return[];var d=JSON.parse(r);if((Date.now()-(d.t||0))/(36e5*EX)>1){localStorage.removeItem(SK);return[]}if(d.lang){lang=d.lang;langSel.value=lang}return Array.isArray(d.messages)?d.messages:[]}catch(e){return[]}}
   function clearH(){localStorage.removeItem(SK);msgs.length=0;mc.innerHTML="";var w=document.createElement("div");w.className="flex gap-2 items-start";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] text-[var(--color-ink)] dark:text-stone-200 leading-relaxed"><p>Assalamualaikum! \U0001f44b Saya Panduan Haji AI.</p><p class="mt-1">Boleh tanya apa sahaja tentang haji &amp; umrah.</p></div>';mc.appendChild(w);if(toolsEl)toolsEl.style.display="";if(sug)sug.style.display=""}
 
   if(!localStorage.getItem(DK))disclaimer.classList.remove("hidden");
   disBtn.addEventListener("click",function(){disclaimer.classList.add("hidden");localStorage.setItem(DK,"1")});
+  langSel.addEventListener("change",function(){lang=langSel.value;save();track("lang",{l:lang})});
 
   function toggle(o){open=o!==undefined?o:!open;if(open){win.style.display="flex";requestAnimationFrame(function(){win.style.opacity="1";win.style.transform="scale(1)"});iO.classList.add("hidden");iC.classList.remove("hidden");badge.classList.add("hidden");inp.focus()}else{win.style.opacity="0";win.style.transform="scale(0.9)";setTimeout(function(){win.style.display="none"},250);iO.classList.remove("hidden");iC.classList.add("hidden")}}
   fab.addEventListener("click",function(){toggle()});clsBtn.addEventListener("click",function(){toggle(false)});
@@ -131,19 +137,19 @@
     lt=now;
     var ut=text.trim();inp.value="";autoR();snd.disabled=true;
     if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none";
-    msgs.push({role:"user",content:ut});addMsg("user",ut);save();
+    msgs.push({role:"user",content:ut});addMsg("user",ut);save();track("q",{t:ut.substring(0,80),l:lang});msgIdx=msgIdx||0;msgIdx++;
     load=true;var typing=addTyping();
-    fetch("/api/chat/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:msgs,pageUrl:window.location.pathname})})
+    fetch("/api/chat/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:msgs,pageUrl:window.location.pathname,lang:lang})})
     .then(function(r){
       rmTyping();
       if(!r.ok)return r.json().then(function(e){
-        if(e.choices&&e.choices[0]&&e.choices[0].message&&e.choices[0].message.content){addMsg("assistant",e.choices[0].message.content);msgs.push({role:"assistant",content:e.choices[0].message.content});save();return}
+        if(e.choices&&e.choices[0]&&e.choices[0].message&&e.choices[0].message.content){var b=addMsg("assistant",e.choices[0].message.content);addFeedback(b,msgIdx);msgs.push({role:"assistant",content:e.choices[0].message.content});save();return}
         throw new Error(e.detail||"HTTP "+r.status)});
       var ct=r.headers.get("content-type")||"";
-      if(ct.indexOf("application/json")>=0)return r.json().then(function(d){var fc=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||d.detail||"Maaf, cuba lagi.";addMsg("assistant",fc);msgs.push({role:"assistant",content:fc});save()});
+      if(ct.indexOf("application/json")>=0)return r.json().then(function(d){var fc=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||d.detail||"Maaf, cuba lagi.";var b2=addMsg("assistant",fc);addFeedback(b2,msgIdx);msgs.push({role:"assistant",content:fc});save()});
       var bubble=addMsg("assistant","",true);var reader=r.body.getReader();var dec=new TextDecoder();var full="";var buf="";
       function pump(){return reader.read().then(function(result){
-        if(result.done){var cur=mc.querySelector(".chatbot-cursor");if(cur)cur.remove();if(full){msgs.push({role:"assistant",content:full});save()}else bubble.innerHTML="<em class=\"text-stone-400\">Tiada respons.</em>";return}
+        if(result.done){var cur=mc.querySelector(".chatbot-cursor");if(cur)cur.remove();if(full){msgs.push({role:"assistant",content:full});save();addFeedback(bubble,msgIdx);track("resp",{l:full.length})}else bubble.innerHTML="<em class=\"text-stone-400\">Tiada respons.</em>";return}
         buf+=dec.decode(result.value,{stream:true});var lines=buf.split("\n");buf=lines.pop()||"";
         for(var i=0;i<lines.length;i++){var tr=lines[i].trim();if(!tr||tr.indexOf("data:")!==0)continue;var d=tr.slice(5).trim();if(d==="[DONE]")continue;
           try{var p=JSON.parse(d);var dl=p.choices&&p.choices[0]&&p.choices[0].delta&&p.choices[0].delta.content;if(dl){full+=dl;bubble.innerHTML=renderMd(full);var cur2=document.createElement("span");cur2.className="chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";bubble.appendChild(cur2);mc.scrollTop=mc.scrollHeight}}catch(e){}}
@@ -156,7 +162,7 @@
       else if(lt2.indexOf("umrah")>=0)fb="Rukun Umrah ada 5:\n1\ufe0f\u20e3 Ihram dari miqat\n2\ufe0f\u20e3 Tawaf 7 pusingan\n3\ufe0f\u20e3 Saie 7 kali\n4\ufe0f\u20e3 Bercukur\n5\ufe0f\u20e3 Tertib\n\n\U0001f4d6 [Baca](/panduan/umrah/tatacara-asas-umrah/)";
       else if(lt2.indexOf("solat")>=0||lt2.indexOf("musafir")>=0||lt2.indexOf("qasar")>=0)fb="Solat musafir: jarak >80km boleh qasar & jamak.\n\n\U0001f527 [Kalkulator Solat Musafir](/alat/solat-musafir/)";
       else if(lt2.indexOf("kos")>=0||lt2.indexOf("harga")>=0)fb="Kos umrah: RM5,000\u2013RM15,000 bergantung pakej.\n\n\U0001f527 [Kalkulator Kos](/alat/kalkulator-kos/)";
-      if(fb){addMsg("assistant",fb+"\n\n<small class=\"opacity-60\">(Jawapan offline \u2014 AI sedang rehat)</small>");msgs.push({role:"assistant",content:fb});save()}
+      if(fb){var b3=addMsg("assistant",fb+"\n\n<small class=\"opacity-60\">(Jawapan offline \u2014 AI sedang rehat)</small>");msgs.push({role:"assistant",content:fb});save();addFeedback(b3,msgIdx)}
       else addMsg("assistant","\u26a0\ufe0f "+(err.message||"Ralat rangkaian.")+"\n\n<small class=\"opacity-60\">Tip: Cuba tanya tentang rukun haji, umrah, atau solat musafir.</small>")
     })
     .then(function(){load=false;snd.disabled=!inp.value.trim()})}
@@ -167,6 +173,22 @@
   snd.addEventListener("click",function(){if(inp.value.trim()&&!load)sendMessage(inp.value)});
   document.querySelectorAll(".chatbot-suggestion").forEach(function(b){b.addEventListener("click",function(){var t=b.textContent.trim();if(t)sendMessage(t)})});
   document.querySelectorAll(".chatbot-tool").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();var n=a.textContent.trim();if(n)sendMessage("Bagaimana guna "+n+"?")})});
+
+  // Voice recognition
+  var recog=null,listening=false;
+  if("webkitSpeechRecognition" in window||"SpeechRecognition" in window){
+    var SR=window.SpeechRecognition||window.webkitSpeechRecognition;
+    recog=new SR();recog.continuous=false;recog.interimResults=true;
+    recog.lang="ms-MY";
+    recog.onresult=function(e){var tr="";for(var i=0;i<e.results.length;i++)tr+=e.results[i][0].transcript;inp.value=tr;autoR();snd.disabled=!tr.trim()};
+    recog.onend=function(){listening=false;micBtn.classList.remove("bg-red-100","dark:bg-red-900","text-red-500");micBtn.classList.add("text-stone-400","dark:text-stone-500")};
+    recog.onerror=function(){listening=false;micBtn.classList.remove("bg-red-100","dark:bg-red-900","text-red-500");micBtn.classList.add("text-stone-400","dark:text-stone-500")};
+    micBtn.addEventListener("click",function(){
+      if(!recog)return;if(listening){recog.stop();return}
+      recog.lang=lang==="ms"?"ms-MY":lang==="ar"?"ar-SA":"en-US";
+      listening=true;micBtn.classList.add("bg-red-100","dark:bg-red-900","text-red-500");micBtn.classList.remove("text-stone-400","dark:text-stone-500");
+      recog.start()});
+  }else{micBtn.style.display="none"}
 
   var saved=loadH();if(saved.length>0){for(var i=0;i<saved.length;i++)addMsg(saved[i].role,saved[i].content);for(var j=0;j<saved.length;j++)msgs.push(saved[j]);if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none"}
 
