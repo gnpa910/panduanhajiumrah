@@ -116,7 +116,7 @@ const relatedArticles = allArticles
   <div class="toc-container">
   <TableOfContents />
   <article class="prose-haji">
-    <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
+    <p class="text-sm text-[var(--color-stone-warm)] uppercase tracking-wide mb-2">
       Panduan / {entry.data.section.replace("-", " ")}
     </p>
     <h1>{entry.data.title}</h1>
@@ -140,7 +140,7 @@ const relatedArticles = allArticles
       </div>
     )}
 
-    <p class="text-sm text-stone-500 mb-8">
+    <p class="text-sm text-[var(--color-stone-warm)] mb-8">
       Diterbitkan {entry.data.publishedAt.toLocaleDateString("ms-MY", {
         year: "numeric", month: "long", day: "numeric",
       })}
@@ -160,7 +160,7 @@ const relatedArticles = allArticles
         {entry.data.sources.map((src) => (
           <li>
             <a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>
-            <span class="text-stone-500 text-xs">
+            <span class="text-[var(--color-stone-warm)] text-xs">
               {" "}— diakses {src.accessedAt.toLocaleDateString("ms-MY")}
             </span>
             {src.excerpt && (

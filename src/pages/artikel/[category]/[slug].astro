@@ -133,7 +133,7 @@ if (faqSchema) pageSchemas.push(faqSchema);
   <div class="toc-container">
   <TableOfContents />
   <article class="prose-haji">
-    <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
+    <p class="text-sm text-[var(--color-stone-warm)] uppercase tracking-wide mb-2">
       Artikel / {categoryLabels[entry.data.category] ?? entry.data.category}
     </p>
     <h1>{entry.data.title}</h1>
@@ -157,7 +157,7 @@ if (faqSchema) pageSchemas.push(faqSchema);
       </div>
     )}
 
-    <p class="text-sm text-stone-500 mb-8">
+    <p class="text-sm text-[var(--color-stone-warm)] mb-8">
       Diterbitkan {entry.data.publishedAt.toLocaleDateString("ms-MY", {
         year: "numeric", month: "long", day: "numeric",
       })}
@@ -187,7 +187,7 @@ if (faqSchema) pageSchemas.push(faqSchema);
         <h2 class="text-2xl font-semibold text-[var(--color-ink)] mb-2" style="font-family: var(--font-serif);">
           Soalan lazim
         </h2>
-        <p class="text-sm text-stone-500 mb-6">
+        <p class="text-sm text-[var(--color-stone-warm)] mb-6">
           Ringkasan soalan paling kerap ditanya berkaitan topik ini.
         </p>
         <div class="space-y-3">
@@ -219,7 +219,7 @@ if (faqSchema) pageSchemas.push(faqSchema);
         {entry.data.sources.map((src) => (
           <li>
             <a href={src.url} target="_blank" rel="noopener noreferrer">{src.label}</a>
-            <span class="text-stone-500 text-xs">
+            <span class="text-[var(--color-stone-warm)] text-xs">
               {" "}— diakses {src.accessedAt.toLocaleDateString("ms-MY")}
             </span>
             {src.excerpt && (
