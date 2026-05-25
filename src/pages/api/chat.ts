@@ -66,6 +66,7 @@ export const POST: APIRoute = async ({ request }) => {
   try {
     const body = await request.json();
     const messages = body.messages;
+    const pageUrl = body.pageUrl || "";
 
     if (!Array.isArray(messages) || messages.length === 0) {
       return new Response(JSON.stringify({ error: "Messages required" }), {
@@ -76,6 +77,12 @@ export const POST: APIRoute = async ({ request }) => {
 
     // Limit history to last 10 messages to control token usage
     const recentMessages = messages.slice(-10);
+
+    // Build system prompt with page context
+    let systemPrompt = SYSTEM_PROMPT;
+    if (pageUrl) {
+      systemPrompt += `\n\nKONTEKS HALAMAN: User di halaman "${pageUrl}". Rujuk kandungan jika relevan.`;
+    }
 
     // LLM config from env vars (set in Vercel dashboard)
     const apiBase =
@@ -97,7 +104,7 @@ export const POST: APIRoute = async ({ request }) => {
       body: JSON.stringify({
         model,
         messages: [
-          { role: "system", content: SYSTEM_PROMPT },
+          { role: "system", content: systemPrompt },
           ...recentMessages,
         ],
         stream: true,
