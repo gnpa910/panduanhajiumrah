@@ -1,0 +1,510 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Kompas Kiblat", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Kompas Kiblat — Arah Kiblat dari Lokasi Anda",
+  description:
+    "Tentukan arah kiblat dari lokasi semasa anda menggunakan GPS dan kompas peranti. Termasuk senarai arah kiblat untuk bandar utama Asia Tenggara.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+
+function getDirectionLabel(bearing) {
+  const dirs = [
+    "Utara", "Utara Timur Laut", "Timur Laut",
+    "Timur Timur Laut", "Timur", "Timur Tenggara",
+    "Tenggara", "Selatan Tenggara", "Selatan",
+    "Selatan Barat Daya", "Barat Daya", "Barat Barat Daya",
+    "Barat", "Barat Barat Laut", "Barat Laut",
+    "Utara Barat Laut",
+  ];
+  const idx = Math.round(bearing / 22.5) % 16;
+  return dirs[idx];
+}
+
+const seaCities = [
+  { name: "Kuala Lumpur", lat: 3.139, lng: 101.687, bearing: 292.4 },
+  { name: "Jakarta", lat: -6.208, lng: 106.846, bearing: 295.1 },
+  { name: "Singapura", lat: 1.352, lng: 103.82, bearing: 292.6 },
+  { name: "Bangkok", lat: 13.756, lng: 100.502, bearing: 281.9 },
+  { name: "Manila", lat: 14.599, lng: 120.984, bearing: 288.2 },
+  { name: "Bandar Seri Begawan", lat: 4.903, lng: 114.94, bearing: 290.4 },
+  { name: "Ho Chi Minh", lat: 10.823, lng: 106.63, bearing: 288.6 },
+  { name: "Phnom Penh", lat: 11.556, lng: 104.928, bearing: 287.2 },
+];
+---
+
+<BaseLayout
+  title="Kompas Kiblat — Arah Kiblat dari Lokasi Anda"
+  description="Tentukan arah kiblat sebenar dari lokasi semasa anda. Gunakan GPS dan kompas peranti, atau lihat senarai arah kiblat bandar utama Asia Tenggara."
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Kompas Kiblat</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Alat Interaktif · GPS & Kompas</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Kompas Kiblat
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Tentukan arah Kiblat dari lokasi semasa anda. Gunakan GPS dan kompas
+        peranti untuk ketepatan terbaik.
+      </p>
+    </header>
+
+    {/* ─────── PERMISSION REQUEST ─────── */}
+    <div
+      id="permission-card"
+      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center"
+    >
+      <p class="text-stone-700 mb-4">
+        Alat ini memerlukan akses ke lokasi dan kompas peranti anda untuk
+        mengira arah kiblat yang tepat.
+      </p>
+      <button
+        id="btn-enable"
+        class="inline-block bg-emerald-700 text-white px-6 py-3 rounded-md text-base font-medium hover:bg-emerald-800 transition-colors"
+      >
+        🧭 Aktifkan Kompas Kiblat
+      </button>
+      <p id="permission-error" class="text-sm text-red-600 mt-3 hidden"></p>
+    </div>
+
+    {/* ─────── COMPASS DISPLAY ─────── */}
+    <div
+      id="compass-card"
+      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm text-center hidden"
+    >
+      <div class="relative inline-block mb-6">
+        {/* Compass SVG */}
+        <svg
+          id="compass-svg"
+          width="280"
+          height="280"
+          viewBox="0 0 280 280"
+          class="mx-auto"
+          style="max-width: 100%;"
+        >
+          {/* Outer ring */}
+          <circle cx="140" cy="140" r="135" fill="none" stroke="#d6d3d1" stroke-width="2" />
+          <circle cx="140" cy="140" r="130" fill="#fefce8" stroke="#fbbf24" stroke-width="1" />
+
+          {/* Degree marks */}
+          <g id="compass-marks"></g>
+
+          {/* Cardinal directions */}
+          <text x="140" y="28" text-anchor="middle" font-size="14" font-weight="700" fill="#b91c1c">U</text>
+          <text x="140" y="266" text-anchor="middle" font-size="14" font-weight="700" fill="#78716c">S</text>
+          <text x="16" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#78716c">B</text>
+          <text x="264" y="144" text-anchor="middle" font-size="14" font-weight="700" fill="#78716c">T</text>
+
+          {/* Qibla needle (rotated dynamically) */}
+          <g id="qibla-needle" transform="rotate(0, 140, 140)">
+            <line x1="140" y1="140" x2="140" y2="35" stroke="#115e4e" stroke-width="3" stroke-linecap="round" />
+            <polygon points="140,30 134,50 146,50" fill="#115e4e" />
+            {/* Kaabah icon at tip */}
+            <rect x="133" y="18" width="14" height="14" rx="2" fill="#115e4e" />
+            <text x="140" y="29" text-anchor="middle" font-size="9" fill="white" font-weight="700">كعب</text>
+          </g>
+
+          {/* Center dot */}
+          <circle cx="140" cy="140" r="6" fill="#115e4e" />
+          <circle cx="140" cy="140" r="3" fill="#fefce8" />
+        </svg>
+      </div>
+
+      {/* Info readout */}
+      <div class="space-y-2">
+        <p class="text-sm text-stone-500 uppercase tracking-wider">Arah Kiblat</p>
+        <p id="qibla-bearing" class="text-3xl font-bold text-emerald-900" style="font-family: var(--font-serif);">
+          --°
+        </p>
+        <p id="qibla-direction" class="text-lg text-stone-600">--</p>
+        <p id="qibla-distance" class="text-sm text-stone-500"></p>
+      </div>
+
+      <div class="mt-4 text-xs text-stone-400">
+        <p id="compass-note">📍 Menunggu data lokasi...</p>
+      </div>
+    </div>
+
+    {/* ─────── STATIC CALCULATOR FALLBACK ─────── */}
+    <div
+      id="static-calc"
+      class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm hidden"
+    >
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+        Kira Arah Kiblat Manual
+      </h2>
+      <p class="text-sm text-stone-600 mb-4">
+        Masukkan koordinat lokasi anda untuk mengira arah kiblat.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
+        <div>
+          <label for="manual-lat" class="block text-sm font-medium text-stone-700 mb-1">Latitud</label>
+          <input
+            type="number"
+            id="manual-lat"
+            step="0.001"
+            placeholder="3.139"
+            class="w-full px-4 py-2 border border-stone-300 rounded-md focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          />
+        </div>
+        <div>
+          <label for="manual-lng" class="block text-sm font-medium text-stone-700 mb-1">Longitud</label>
+          <input
+            type="number"
+            id="manual-lng"
+            step="0.001"
+            placeholder="101.687"
+            class="w-full px-4 py-2 border border-stone-300 rounded-md focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+          />
+        </div>
+      </div>
+      <button
+        id="btn-manual-calc"
+        class="inline-block bg-emerald-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-emerald-800 transition-colors"
+      >
+        Kira Arah Kiblat
+      </button>
+      <div id="manual-result" class="mt-4 hidden">
+        <p class="text-lg font-semibold text-emerald-900">
+          Arah Kiblat: <span id="manual-bearing" class="text-emerald-700"></span>
+        </p>
+      </div>
+    </div>
+
+    {/* ─────── SEA CITIES TABLE ─────── */}
+    <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+        Arah Kiblat Bandar Utama Asia Tenggara
+      </h2>
+      <p class="text-sm text-stone-600 mb-4">
+        Anggaran arah kiblat dari bandar-bandar utama. Arah sebenar mungkin
+        sedikit berbeza bergantung pada lokasi tepat anda.
+      </p>
+      <div class="space-y-3">
+        {seaCities.map((c) => (
+          <div class="flex items-center justify-between py-2 border-b border-emerald-100 last:border-0">
+            <div>
+              <span class="font-medium text-emerald-900">{c.name}</span>
+            </div>
+            <div class="text-right">
+              <span class="text-lg font-semibold text-emerald-800">{c.bearing}°</span>
+              <span class="text-sm text-stone-500 ml-2">{getDirectionLabel(c.bearing)}</span>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+
+    {/* ─────── INFO CARD ─────── */}
+    <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-3" style="font-family: var(--font-serif);">
+        Tentang Arah Kiblat
+      </h2>
+      <p class="text-stone-700 mb-3">
+        Kiblat ialah arah menghadap Kaabah di Masjidil Haram, Mekah
+        (21.4225°N, 39.8262°E). Setiap Muslim menghadap kiblat semasa solat.
+        Arah kiblat dikira berdasarkan bulatan besar (<em>great circle</em>)
+        dari lokasi anda ke Kaabah.
+      </p>
+      <p class="text-stone-700">
+        Dari Asia Tenggara, arah kiblat umumnya ke Barat Laut (NW). Namun,
+        kerana bentuk bumi, arah tepat berbeza mengikut lokasi — contohnya,
+        dari Kuala Lumpur ia 292° manakala dari Bangkok ia 282°.
+      </p>
+    </div>
+
+    {/* ─────── FOOTER LINKS ─────── */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+        Bacaan lanjut
+      </h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>
+          →
+          <a href="/panduan/ibadah-solat/solat-musafir-qasar-jamak/"
+             class="text-emerald-700 underline">
+            Solat Musafir: Qasar dan Jamak
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/alat/doa-harian/"
+             class="text-emerald-700 underline">
+            Panduan Doa Harian untuk Musafir
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/alat/jadual-haji/"
+             class="text-emerald-700 underline">
+            Jadual Haji 2026
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      // Kaabah coordinates
+      const KAABAH_LAT = 21.4225;
+      const KAABAH_LNG = 39.8262;
+
+      const btnEnable = document.getElementById("btn-enable");
+      const permCard = document.getElementById("permission-card");
+      const compassCard = document.getElementById("compass-card");
+      const staticCalc = document.getElementById("static-calc");
+      const permError = document.getElementById("permission-error");
+      const qiblaNeedle = document.getElementById("qibla-needle");
+      const qiblaBearing = document.getElementById("qibla-bearing");
+      const qiblaDirection = document.getElementById("qibla-direction");
+      const qiblaDistance = document.getElementById("qibla-distance");
+      const compassNote = document.getElementById("compass-note");
+
+      let userLat = null;
+      let userLng = null;
+      let currentHeading = 0;
+      let compassActive = false;
+
+      // Draw degree marks
+      (function drawMarks() {
+        const g = document.getElementById("compass-marks");
+        for (let i = 0; i < 360; i += 5) {
+          const rad = ((i - 90) * Math.PI) / 180;
+          const len = i % 30 === 0 ? 12 : i % 10 === 0 ? 8 : 4;
+          const x1 = 140 + Math.cos(rad) * 130;
+          const y1 = 140 + Math.sin(rad) * 130;
+          const x2 = 140 + Math.cos(rad) * (130 - len);
+          const y2 = 140 + Math.sin(rad) * (130 - len);
+          const line = document.createElementNS("http://www.w3.org/2000/svg", "line");
+          line.setAttribute("x1", x1);
+          line.setAttribute("y1", y1);
+          line.setAttribute("x2", x2);
+          line.setAttribute("y2", y2);
+          line.setAttribute("stroke", i % 30 === 0 ? "#78716c" : "#d6d3d1");
+          line.setAttribute("stroke-width", i % 30 === 0 ? "1.5" : "0.75");
+          g.appendChild(line);
+        }
+      })();
+
+      function toRad(deg) {
+        return (deg * Math.PI) / 180;
+      }
+      function toDeg(rad) {
+        return (rad * 180) / Math.PI;
+      }
+
+      // Calculate great-circle bearing from point to Kaabah
+      function calcQiblaBearing(lat, lng) {
+        const phi1 = toRad(lat);
+        const phi2 = toRad(KAABAH_LAT);
+        const dLambda = toRad(KAABAH_LNG - lng);
+        const y = Math.sin(dLambda) * Math.cos(phi2);
+        const x =
+          Math.cos(phi1) * Math.sin(phi2) -
+          Math.sin(phi1) * Math.cos(phi2) * Math.cos(dLambda);
+        let bearing = toDeg(Math.atan2(y, x));
+        return ((bearing % 360) + 360) % 360;
+      }
+
+      // Haversine distance in km
+      function calcDistance(lat1, lng1, lat2, lng2) {
+        const R = 6371;
+        const dLat = toRad(lat2 - lat1);
+        const dLng = toRad(lng2 - lng1);
+        const a =
+          Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+          Math.cos(toRad(lat1)) *
+            Math.cos(toRad(lat2)) *
+            Math.sin(dLng / 2) *
+            Math.sin(dLng / 2);
+        return R * 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
+      }
+
+      function getDirectionLabel(bearing) {
+        const dirs = [
+          "Utara", "Utara Timur Laut", "Timur Laut",
+          "Timur Timur Laut", "Timur", "Timur Tenggara",
+          "Tenggara", "Selatan Tenggara", "Selatan",
+          "Selatan Barat Daya", "Barat Daya", "Barat Barat Daya",
+          "Barat", "Barat Barat Laut", "Barat Laut",
+          "Utara Barat Laut",
+        ];
+        const idx = Math.round(bearing / 22.5) % 16;
+        return dirs[idx];
+      }
+
+      function updateCompass(qiblaBearingDeg) {
+        // The needle shows qibla direction relative to device heading
+        // If device heading = 0 (north), needle points to qibla bearing
+        const relativeBearing = qiblaBearingDeg - currentHeading;
+        qiblaNeedle.setAttribute(
+          "transform",
+          "rotate(" + relativeBearing + ", 140, 140)"
+        );
+
+        qiblaBearing.textContent = Math.round(qiblaBearingDeg) + "°";
+        qiblaDirection.textContent =
+          Math.round(qiblaBearingDeg) + "° " + getDirectionLabel(qiblaBearingDeg);
+
+        if (userLat !== null) {
+          const dist = calcDistance(userLat, userLng, KAABAH_LAT, KAABAH_LNG);
+          qiblaDistance.textContent = "Jarak ke Kaabah: " + Math.round(dist).toLocaleString("ms-MY") + " km";
+        }
+      }
+
+      function startCompass(lat, lng) {
+        userLat = lat;
+        userLng = lng;
+        const bearing = calcQiblaBearing(lat, lng);
+
+        permCard.classList.add("hidden");
+        compassCard.classList.remove("hidden");
+
+        updateCompass(bearing);
+        compassNote.textContent =
+          "📍 Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "°";
+
+        // Try device orientation for live compass
+        if (typeof DeviceOrientationEvent !== "undefined") {
+          function onOrientation(e) {
+            let heading = e.alpha;
+            if (e.webkitCompassHeading !== undefined) {
+              heading = e.webkitCompassHeading; // iOS
+            }
+            if (heading !== null && heading !== undefined) {
+              currentHeading = heading;
+              compassActive = true;
+              updateCompass(bearing);
+              compassNote.textContent =
+                "🧭 Kompas aktif · Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "°";
+            }
+          }
+
+          // iOS 13+ requires permission
+          if (
+            typeof DeviceOrientationEvent.requestPermission === "function"
+          ) {
+            DeviceOrientationEvent.requestPermission()
+              .then(function (state) {
+                if (state === "granted") {
+                  window.addEventListener("deviceorientation", onOrientation, true);
+                } else {
+                  compassNote.textContent =
+                    "📍 Kompas tidak diluluskan — arah statik dari Utara";
+                }
+              })
+              .catch(function () {
+                compassNote.textContent =
+                  "📍 Kompas tidak tersedia — arah statik dari Utara";
+              });
+          } else {
+            window.addEventListener("deviceorientationabsolute", onOrientation, true);
+            window.addEventListener("deviceorientation", onOrientation, true);
+          }
+        }
+      }
+
+      // Button: enable compass
+      btnEnable.addEventListener("click", function () {
+        permError.classList.add("hidden");
+
+        if (!navigator.geolocation) {
+          permError.textContent =
+            "Geolocation tidak disokong oleh pelayar ini. Sila gunakan kiraan manual di bawah.";
+          permError.classList.remove("hidden");
+          staticCalc.classList.remove("hidden");
+          return;
+        }
+
+        btnEnable.textContent = "⏳ Mendapatkan lokasi...";
+        btnEnable.disabled = true;
+
+        navigator.geolocation.getCurrentPosition(
+          function (pos) {
+            startCompass(pos.coords.latitude, pos.coords.longitude);
+          },
+          function (err) {
+            permError.textContent =
+              "Gagal mendapatkan lokasi: " +
+              (err.message || "Ralat tidak diketahui") +
+              ". Sila gunakan kiraan manual di bawah.";
+            permError.classList.remove("hidden");
+            staticCalc.classList.remove("hidden");
+            btnEnable.textContent = "🧭 Cuba Lagi";
+            btnEnable.disabled = false;
+          },
+          { enableHighAccuracy: true, timeout: 10000, maximumAge: 60000 }
+        );
+      });
+
+      // Manual calculator
+      document.getElementById("btn-manual-calc").addEventListener("click", function () {
+        var latVal = parseFloat(document.getElementById("manual-lat").value);
+        var lngVal = parseFloat(document.getElementById("manual-lng").value);
+        var manualResult = document.getElementById("manual-result");
+        var manualBearing = document.getElementById("manual-bearing");
+
+        if (isNaN(latVal) || isNaN(lngVal)) {
+          alert("Sila masukkan latitud dan longitud yang sah.");
+          return;
+        }
+
+        var bearing = calcQiblaBearing(latVal, lngVal);
+        manualBearing.textContent =
+          Math.round(bearing) + "° " + getDirectionLabel(bearing);
+        manualResult.classList.remove("hidden");
+
+        // Also show on compass
+        startCompass(latVal, lngVal);
+      });
+    })();
+  </script>
+
+  <style>
+    .badge-teal {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--color-teal, #115e4e);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+  </style>
+</BaseLayout>

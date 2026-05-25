@@ -148,11 +148,25 @@ const relatedArticles = allArticles
         year: "numeric", month: "long", day: "numeric",
       })}`}
       {entry.data.readingMinutes && ` · ${entry.data.readingMinutes} min bacaan`}
+      <span id="reading-time" class="hidden"></span>
     </p>
 
     <ShareButtons title={entry.data.title} url={pageUrl} />
 
     <Content />
+    {!entry.data.readingMinutes && (
+      <script is:inline>
+        (function(){
+          var el=document.querySelector('.prose-haji');
+          if(!el)return;
+          var text=el.textContent||'';
+          var words=text.trim().split(/\s+/).filter(Boolean).length;
+          var mins=Math.max(1,Math.round(words/200));
+          var rt=document.getElementById('reading-time');
+          if(rt){rt.textContent=' · '+mins+' min bacaan';rt.classList.remove('hidden');}
+        })();
+      </script>
+    )}
 
     <div class="source-list">
       <h3>Rujukan</h3>

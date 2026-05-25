@@ -1,0 +1,303 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Wukuf Countdown", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Wukuf Countdown — Kira Masa Menuju Hari Arafah",
+  description:
+    "Kira detik menuju Hari Wukuf Arafah (9 Zulhijjah 1447H). Paparan countdown besar dengan jam, minit, saat untuk persediaan jemaah haji.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+---
+
+<BaseLayout
+  title="Wukuf Countdown — Kira Masa Menuju Hari Arafah 1447H"
+  description="Kira detik menuju Hari Wukuf Arafah 9 Zulhijjah 1447H (5 Jun 2026). Paparan countdown besar untuk jemaah haji — bersedia lebih awal!"
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Wukuf Countdown</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Alat Interaktif · Kira Masa</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Wukuf Countdown
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Kira detik menuju Hari Wukuf Arafah — rukun haji yang paling besar.
+        Tiada wukuf, tiada haji.
+      </p>
+    </header>
+
+    {/* ─────── COUNTDOWN DISPLAY ─────── */}
+    <div
+      class="bg-white border border-stone-200 rounded-lg p-8 md:p-12 mb-6 shadow-sm text-center"
+      id="countdown-card"
+    >
+      <p class="text-sm text-stone-500 mb-2 uppercase tracking-wider">
+        9 Zulhijjah 1447H · Jumaat
+      </p>
+      <p class="text-lg text-emerald-900 font-medium mb-6" style="font-family: var(--font-serif);">
+        5 Jun 2026 Masihi
+      </p>
+
+      {/* countdown boxes */}
+      <div id="countdown-display" class="flex justify-center gap-3 md:gap-6 flex-wrap mb-6">
+        <div class="countdown-box">
+          <span id="cd-days" class="countdown-number">--</span>
+          <span class="countdown-label">Hari</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-box">
+          <span id="cd-hours" class="countdown-number">--</span>
+          <span class="countdown-label">Jam</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-box">
+          <span id="cd-minutes" class="countdown-number">--</span>
+          <span class="countdown-label">Minit</span>
+        </div>
+        <div class="countdown-separator">:</div>
+        <div class="countdown-box">
+          <span id="cd-seconds" class="countdown-number">--</span>
+          <span class="countdown-label">Saat</span>
+        </div>
+      </div>
+
+      {/* status message (shown when wukuf day or after) */}
+      <div id="countdown-status" class="hidden"></div>
+    </div>
+
+    {/* ─────── INFO CARD ─────── */}
+    <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-6 md:p-8 mb-6">
+      <h2
+        class="text-xl font-semibold text-emerald-900 mb-3"
+        style="font-family: var(--font-serif);"
+      >
+        Apa itu Wukuf?
+      </h2>
+      <p class="text-stone-700 mb-3">
+        Wukuf ialah rukun haji yang paling utama — berdiri di Padang Arafah
+        pada 9 Zulhijjah dari tergelincir matahari hingga terbit fajar 10
+        Zulhijjah. Nabi SAW bersabda: <em>"Al-hajju Arafah"</em> (Haji itu
+        ialah Arafah). Tanpa wukuf, haji tidak sah.
+      </p>
+      <p class="text-stone-700">
+        Hari Wukuf jatuh pada <strong>9 Zulhijjah</strong>, iaitu hari paling
+        mulia dalam setahun. Ia juga hari yang digunakan untuk mengira tarikh
+        Aidiladha dan ibadah korban.
+      </p>
+    </div>
+
+    {/* ─────── FOOTER LINKS ─────── */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+        Bacaan lanjut
+      </h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>
+          →
+          <a href="/panduan/haji/tatacara-wukuf-arafah-9-zulhijjah/"
+             class="text-emerald-700 underline">
+            Tatacara Wukuf Arafah — Panduan Lengkap 9 Zulhijjah
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/artikel/persoalan/sakit-dan-dehidrasi-semasa-wukuf/"
+             class="text-emerald-700 underline">
+            Sakit dan Dehidrasi Semasa Wukuf: Panduan Kecemasan
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/alat/jadual-haji/"
+             class="text-emerald-700 underline">
+            Jadual Haji 2026 — Timeline Lengkap Hari-Hari Haji
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/panduan/haji/wajib-haji-tujuh-perkara/"
+             class="text-emerald-700 underline">
+            Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    (function () {
+      // 9 Zulhijjah 1447H ≈ 5 June 2026, 00:00 local time (Saudi Arabia = UTC+3)
+      // Using UTC so it's consistent regardless of user timezone
+      const WUKUF_DATE = new Date(Date.UTC(2026, 5, 5, 0, 0, 0)); // June 5, 2026 UTC
+      // Adjust to Saudi time (UTC+3): Wukuf starts at sunrise ~06:00 AST
+      // But for simplicity, count to midnight of that day in UTC+3
+      const WUKUF_SAST = new Date(Date.UTC(2026, 5, 4, 21, 0, 0)); // June 5 00:00 AST = June 4 21:00 UTC
+
+      const AFTER_WUKUF = new Date(Date.UTC(2026, 5, 5, 21, 0, 0)); // June 6 00:00 AST
+
+      const elDays = document.getElementById("cd-days");
+      const elHours = document.getElementById("cd-hours");
+      const elMinutes = document.getElementById("cd-minutes");
+      const elSeconds = document.getElementById("cd-seconds");
+      const elDisplay = document.getElementById("countdown-display");
+      const elStatus = document.getElementById("countdown-status");
+      const elCard = document.getElementById("countdown-card");
+
+      function pad(n) {
+        return String(n).padStart(2, "0");
+      }
+
+      function tick() {
+        const now = new Date();
+        const diff = WUKUF_SAST.getTime() - now.getTime();
+
+        if (diff <= 0 && now.getTime() < AFTER_WUKUF.getTime()) {
+          // Wukuf day!
+          elDisplay.classList.add("hidden");
+          elStatus.classList.remove("hidden");
+          elStatus.innerHTML =
+            '<div class="text-6xl mb-4">🕋</div>' +
+            '<p class="text-2xl md:text-3xl font-semibold text-emerald-900 mb-2" style="font-family: var(--font-serif);">Hari Wukuf!</p>' +
+            '<p class="text-stone-700">Semoga Allah terima wukuf dan haji kita. Amin.</p>';
+          return;
+        }
+
+        if (diff <= -86400000) {
+          // Past wukuf day
+          elDisplay.classList.add("hidden");
+          elStatus.classList.remove("hidden");
+          elStatus.innerHTML =
+            '<div class="text-5xl mb-4">✅</div>' +
+            '<p class="text-2xl font-semibold text-emerald-900 mb-2" style="font-family: var(--font-serif);">Wukuf telah berlalu</p>' +
+            '<p class="text-stone-700 mb-4">Semoga haji kita mabrur. Teruskan ibadah selepas wukuf.</p>' +
+            '<a href="/alat/jadual-haji/" class="inline-block bg-emerald-700 text-white px-5 py-2 rounded-md text-sm font-medium hover:bg-emerald-800 transition-colors">Lihat Jadual Hari-Hari Haji →</a>';
+          return;
+        }
+
+        // Normal countdown
+        const totalSec = Math.max(0, Math.floor(diff / 1000));
+        const days = Math.floor(totalSec / 86400);
+        const hours = Math.floor((totalSec % 86400) / 3600);
+        const minutes = Math.floor((totalSec % 3600) / 60);
+        const seconds = totalSec % 60;
+
+        elDays.textContent = pad(days);
+        elHours.textContent = pad(hours);
+        elMinutes.textContent = pad(minutes);
+        elSeconds.textContent = pad(seconds);
+
+        requestAnimationFrame(tick);
+      }
+
+      tick();
+    })();
+  </script>
+
+  <style>
+    .badge-teal {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--color-teal, #115e4e);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    .countdown-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-width: 4.5rem;
+    }
+
+    .countdown-number {
+      font-size: 3rem;
+      font-weight: 700;
+      line-height: 1;
+      color: var(--color-teal, #115e4e);
+      font-family: var(--font-serif, serif);
+      background: linear-gradient(135deg, #ecfdf5 0%, #d1fae5 100%);
+      border: 2px solid #a7f3d0;
+      border-radius: 0.75rem;
+      padding: 0.75rem 1rem;
+      min-width: 5rem;
+      text-align: center;
+    }
+
+    @media (min-width: 768px) {
+      .countdown-number {
+        font-size: 4.5rem;
+        min-width: 7rem;
+        padding: 1rem 1.5rem;
+      }
+    }
+
+    .countdown-label {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: #78716c;
+      margin-top: 0.5rem;
+      font-weight: 500;
+    }
+
+    .countdown-separator {
+      font-size: 2.5rem;
+      font-weight: 700;
+      color: #d6d3d1;
+      align-self: flex-start;
+      margin-top: 0.75rem;
+    }
+
+    @media (min-width: 768px) {
+      .countdown-separator {
+        font-size: 4rem;
+        margin-top: 1rem;
+      }
+    }
+
+    @keyframes pulse-glow {
+      0%, 100% { box-shadow: 0 0 0 0 rgba(16, 185, 129, 0); }
+      50% { box-shadow: 0 0 20px 4px rgba(16, 185, 129, 0.15); }
+    }
+
+    .countdown-box {
+      animation: pulse-glow 3s ease-in-out infinite;
+    }
+  </style>
+</BaseLayout>
