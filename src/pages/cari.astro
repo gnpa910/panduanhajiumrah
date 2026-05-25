@@ -1,0 +1,199 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Cari Panduan & Artikel"
+  description="Cari panduan haji, umrah, dan artikel dalam Bahasa Melayu. Sumber rasmi JAKIM, Mufti Wilayah, Tabung Haji."
+>
+  <section class="max-w-3xl mx-auto px-4 pt-10 pb-20">
+    <div class="mb-8">
+      <p class="badge badge-teal mb-4">Cari</p>
+      <h1
+        class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] leading-tight"
+        style="font-family: var(--font-serif);"
+      >
+        Cari Panduan & Artikel
+      </h1>
+      <p class="text-[var(--color-stone-warm)] mt-2">
+        Cari tajuk atau topik — tatacara haji, umrah, doa, hukum khas, dan banyak lagi.
+      </p>
+    </div>
+
+    <!-- Search input -->
+    <div class="relative mb-8">
+      <svg
+        class="absolute left-4 top-1/2 -translate-y-1/2 text-[var(--color-stone-warm)] pointer-events-none"
+        width="20" height="20" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+      >
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+      <input
+        id="search-input"
+        type="search"
+        placeholder="Contoh: tatacara tawaf, wukuf, vaksin haji..."
+        class="w-full pl-12 pr-4 py-4 text-base border border-[var(--color-rule)] rounded-lg bg-white focus:outline-none focus:ring-2 focus:ring-[var(--color-teal)] focus:border-transparent placeholder:text-[var(--color-stone-warm)]"
+        autocomplete="off"
+        autofocus
+      />
+    </div>
+
+    <!-- Results count -->
+    <p id="result-count" class="text-sm text-[var(--color-stone-warm)] mb-4 hidden"></p>
+
+    <!-- Results list -->
+    <ul id="results" class="space-y-3"></ul>
+
+    <!-- Empty state (before search) -->
+    <div id="empty-state" class="text-center py-16">
+      <svg class="mx-auto mb-4 text-[var(--color-rule)]" width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"></circle>
+        <path d="m21 21-4.3-4.3"></path>
+      </svg>
+      <p class="text-[var(--color-stone-warm)] text-lg" style="font-family: var(--font-serif);">
+        Taip untuk mula mencari
+      </p>
+      <p class="text-[var(--color-stone-warm)] text-sm mt-1">
+        Cuba cari: "tawaf", "ihram", "doa", "haji wanita"
+      </p>
+    </div>
+
+    <!-- No results -->
+    <div id="no-results" class="text-center py-16 hidden">
+      <p class="text-[var(--color-stone-warm)] text-lg" style="font-family: var(--font-serif);">
+        Tiada hasil ditemui
+      </p>
+      <p class="text-[var(--color-stone-warm)] text-sm mt-1">
+        Cuba kata kunci lain atau lebih umum.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script>
+  interface SearchItem {
+    type: "guide" | "article";
+    title: string;
+    description: string;
+    section?: string;
+    category?: string;
+    tags?: string[];
+    url: string;
+  }
+
+  const sectionLabels: Record<string, string> = {
+    persiapan: "Persiapan",
+    "ihram-miqat": "Ihram & Miqat",
+    umrah: "Umrah",
+    haji: "Haji",
+    tempat: "Tempat Penting",
+    "doa-zikir": "Doa & Zikir",
+    "hukum-khas": "Hukum Khas",
+    selepas: "Selepas Pulang",
+  };
+  const categoryLabels: Record<string, string> = {
+    persoalan: "Persoalan",
+    muzakarah: "Muzakarah",
+    berita: "Berita",
+    pengalaman: "Pengalaman",
+  };
+
+  let index: SearchItem[] = [];
+  let loaded = false;
+
+  const input = document.getElementById("search-input") as HTMLInputElement;
+  const resultsEl = document.getElementById("results")!;
+  const countEl = document.getElementById("result-count")!;
+  const emptyState = document.getElementById("empty-state")!;
+  const noResults = document.getElementById("no-results")!;
+
+  async function loadIndex() {
+    if (loaded) return;
+    const res = await fetch("/search-index.json");
+    index = await res.json();
+    loaded = true;
+  }
+
+  function search(query: string): SearchItem[] {
+    const q = query.toLowerCase().trim();
+    if (!q) return [];
+
+    const terms = q.split(/\s+/);
+
+    return index
+      .map((item) => {
+        const haystack = [item.title, item.description, item.section ?? "", item.category ?? "", ...(item.tags ?? [])]
+          .join(" ")
+          .toLowerCase();
+
+        let score = 0;
+        for (const term of terms) {
+          if (!haystack.includes(term)) return { item, score: 0 };
+          // Title match = higher score
+          if (item.title.toLowerCase().includes(term)) score += 3;
+          if (item.description.toLowerCase().includes(term)) score += 1;
+        }
+        return { item, score };
+      })
+      .filter((r) => r.score > 0)
+      .sort((a, b) => b.score - a.score)
+      .map((r) => r.item);
+  }
+
+  function render(results: SearchItem[]) {
+    if (results.length === 0) {
+      resultsEl.innerHTML = "";
+      countEl.classList.add("hidden");
+      noResults.classList.remove("hidden");
+      emptyState.classList.add("hidden");
+      return;
+    }
+
+    noResults.classList.add("hidden");
+    emptyState.classList.add("hidden");
+    countEl.textContent = `${results.length} hasil ditemui`;
+    countEl.classList.remove("hidden");
+
+    resultsEl.innerHTML = results
+      .map((r) => {
+        const badge =
+          r.type === "guide"
+            ? `<span class="badge badge-teal">Panduan · ${sectionLabels[r.section!] ?? r.section}</span>`
+            : `<span class="badge">Artikel · ${categoryLabels[r.category!] ?? r.category}</span>`;
+
+        return `
+        <li>
+          <a href="${r.url}" class="block p-4 border border-[var(--color-rule)] rounded-lg hover:border-[var(--color-saffron)] hover:bg-stone-50 transition-colors">
+            ${badge}
+            <p class="font-semibold text-[var(--color-ink)] mt-2 mb-1" style="font-family: var(--font-serif);">${r.title}</p>
+            <p class="text-sm text-[var(--color-stone-warm)] line-clamp-2">${r.description}</p>
+          </a>
+        </li>`;
+      })
+      .join("");
+  }
+
+  input.addEventListener("input", async () => {
+    await loadIndex();
+    const q = input.value.trim();
+    if (!q) {
+      resultsEl.innerHTML = "";
+      countEl.classList.add("hidden");
+      noResults.classList.add("hidden");
+      emptyState.classList.remove("hidden");
+      return;
+    }
+    render(search(q));
+  });
+
+  // If navigated with ?q= param
+  const params = new URLSearchParams(window.location.search);
+  const q = params.get("q");
+  if (q) {
+    input.value = q;
+    input.dispatchEvent(new Event("input"));
+  }
+</script>

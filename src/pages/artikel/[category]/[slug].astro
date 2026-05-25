@@ -1,6 +1,8 @@
 ---
 import { getCollection, getEntry, render } from "astro:content";
 import BaseLayout from "../../../layouts/BaseLayout.astro";
+import ShareButtons from "../../../components/ShareButtons.astro";
+import TableOfContents from "../../../components/TableOfContents.astro";
 
 export async function getStaticPaths() {
   const articles = await getCollection("article", ({ data }) => !data.draft);
@@ -128,6 +130,8 @@ if (faqSchema) pageSchemas.push(faqSchema);
     </ol>
   </nav>
 
+  <div class="toc-container">
+  <TableOfContents />
   <article class="prose-haji">
     <p class="text-sm text-stone-500 uppercase tracking-wide mb-2">
       Artikel / {categoryLabels[entry.data.category] ?? entry.data.category}
@@ -173,6 +177,8 @@ if (faqSchema) pageSchemas.push(faqSchema);
         ))}
       </div>
     )}
+
+    <ShareButtons title={entry.data.title} url={pageUrl} />
 
     <Content />
 
@@ -224,6 +230,7 @@ if (faqSchema) pageSchemas.push(faqSchema);
       </ol>
     </div>
   </article>
+  </div>
 
   {/* Related: guide chapters from frontmatter */}
   {validRelatedGuides.length > 0 && (

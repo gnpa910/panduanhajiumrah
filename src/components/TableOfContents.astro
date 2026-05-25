@@ -1,0 +1,142 @@
+---
+/**
+ * Auto-generated Table of Contents.
+ * Client-side JS reads h2/h3 from .prose-haji and builds a linked list.
+ * Desktop: sticky sidebar. Mobile: collapsible above article.
+ */
+---
+
+<!-- Mobile TOC — collapsible -->
+<nav id="toc-mobile" class="toc-mobile mb-6 xl:hidden" aria-label="Isi kandungan">
+  <details class="border border-[var(--color-rule)] rounded-lg bg-white">
+    <summary class="cursor-pointer list-none px-4 py-3 flex items-center justify-between gap-2 hover:bg-stone-50 rounded-lg">
+      <span class="text-sm font-semibold text-[var(--color-ink)]">📑 Isi Kandungan</span>
+      <svg
+        class="flex-shrink-0 text-[var(--color-stone-warm)] transition-transform details-chevron"
+        width="18" height="18" viewBox="0 0 24 24"
+        fill="none" stroke="currentColor" stroke-width="2"
+        stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+      >
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </summary>
+    <div class="border-t border-[var(--color-rule)] px-4 py-3">
+      <ol id="toc-list-mobile" class="toc-list space-y-1.5 text-sm"></ol>
+    </div>
+  </details>
+</nav>
+
+<!-- Desktop TOC — sticky sidebar -->
+<aside id="toc-desktop" class="toc-desktop hidden xl:block" aria-label="Isi kandungan">
+  <div class="sticky top-8">
+    <p class="text-xs font-semibold uppercase tracking-[0.12em] text-[var(--color-stone-warm)] mb-3">
+      Isi Kandungan
+    </p>
+    <ol id="toc-list-desktop" class="toc-list space-y-1 text-sm"></ol>
+  </div>
+</aside>
+
+<style>
+  .toc-desktop {
+    font-size: 0.85rem;
+  }
+  .toc-desktop .toc-list {
+    max-height: calc(100vh - 10rem);
+    overflow-y: auto;
+    scrollbar-width: thin;
+  }
+  .toc-list a {
+    display: block;
+    padding: 0.2rem 0.5rem;
+    color: var(--color-stone-warm);
+    text-decoration: none;
+    border-left: 2px solid transparent;
+    line-height: 1.4;
+    transition: all 0.15s ease;
+  }
+  .toc-list a:hover,
+  .toc-list a.active {
+    color: var(--color-teal-deep);
+    border-left-color: var(--color-teal);
+    background: var(--color-teal-soft);
+  }
+  .toc-list a.toc-h3 {
+    padding-left: 1.25rem;
+    font-size: 0.82rem;
+  }
+  details[open] .details-chevron {
+    transform: rotate(180deg);
+  }
+</style>
+
+<script>
+  function buildTOC() {
+    const prose = document.querySelector(".prose-haji");
+    if (!prose) return;
+
+    const allHeadings = prose.querySelectorAll("h2, h3");
+    // Filter out headings inside .source-list (e.g. "Rujukan")
+    const sourceList = prose.querySelector(".source-list");
+    const headings = Array.from(allHeadings).filter((h) => !sourceList?.contains(h));
+    if (headings.length < 2) {
+      // Not enough headings — hide TOC
+      document.getElementById("toc-mobile")?.classList.add("hidden");
+      return;
+    }
+
+    const lists = [
+      document.getElementById("toc-list-mobile"),
+      document.getElementById("toc-list-desktop"),
+    ];
+
+    headings.forEach((h, i) => {
+      // Ensure heading has an id for linking
+      if (!h.id) {
+        h.id = h.textContent?.trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9\s-]/g, "")
+          .replace(/\s+/g, "-")
+          .replace(/-+/g, "-") ?? `heading-${i}`;
+      }
+
+      lists.forEach((list) => {
+        if (!list) return;
+        const li = document.createElement("li");
+        const a = document.createElement("a");
+        a.href = `#${h.id}`;
+        a.textContent = h.textContent?.trim() ?? "";
+        if (h.tagName === "H3") a.classList.add("toc-h3");
+        a.addEventListener("click", (e) => {
+          e.preventDefault();
+          h.scrollIntoView({ behavior: "smooth", block: "start" });
+          history.replaceState(null, "", `#${h.id}`);
+        });
+        li.appendChild(a);
+        list.appendChild(li);
+      });
+    });
+
+    // Active state tracking
+    const allLinks = document.querySelectorAll(".toc-list a");
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          const link = document.querySelectorAll(`.toc-list a[href="#${entry.target.id}"]`);
+          if (entry.isIntersecting) {
+            allLinks.forEach((l) => l.classList.remove("active"));
+            link.forEach((l) => l.classList.add("active"));
+          }
+        });
+      },
+      { rootMargin: "-80px 0px -80% 0px", threshold: 0 }
+    );
+    headings.forEach((h) => observer.observe(h));
+  }
+
+  // Run after content renders
+  if (document.readyState === "loading") {
+    document.addEventListener("DOMContentLoaded", buildTOC);
+  } else {
+    buildTOC();
+  }
+</script>

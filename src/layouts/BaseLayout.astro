@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import BackToTop from "../components/BackToTop.astro";
 
 interface Props {
   title: string;
@@ -144,6 +145,19 @@ const schemas = jsonLd
               class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
             >Tentang</a>
           </li>
+          <li>
+            <a
+              href="/cari"
+              class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
+              aria-label="Cari"
+            >
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="inline -mt-0.5" aria-hidden="true">
+                <circle cx="11" cy="11" r="8"></circle>
+                <path d="m21 21-4.3-4.3"></path>
+              </svg>
+              Cari
+            </a>
+          </li>
         </ul>
       </nav>
       <hr class="rule-saffron" />
@@ -194,5 +208,6 @@ const schemas = jsonLd
         </div>
       </div>
     </footer>
+  <BackToTop />
   </body>
 </html>
