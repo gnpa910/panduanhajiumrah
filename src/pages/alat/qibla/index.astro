@@ -254,9 +254,9 @@ const seaCities = [
       <ul class="space-y-2 text-stone-700">
         <li>
           →
-          <a href="/panduan/ibadah-solat/solat-musafir-qasar-jamak/"
+          <a href="/artikel/persoalan/solat-jamak-qasar-jemaah-haji-umrah/"
              class="text-emerald-700 underline">
-            Solat Musafir: Qasar dan Jamak
+            Solat Jamak & Qasar Jemaah Haji & Umrah
           </a>
         </li>
         <li>
@@ -395,22 +395,24 @@ const seaCities = [
         compassCard.classList.remove("hidden");
 
         updateCompass(bearing);
-        compassNote.textContent =
-          "📍 Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "°";
+        // Show static Qibla bearing from GPS (always works)
+        compassNote.innerHTML =
+          "📍 Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "° · " +
+          "Arah jarum dari <strong>Utara</strong> menuju Kiblat";
 
-        // Try device orientation for live compass
+        // Try device orientation for live compass (bonus — not required)
         if (typeof DeviceOrientationEvent !== "undefined") {
           function onOrientation(e) {
             let heading = e.alpha;
             if (e.webkitCompassHeading !== undefined) {
               heading = e.webkitCompassHeading; // iOS
             }
-            if (heading !== null && heading !== undefined) {
+            if (heading !== null && heading !== undefined && !isNaN(heading)) {
               currentHeading = heading;
               compassActive = true;
               updateCompass(bearing);
-              compassNote.textContent =
-                "🧭 Kompas aktif · Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "°";
+              compassNote.innerHTML =
+                "🧭 <strong>Kompas aktif</strong> · Lokasi: " + lat.toFixed(4) + "°, " + lng.toFixed(4) + "°";
             }
           }
 
@@ -422,16 +424,14 @@ const seaCities = [
               .then(function (state) {
                 if (state === "granted") {
                   window.addEventListener("deviceorientation", onOrientation, true);
-                } else {
-                  compassNote.textContent =
-                    "📍 Kompas tidak diluluskan — arah statik dari Utara";
                 }
+                // else: no compass — static bearing still shown, no error
               })
               .catch(function () {
-                compassNote.textContent =
-                  "📍 Kompas tidak tersedia — arah statik dari Utara";
+                // No compass — static bearing still works fine
               });
           } else {
+            // Android / desktop
             window.addEventListener("deviceorientationabsolute", onOrientation, true);
             window.addEventListener("deviceorientation", onOrientation, true);
           }
