@@ -1,0 +1,405 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const sections = [
+  {
+    id: "dokumen",
+    title: "Dokumen Penting",
+    icon: "📄",
+    items: [
+      "Pasport (sah 6+ bulan)",
+      "Visa haji/umrah",
+      "Kad pengenalan",
+      "Sijil vaksin meningitis",
+      "Sijil vaksin COVID-19",
+      "Tiket penerbangan",
+      "Dokumen TH / surat tawaran",
+      "Insuran perjalanan",
+      "Salinan dokumen (2 salinan)",
+      "Foto pasport (6 keping)",
+    ],
+  },
+  {
+    id: "pakaian",
+    title: "Pakaian Ihram & Harian",
+    icon: "👕",
+    items: [
+      "Kain ihram (2 helai)",
+      "Selipar ihram (tidak bertutup)",
+      "Baju harian (5-7 set)",
+      "Seluar dalam (7+)",
+      "Stokin (5 pasang)",
+      "Tudung / telekung (wanita)",
+      "Jaket / sweater (Madinah sejuk)",
+      "Beg pakaian dalam",
+    ],
+  },
+  {
+    id: "kesihatan",
+    title: "Kesihatan & Ubatan",
+    icon: "💊",
+    items: [
+      "Ubat preskripsi peribadi",
+      "Panadol / paracetamol",
+      "Ubat cirit-birit",
+      "Ubat batuk / selsema",
+      "Minyak angin / balm",
+      "Plaster luka",
+      "Sunscreen SPF50+",
+      "Oral rehydration salts (ORS)",
+      "Mask muka",
+      "Hand sanitizer",
+    ],
+  },
+  {
+    id: "ibadah",
+    title: "Keperluan Ibadah",
+    icon: "🕌",
+    items: [
+      "Telekung solat (wanita)",
+      "Sejadah kecil / portable",
+      "Tasbih / counter",
+      "Mushaf kecil / Quran digital",
+      "Buku doa haji",
+      "Beg sandang kecil (untuk ke masjid)",
+      "Botol air zamzam (kosong)",
+    ],
+  },
+  {
+    id: "elektronik",
+    title: "Elektronik & Lain-lain",
+    icon: "🔌",
+    items: [
+      "Telefon + charger",
+      "Power bank (10,000mAh+)",
+      "Adapter plug (Arab Saudi = Type G)",
+      "Earphone",
+      "Kipas mini / mist fan",
+      "Beg pinggang / money belt",
+      "Mangga kecil (untuk locker)",
+      "Tali beg (pengenalan)",
+      "Pen + buku kecil",
+    ],
+  },
+  {
+    id: "makanan",
+    title: "Makanan & Minuman",
+    icon: "🍎",
+    items: [
+      "Makanan segera (mi, biskut)",
+      "Minuman elektrolit",
+      "Gula-gula / kurma",
+      "Sudu / garpu kecil",
+    ],
+  },
+];
+
+const totalItems = sections.reduce((sum, s) => sum + s.items.length, 0);
+---
+
+<BaseLayout
+  title="Senarai Beg Haji — Packing List Interaktif"
+  description="Senarai beg haji & umrah lengkap mengikut kategori. Tandakan item yang sudah dimasukkan ke beg — progress disimpan automatik dalam browser."
+>
+  <style>
+    @media print {
+      body * { visibility: hidden; }
+      #packing-print, #packing-print * { visibility: visible; }
+      #packing-print { position: absolute; left: 0; top: 0; width: 100%; }
+      #packing-print details { page-break-inside: avoid; }
+      #packing-print details[open] summary ~ * { display: block !important; }
+      .no-print { display: none !important; }
+      .print-header { display: block !important; text-align: center; margin-bottom: 1rem; }
+      .print-header h1 { font-size: 1.5rem; font-weight: bold; }
+      .print-header p { font-size: 0.85rem; color: #555; }
+      .checklist-item-print { padding: 2px 0; font-size: 0.85rem; }
+      .checklist-item-print .print-box { display: inline-block; width: 12px; height: 12px; border: 1.5px solid #333; margin-right: 8px; vertical-align: middle; }
+      .checklist-item-print .print-checked .print-box { position: relative; }
+      .checklist-item-print .print-checked .print-box::after { content: "✓"; position: absolute; top: -4px; left: -1px; font-size: 12px; }
+      .cat-progress-bar { display: none !important; }
+    }
+  </style>
+
+  <section class="max-w-3xl mx-auto px-4 py-12 md:py-16" id="packing-print">
+    {/* Print-only header */}
+    <div class="print-header hidden">
+      <h1>Senarai Beg Haji & Umrah</h1>
+      <p>panduanhajiumrah.com — {totalItems} item</p>
+    </div>
+
+    <div class="text-center mb-10 no-print">
+      <p class="badge badge-teal mb-4">Alat Interaktif</p>
+      <h1
+        class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Senarai Beg Haji
+      </h1>
+      <p class="text-[var(--color-stone-warm)] max-w-lg mx-auto leading-relaxed">
+        Senarai beg lengkap mengikut kategori untuk jemaah haji & umrah. Tandakan
+        item yang sudah dimasukkan — progress disimpan automatik.
+      </p>
+    </div>
+
+    {/* Total progress bar */}
+    <div class="mb-8 p-4 bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg no-print">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-semibold text-[var(--color-ink)]">Kemajuan Keseluruhan</span>
+        <span id="progress-text" class="text-sm text-[var(--color-stone-warm)]">0 / {totalItems}</span>
+      </div>
+      <div class="w-full h-2.5 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: var(--color-teal);"></div>
+      </div>
+      <div class="flex justify-between mt-2">
+        <button
+          id="btn-reset"
+          class="text-xs text-[var(--color-stone-warm)] hover:text-red-600 transition-colors underline"
+          type="button"
+        >
+          Reset semua
+        </button>
+        <div class="flex gap-3">
+          <button
+            id="btn-print"
+            class="text-xs text-[var(--color-stone-warm)] hover:text-[var(--color-teal)] transition-colors underline"
+            type="button"
+          >
+            🖨️ Cetak
+          </button>
+          <button
+            id="btn-expand-all"
+            class="text-xs text-[var(--color-stone-warm)] hover:text-[var(--color-teal)] transition-colors underline"
+            type="button"
+          >
+            Buka / tutup semua
+          </button>
+        </div>
+      </div>
+    </div>
+
+    {/* Checklist sections */}
+    <div id="checklist" class="space-y-4">
+      {sections.map((section) => (
+        <details class="checklist-section" open>
+          <summary class="flex items-center gap-3 cursor-pointer p-4 bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg hover:border-[var(--color-teal)] transition-colors select-none">
+            <span class="text-xl" aria-hidden="true">{section.icon}</span>
+            <span class="font-semibold text-[var(--color-ink)] flex-1" style="font-family: var(--font-serif);">
+              {section.title}
+            </span>
+            <span class="checklist-count text-xs text-[var(--color-stone-warm)] font-mono" data-section={section.id}>
+              0/{section.items.length}
+            </span>
+          </summary>
+
+          {/* Per-category progress bar */}
+          <div class="cat-progress-bar mx-2 mt-3 mb-1 no-print">
+            <div class="w-full h-1.5 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+              <div class="cat-bar h-full rounded-full transition-all duration-500" data-cat={section.id} style="width: 0%; background: var(--color-teal);"></div>
+            </div>
+          </div>
+
+          {/* Select/clear buttons */}
+          <div class="flex gap-2 mx-2 mt-2 mb-1 no-print">
+            <button
+              type="button"
+              class="btn-select-all text-xs px-2.5 py-1 rounded border border-[var(--color-rule)] text-[var(--color-stone-warm)] hover:border-[var(--color-teal)] hover:text-[var(--color-teal)] transition-colors"
+              data-section={section.id}
+            >
+              Pilih Semua
+            </button>
+            <button
+              type="button"
+              class="btn-clear-section text-xs px-2.5 py-1 rounded border border-[var(--color-rule)] text-[var(--color-stone-warm)] hover:border-red-400 hover:text-red-600 transition-colors"
+              data-section={section.id}
+            >
+              Kosongkan
+            </button>
+          </div>
+
+          <ul class="mt-2 ml-2 space-y-1">
+            {section.items.map((item, i) => (
+              <li class="checklist-item flex items-start gap-3 py-2 px-3 rounded hover:bg-[var(--color-surface-soft)] transition-colors">
+                <input
+                  type="checkbox"
+                  class="mt-1 w-4 h-4 rounded border-[var(--color-rule)] text-[var(--color-teal)] focus:ring-[var(--color-saffron)] cursor-pointer accent-[var(--color-teal)]"
+                  data-key={`${section.id}-${i}`}
+                  data-cat={section.id}
+                  aria-label={item}
+                />
+                <span class="text-sm text-[var(--color-ink-soft)] leading-relaxed checklist-label">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+
+    {/* Tip box */}
+    <div class="mt-10 p-5 bg-[var(--color-saffron-soft)] border border-[var(--color-saffron)] border-opacity-30 rounded-lg no-print">
+      <p class="text-sm text-[var(--color-ink)] leading-relaxed">
+        <strong>💡 Tip:</strong> Progress disimpan dalam browser anda (localStorage). Tekan
+        butang <strong>Cetak</strong> untuk cetak senarai bersih tanpa UI. Untuk backup,
+        screenshot progress anda sebelum tukar peranti.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    var KEY = 'haji-packing-list';
+    var checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    var progressBar = document.getElementById('progress-bar');
+    var progressText = document.getElementById('progress-text');
+    var btnReset = document.getElementById('btn-reset');
+    var btnExpand = document.getElementById('btn-expand-all');
+    var btnPrint = document.getElementById('btn-print');
+
+    // Load saved state
+    var state = {};
+    try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
+
+    // Apply saved state to checkboxes
+    checkboxes.forEach(function(cb) {
+      var key = cb.getAttribute('data-key');
+      if (state[key]) cb.checked = true;
+    });
+
+    function updateProgress() {
+      var total = checkboxes.length;
+      var checked = 0;
+      checkboxes.forEach(function(cb) { if (cb.checked) checked++; });
+      var pct = total ? Math.round((checked / total) * 100) : 0;
+      progressBar.style.width = pct + '%';
+      progressBar.style.background = pct === 100 ? 'var(--color-saffron)' : 'var(--color-teal)';
+      progressText.textContent = checked + ' / ' + total + ' (' + pct + '%)';
+
+      // Update section counts + per-category bars
+      document.querySelectorAll('.checklist-count').forEach(function(el) {
+        var sec = el.getAttribute('data-section');
+        var secCbs = document.querySelectorAll('input[data-key^="' + sec + '-"]');
+        var secChecked = 0;
+        secCbs.forEach(function(c) { if (c.checked) secChecked++; });
+        el.textContent = secChecked + '/' + secCbs.length;
+
+        // Per-category progress bar
+        var catBar = document.querySelector('.cat-bar[data-cat="' + sec + '"]');
+        if (catBar) {
+          var catPct = secCbs.length ? Math.round((secChecked / secCbs.length) * 100) : 0;
+          catBar.style.width = catPct + '%';
+          catBar.style.background = catPct === 100 ? 'var(--color-saffron)' : 'var(--color-teal)';
+        }
+      });
+    }
+
+    function applyLabelStyle(cb) {
+      var label = cb.closest('.checklist-item').querySelector('.checklist-label');
+      label.style.textDecoration = cb.checked ? 'line-through' : 'none';
+      label.style.opacity = cb.checked ? '0.5' : '1';
+    }
+
+    function saveState() {
+      localStorage.setItem(KEY, JSON.stringify(state));
+    }
+
+    // Save on change
+    checkboxes.forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var key = cb.getAttribute('data-key');
+        if (cb.checked) { state[key] = true; } else { delete state[key]; }
+        saveState();
+        applyLabelStyle(cb);
+        updateProgress();
+      });
+      // Apply initial strikethrough
+      applyLabelStyle(cb);
+    });
+
+    // Pilih Semua per category
+    document.querySelectorAll('.btn-select-all').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var sec = btn.getAttribute('data-section');
+        document.querySelectorAll('input[data-key^="' + sec + '-"]').forEach(function(cb) {
+          cb.checked = true;
+          state[cb.getAttribute('data-key')] = true;
+          applyLabelStyle(cb);
+        });
+        saveState();
+        updateProgress();
+      });
+    });
+
+    // Kosongkan per category
+    document.querySelectorAll('.btn-clear-section').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        var sec = btn.getAttribute('data-section');
+        document.querySelectorAll('input[data-key^="' + sec + '-"]').forEach(function(cb) {
+          cb.checked = false;
+          delete state[cb.getAttribute('data-key')];
+          applyLabelStyle(cb);
+        });
+        saveState();
+        updateProgress();
+      });
+    });
+
+    // Reset all
+    btnReset.addEventListener('click', function() {
+      if (!confirm('Reset semua senarai beg? Progress akan hilang.')) return;
+      checkboxes.forEach(function(cb) { cb.checked = false; });
+      state = {};
+      localStorage.removeItem(KEY);
+      checkboxes.forEach(function(cb) { applyLabelStyle(cb); });
+      updateProgress();
+    });
+
+    // Expand/collapse all
+    var allExpanded = true;
+    btnExpand.addEventListener('click', function() {
+      allExpanded = !allExpanded;
+      document.querySelectorAll('.checklist-section').forEach(function(d) {
+        d.open = allExpanded;
+      });
+    });
+
+    // Print
+    btnPrint.addEventListener('click', function() {
+      window.print();
+    });
+
+    updateProgress();
+  })();
+</script>
+
+{/* JSON-LD: WebApplication + BreadcrumbList */}
+<script is:inline type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Senarai Beg Haji — Packing List Interaktif",
+      "url": "https://panduanhajiumrah.com/alat/senarai-beg/",
+      "description": "Senarai beg haji & umrah lengkap mengikut kategori. Tandakan item yang sudah dimasukkan ke beg — progress disimpan automatik.",
+      "applicationCategory": "UtilitiesApplication",
+      "operatingSystem": "Web",
+      "inLanguage": ["ms", "en"],
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "MYR"
+      }
+    },
+    {
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Utama", "item": "https://panduanhajiumrah.com/" },
+        { "@type": "ListItem", "position": 2, "name": "Alat", "item": "https://panduanhajiumrah.com/alat/" },
+        { "@type": "ListItem", "position": 3, "name": "Senarai Beg Haji", "item": "https://panduanhajiumrah.com/alat/senarai-beg/" }
+      ]
+    }
+  ]
+}
+</script>

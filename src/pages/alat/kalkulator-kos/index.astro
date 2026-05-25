@@ -1,0 +1,470 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Kalkulator Kos Haji", item: pageUrl },
+  ],
+};
+
+const webAppSchema = {
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  name: "Kalkulator Kos Haji 2026",
+  description:
+    "Anggarkan keseluruhan kos haji 2026 anda — perbandingan TH Muassasah vs TH Private vs Swasta, termasuk dam tamattu, shopping, bagasi tambahan, dan lawatan ziarah. Disokong maklumat pembiayaan THiJARI & subsidi B40.",
+  applicationCategory: "ReligionApplication",
+  operatingSystem: "Web",
+  inLanguage: "ms-MY",
+  isAccessibleForFree: true,
+  url: pageUrl,
+  offers: { "@type": "Offer", price: "0", priceCurrency: "MYR" },
+};
+---
+
+<BaseLayout
+  title="Kalkulator Kos Haji 2026"
+  description="Anggarkan kos haji 2026 anda: TH Muassasah (~RM11,450), TH Private (RM25k-45k), atau pakej swasta. Bandingkan harga, tambah kos sampingan, dan lihat pilihan pembiayaan THiJARI."
+  jsonLd={[breadcrumbSchema, webAppSchema]}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    {/* breadcrumb */}
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Kalkulator Kos Haji</span>
+    </nav>
+
+    <header class="mb-8">
+      <p class="badge badge-teal mb-4">Alat Interaktif · Anggaran 2026</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Kalkulator Kos Haji 2026
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl">
+        Anggarkan keseluruhan kos haji anda — pilih jenis pakej, bilangan tanggungan, dan kos sampingan. Bandingkan TH Muassasah, TH Private, dan pakej swasta secara langsung.
+      </p>
+    </header>
+
+    {/* ─────── INPUT SECTION ─────── */}
+    <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm">
+      {/* Package Type */}
+      <label for="package-type" class="block text-sm font-semibold text-emerald-900 mb-2">
+        Jenis pakej haji
+      </label>
+      <select
+        id="package-type"
+        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 mb-5"
+      >
+        <option value="">— Pilih pakej —</option>
+        <option value="muassasah">TH Muassasah (≈ RM11,450)</option>
+        <option value="th-private">TH Private (RM25,000 – RM45,000)</option>
+        <option value="swasta">Pakej Swasta / Lain-lain</option>
+      </select>
+
+      {/* Custom price for swasta */}
+      <div id="custom-price-wrap" class="hidden mb-5">
+        <label for="custom-price" class="block text-sm font-semibold text-emerald-900 mb-2">
+          Harga pakej swasta (RM)
+        </label>
+        <input
+          type="number"
+          id="custom-price"
+          min="0"
+          step="100"
+          placeholder="cth: 30000"
+          class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30"
+        />
+      </div>
+
+      {/* TH Private range slider */}
+      <div id="th-private-wrap" class="hidden mb-5">
+        <label for="th-private-range" class="block text-sm font-semibold text-emerald-900 mb-2">
+          Anggaran harga TH Private (RM): <span id="th-private-val" class="text-emerald-700">35,000</span>
+        </label>
+        <input
+          type="range"
+          id="th-private-range"
+          min="25000"
+          max="45000"
+          step="500"
+          value="35000"
+          class="w-full accent-emerald-700"
+        />
+        <div class="flex justify-between text-xs text-stone-500 mt-1">
+          <span>RM25,000</span>
+          <span>RM45,000</span>
+        </div>
+      </div>
+
+      {/* Dependents */}
+      <label for="dependents" class="block text-sm font-semibold text-emerald-900 mb-2">
+        Bilangan tanggungan (anak / ibu bapa)
+      </label>
+      <input
+        type="number"
+        id="dependents"
+        min="0"
+        max="10"
+        value="0"
+        class="w-full px-4 py-3 border border-stone-300 rounded-md text-base bg-white focus:border-emerald-700 focus:outline-none focus:ring-2 focus:ring-emerald-700/30 mb-5"
+      />
+
+      {/* Additional Costs Checkboxes */}
+      <fieldset class="mb-4">
+        <legend class="block text-sm font-semibold text-emerald-900 mb-3">
+          Kos sampingan (pilih yang berkenaan)
+        </legend>
+        <div class="space-y-3">
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="cost-dam" class="mt-1 accent-emerald-700 w-5 h-5" />
+            <span class="text-stone-700">
+              <span class="font-medium">Dam Tamattu'</span> — RM810/seekor kibas (kadar ADAHI 2026)
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="cost-shopping" class="mt-1 accent-emerald-700 w-5 h-5" />
+            <span class="text-stone-700">
+              <span class="font-medium">Beli-belah / cenderamata</span> — anggaran:
+              <select id="shopping-range" class="ml-1 px-2 py-1 border border-stone-300 rounded text-sm" disabled>
+                <option value="2000">RM2,000</option>
+                <option value="3000" selected>RM3,000</option>
+                <option value="5000">RM5,000</option>
+              </select>
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="cost-baggage" class="mt-1 accent-emerald-700 w-5 h-5" />
+            <span class="text-stone-700">
+              <span class="font-medium">Bagasi tambahan</span> — anggaran RM400 (30kg+)
+            </span>
+          </label>
+          <label class="flex items-start gap-3 cursor-pointer">
+            <input type="checkbox" id="cost-ziarah" class="mt-1 accent-emerald-700 w-5 h-5" />
+            <span class="text-stone-700">
+              <span class="font-medium">Lawatan ziarah tambahan</span> — anggaran RM300
+            </span>
+          </label>
+        </div>
+      </fieldset>
+    </div>
+
+    {/* ─────── RESULT: COMPARISON TABLE ─────── */}
+    <div id="cost-result" class="hidden">
+      {/* Summary Cards */}
+      <div class="grid md:grid-cols-2 gap-4 mb-6">
+        {/* Muassasah Card */}
+        <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-5">
+          <span class="badge badge-teal text-xs mb-2">Muassasah</span>
+          <h3 class="text-xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">
+            TH Muassasah
+          </h3>
+          <p id="muassasah-total" class="text-2xl font-bold text-emerald-700 mb-2">RM 0</p>
+          <p class="text-sm text-stone-600">Pakej paling mampu milik oleh Tabung Haji</p>
+        </div>
+        {/* Private Card */}
+        <div class="bg-emerald-50 border-l-4 border-emerald-700 rounded-r-lg p-5">
+          <span class="badge badge-teal text-xs mb-2">Private</span>
+          <h3 class="text-xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">
+            <span id="private-label">TH Private</span>
+          </h3>
+          <p id="private-total" class="text-2xl font-bold text-emerald-700 mb-2">RM 0</p>
+          <p class="text-sm text-stone-600">Lebih fleksibel — hotel & penerbangan lebih selesa</p>
+        </div>
+      </div>
+
+      {/* Breakdown Table */}
+      <div class="bg-white border border-stone-200 rounded-lg p-6 md:p-8 mb-6 shadow-sm" id="print-area">
+        <h2 class="text-xl font-semibold text-emerald-900 mb-4" style="font-family: var(--font-serif);">
+          Perincian Kos
+        </h2>
+        <div id="breakdown-list" class="space-y-3"></div>
+        <hr class="my-4 border-stone-200" />
+        <div class="flex justify-between items-baseline">
+          <span class="text-lg font-semibold text-emerald-900">Jumlah Anggaran</span>
+          <span id="grand-total" class="text-2xl font-bold text-emerald-700"></span>
+        </div>
+        <div class="flex justify-between items-baseline mt-1">
+          <span class="text-sm text-stone-600">Jumlah per tanggungan</span>
+          <span id="per-dependent" class="text-sm font-medium text-stone-700"></span>
+        </div>
+      </div>
+
+      {/* Financing Notes */}
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 mb-6 text-sm text-stone-700">
+        <p class="font-medium text-stone-900 mb-2">💡 Pilihan Pembiayaan Haji</p>
+        <ul class="space-y-2 list-disc list-inside">
+          <li>
+            <span class="font-medium">THiJARI Pembiayaan Haji</span> — pinjaman tanpa faedah khas pendeposit TH. Permohonan melalui aplikasi THiJARI.
+          </li>
+          <li>
+            <span class="font-medium">Subsidi B40</span> — kerajaan kadang-kadang menawarkan subsidi haji kepada golongan B40. Semak pengumuman terkini di
+            <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-emerald-700 underline">tabunghaji.gov.my</a>.
+          </li>
+          <li>
+            <span class="font-medium">Haji dengan wang anak-anak</span> — dibenarkan menurut Mufti WP (Bayan Siri 10). Lihat
+            <a href="https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/716-bayan-li-al-haj-siri-10-hukum-melaksanakan-haji-menggunakan-bantuan-perbelanjaan-daripada-anak-anak" rel="noopener" class="text-emerald-700 underline">Bayan Li al-Haj Siri 10</a>.
+          </li>
+          <li>
+            <span class="font-medium">Wang KWSP / simpanan</span> — pengeluaran khas haji dari Akaun 2 KWSP boleh dipohon.
+          </li>
+        </ul>
+      </div>
+
+      {/* Disclaimer */}
+      <div class="bg-saffron-50 border border-saffron-200 rounded-lg p-5 text-sm text-stone-700 mb-6">
+        <p class="font-medium text-stone-900 mb-1">⚠️ Penafian</p>
+        <p>
+          Kalkulator ini memberi anggaran sahaja berdasarkan kadar 2026. Harga sebenar bergantung pada pakej yang dipilih dan pengumuman rasmi Tabung Haji. Sila sahkan dengan
+          <a href="https://www.tabunghaji.gov.my" rel="noopener" class="text-emerald-700 underline">Tabung Haji</a> atau ejen pelancongan berlesen.
+        </p>
+      </div>
+
+      {/* Print Button */}
+      <div class="flex gap-3 mb-6">
+        <button
+          id="btn-print"
+          class="inline-flex items-center gap-2 px-5 py-2.5 bg-emerald-700 text-white rounded-md text-sm font-medium hover:bg-emerald-800 transition"
+        >
+          🖨️ Cetak / Simpan PDF
+        </button>
+        <button
+          id="btn-reset"
+          class="inline-flex items-center gap-2 px-5 py-2.5 border border-stone-300 text-stone-700 rounded-md text-sm font-medium hover:bg-stone-50 transition"
+        >
+          🔄 Kira Semula
+        </button>
+      </div>
+    </div>
+
+    {/* ─────── FOOTER LINKS ─────── */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">
+        Bacaan lanjut
+      </h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>
+          →
+          <a href="https://www.tabunghaji.gov.my" rel="noopener"
+             class="text-emerald-700 underline">
+            Tabung Haji — Kos & Pakej Haji Rasmi
+          </a>
+        </li>
+        <li>
+          →
+          <a href="https://muftiwp.gov.my/ms/artikel/bayan-li-al-haj/716-bayan-li-al-haj-siri-10-hukum-melaksanakan-haji-menggunakan-bantuan-perbelanjaan-daripada-anak-anak" rel="noopener"
+             class="text-emerald-700 underline">
+            Mufti WP — Haji dengan Bantuan Wang Anak (Bayan Siri 10)
+          </a>
+        </li>
+        <li>
+          →
+          <a href="/alat/kalkulator-dam/"
+             class="text-emerald-700 underline">
+            Kalkulator Dam Haji & Umrah
+          </a>
+        </li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    const pkgSelect = document.getElementById("package-type");
+    const customWrap = document.getElementById("custom-price-wrap");
+    const customInput = document.getElementById("custom-price");
+    const thPrivateWrap = document.getElementById("th-private-wrap");
+    const thPrivateRange = document.getElementById("th-private-range");
+    const thPrivateVal = document.getElementById("th-private-val");
+    const dependentsInput = document.getElementById("dependents");
+    const costDam = document.getElementById("cost-dam");
+    const costShopping = document.getElementById("cost-shopping");
+    const shoppingRange = document.getElementById("shopping-range");
+    const costBaggage = document.getElementById("cost-baggage");
+    const costZiarah = document.getElementById("cost-ziarah");
+    const resultDiv = document.getElementById("cost-result");
+    const muassasahTotal = document.getElementById("muassasah-total");
+    const privateTotal = document.getElementById("private-total");
+    const privateLabel = document.getElementById("private-label");
+    const breakdownList = document.getElementById("breakdown-list");
+    const grandTotal = document.getElementById("grand-total");
+    const perDep = document.getElementById("per-dependent");
+    const btnPrint = document.getElementById("btn-print");
+    const btnReset = document.getElementById("btn-reset");
+
+    // Constants 2026
+    const MUASSASAH_PRICE = 11450;
+    const DAM_PRICE = 810;
+    const BAGGAGE_PRICE = 400;
+    const ZIARAH_PRICE = 300;
+
+    // Toggle extra inputs
+    pkgSelect.addEventListener("change", function () {
+      customWrap.classList.toggle("hidden", this.value !== "swasta");
+      thPrivateWrap.classList.toggle("hidden", this.value !== "th-private");
+      calculate();
+    });
+
+    costShopping.addEventListener("change", function () {
+      shoppingRange.disabled = !this.checked;
+      calculate();
+    });
+
+    thPrivateRange.addEventListener("input", function () {
+      thPrivateVal.textContent = Number(this.value).toLocaleString("ms-MY");
+      calculate();
+    });
+
+    [dependentsInput, costDam, costShopping, shoppingRange, costBaggage, costZiarah, customInput].forEach(
+      (el) => el.addEventListener("input", calculate)
+    );
+    [costDam, costBaggage, costZiarah].forEach((el) =>
+      el.addEventListener("change", calculate)
+    );
+
+    function fmt(n) {
+      return "RM " + Number(Math.round(n)).toLocaleString("ms-MY");
+    }
+
+    function calculate() {
+      if (!pkgSelect.value) {
+        resultDiv.classList.add("hidden");
+        return;
+      }
+
+      const deps = parseInt(dependentsInput.value) || 0;
+      const muassasahPerPerson = MUASSASAH_PRICE;
+
+      let privatePerPerson = 0;
+      let privateLabelText = "TH Private";
+      if (pkgSelect.value === "muassasah") {
+        privatePerPerson = MUASSASAH_PRICE;
+        privateLabelText = "TH Muassasah";
+      } else if (pkgSelect.value === "th-private") {
+        privatePerPerson = parseInt(thPrivateRange.value) || 35000;
+        privateLabelText = "TH Private";
+      } else {
+        privatePerPerson = parseInt(customInput.value) || 0;
+        privateLabelText = "Pakej Swasta";
+      }
+
+      // Additional costs (per person, including dependents for dam)
+      let addDam = costDam.checked ? DAM_PRICE : 0;
+      let addShopping = costShopping.checked ? parseInt(shoppingRange.value) : 0;
+      let addBaggage = costBaggage.checked ? BAGGAGE_PRICE : 0;
+      let addZiarah = costZiarah.checked ? ZIARAH_PRICE : 0;
+
+      const addPerPerson = addShopping + addBaggage + addZiarah;
+      // Dam is per person needing it (usually 1, but list per pilgrim)
+      const totalPeople = 1 + deps;
+
+      const muassasahGrand = muassasahPerPerson * totalPeople + addDam + (addPerPerson * totalPeople);
+      const privateGrand = privatePerPerson * totalPeople + addDam + (addPerPerson * totalPeople);
+
+      // Update summary cards
+      muassasahTotal.textContent = fmt(muassasahGrand);
+      privateTotal.textContent = fmt(privateGrand);
+      privateLabel.textContent = privateLabelText;
+
+      // Build breakdown
+      let rows = [];
+      rows.push({ label: `Pakej haji (×${totalPeople} orang)`, muassasah: fmt(muassasahPerPerson * totalPeople), chosen: fmt(privatePerPerson * totalPeople) });
+
+      if (deps > 0) {
+        rows.push({ label: `  ↳ Termasuk ${deps} tanggungan`, muassasah: `(${fmt(muassasahPerPerson)}/org)`, chosen: `(${fmt(privatePerPerson)}/org)` });
+      }
+
+      if (costDam.checked) {
+        rows.push({ label: "Dam Tamattu' (kibas)", muassasah: fmt(addDam), chosen: fmt(addDam) });
+      }
+      if (costShopping.checked) {
+        rows.push({ label: `Beli-belah (×${totalPeople})`, muassasah: fmt(addShopping * totalPeople), chosen: fmt(addShopping * totalPeople) });
+      }
+      if (costBaggage.checked) {
+        rows.push({ label: `Bagasi tambahan (×${totalPeople})`, muassasah: fmt(addBaggage * totalPeople), chosen: fmt(addBaggage * totalPeople) });
+      }
+      if (costZiarah.checked) {
+        rows.push({ label: `Lawatan ziarah (×${totalPeople})`, muassasah: fmt(addZiarah * totalPeople), chosen: fmt(addZiarah * totalPeople) });
+      }
+
+      breakdownList.innerHTML = rows.map((r) =>
+        `<div class="flex justify-between items-baseline py-2 border-b border-stone-100 last:border-0">
+          <span class="text-stone-700 text-sm">${r.label}</span>
+          <div class="flex gap-4 text-sm">
+            <span class="text-stone-500 w-28 text-right">${r.muassasah}</span>
+            <span class="text-emerald-700 font-medium w-28 text-right">${r.chosen}</span>
+          </div>
+        </div>`
+      ).join("") +
+      `<div class="flex justify-between items-baseline py-2">
+        <span class="text-xs text-stone-500"></span>
+        <div class="flex gap-4 text-xs text-stone-500">
+          <span class="w-28 text-right">Muassasah</span>
+          <span class="w-28 text-right">${privateLabelText}</span>
+        </div>
+      </div>`;
+
+      // Selected package grand total
+      const selectedGrand = pkgSelect.value === "muassasah" ? muassasahGrand : privateGrand;
+      grandTotal.textContent = fmt(selectedGrand);
+
+      const perDepCost = deps > 0 ? fmt(selectedGrand / totalPeople) : "—";
+      perDep.textContent = perDepCost + " / seorang";
+
+      resultDiv.classList.remove("hidden");
+      resultDiv.scrollIntoView({ behavior: "smooth", block: "start" });
+    }
+
+    btnPrint.addEventListener("click", function () {
+      window.print();
+    });
+
+    btnReset.addEventListener("click", function () {
+      pkgSelect.value = "";
+      dependentsInput.value = "0";
+      costDam.checked = false;
+      costShopping.checked = false;
+      shoppingRange.disabled = true;
+      costBaggage.checked = false;
+      costZiarah.checked = false;
+      customInput.value = "";
+      thPrivateRange.value = 35000;
+      thPrivateVal.textContent = "35,000";
+      customWrap.classList.add("hidden");
+      thPrivateWrap.classList.add("hidden");
+      resultDiv.classList.add("hidden");
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  </script>
+
+  <style>
+    .badge-teal {
+      display: inline-block;
+      padding: 0.25rem 0.75rem;
+      background: var(--color-teal, #115e4e);
+      color: #fff;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .bg-saffron-50 { background-color: #fef9ec; }
+    .border-saffron-200 { border-color: #f7e3a3; }
+    @media print {
+      nav, header, .bg-saffron-50, #btn-print, #btn-reset, .border-t { display: none !important; }
+      #cost-result { display: block !important; }
+      #print-area { break-inside: avoid; }
+    }
+  </style>
+</BaseLayout>
