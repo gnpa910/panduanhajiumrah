@@ -152,7 +152,7 @@ const schemas = jsonLd
           </li>
           <li>
             <a
-              href="/alat"
+              href="/alat/"
               class="block px-1 py-1 hover:text-[var(--color-teal-deep)] transition-colors"
             >Alat</a>
           </li>
@@ -241,7 +241,7 @@ const schemas = jsonLd
   </div>
 
   <script is:inline>
-    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js');
+    if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(function(){});
 
     let _modalResolve = null;
     function siteModal({icon, title, msg, buttons}) {

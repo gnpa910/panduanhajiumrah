@@ -13,7 +13,7 @@
   <span id="chatbot-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
 </button>
 
-<div id="chatbot-window" class="fixed bottom-24 right-5 z-50 w-[min(380px,calc(100vw-2rem))] h-[min(560px,calc(100vh-6rem))] bg-white dark:bg-[var(--color-ink)] border border-stone-200 dark:border-stone-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right print:hidden" style="display:none;opacity:0;transform:scale(0.9)">
+<div id="chatbot-window" role="dialog" aria-label="Chatbot Panduan Haji" aria-modal="false" class="fixed bottom-24 right-5 z-50 w-[min(380px,calc(100vw-2rem))] h-[min(560px,calc(100vh-6rem))] bg-white dark:bg-[var(--color-ink)] border border-stone-200 dark:border-stone-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right print:hidden" style="display:none;opacity:0;transform:scale(0.9)">
   <div class="flex items-center justify-between px-4 py-3 bg-[#0d7377] text-white shrink-0">
     <div class="flex items-center gap-2">
       <span class="text-lg">🕌</span>
@@ -69,7 +69,7 @@
   <div class="shrink-0 border-t border-stone-200 dark:border-stone-700 px-3 py-2 bg-white dark:bg-[var(--color-ink)]">
     <div class="flex gap-2 items-end">
       <button id="chatbot-mic" aria-label="Suarakan" title="Suarakan" class="shrink-0 w-9 h-9 rounded-xl border border-stone-300 dark:border-stone-600 text-stone-400 dark:text-stone-500 flex items-center justify-center hover:bg-stone-100 dark:hover:bg-stone-700 transition"><svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z"/></svg></button>
-      <textarea id="chatbot-input" rows="1" placeholder="Taip soalan anda..." class="flex-1 resize-none rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 px-3 py-2 text-sm text-[var(--color-ink)] dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#0d7377] dark:focus:ring-teal-400 max-h-24 leading-relaxed"></textarea>
+      <textarea id="chatbot-input" aria-label="Taip soalan anda" rows="1" placeholder="Taip soalan anda..." class="flex-1 resize-none rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 px-3 py-2 text-sm text-[var(--color-ink)] dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#0d7377] dark:focus:ring-teal-400 max-h-24 leading-relaxed"></textarea>
       <button id="chatbot-send" aria-label="Hantar" class="shrink-0 w-9 h-9 rounded-xl bg-[#0d7377] text-white flex items-center justify-center hover:bg-[#095e61] disabled:opacity-40 disabled:cursor-not-allowed transition" disabled>
         <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
@@ -94,7 +94,7 @@
 
   function save(){try{localStorage.setItem(SK,JSON.stringify({messages:msgs.slice(-MX),t:Date.now(),lang:lang}))}catch(e){}}
   function loadH(){try{var r=localStorage.getItem(SK);if(!r)return[];var d=JSON.parse(r);if((Date.now()-(d.t||0))/(36e5*EX)>1){localStorage.removeItem(SK);return[]}if(d.lang){lang=d.lang;langSel.value=lang}return Array.isArray(d.messages)?d.messages:[]}catch(e){return[]}}
-  function clearH(){localStorage.removeItem(SK);msgs.length=0;mc.innerHTML="";var w=document.createElement("div");w.className="flex gap-2 items-start";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] text-[var(--color-ink)] dark:text-stone-200 leading-relaxed"><p>Assalamualaikum! \U0001f44b Saya Panduan Haji AI.</p><p class="mt-1">Boleh tanya apa sahaja tentang haji &amp; umrah.</p></div>';mc.appendChild(w);if(toolsEl)toolsEl.style.display="";if(sug)sug.style.display=""}
+  function clearH(){localStorage.removeItem(SK);msgs.length=0;mc.innerHTML="";var w=document.createElement("div");w.className="flex gap-2 items-start";w.innerHTML='<span class="text-base shrink-0 mt-0.5">🤖</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] text-[var(--color-ink)] dark:text-stone-200 leading-relaxed"><p>Assalamualaikum! 👋 Saya Panduan Haji AI.</p><p class="mt-1">Boleh tanya apa sahaja tentang haji &amp; umrah.</p></div>';mc.appendChild(w);if(toolsEl)toolsEl.style.display="";if(sug)sug.style.display=""}
 
   if(!localStorage.getItem(DK))disclaimer.classList.remove("hidden");
   disBtn.addEventListener("click",function(){disclaimer.classList.add("hidden");localStorage.setItem(DK,"1")});
@@ -117,7 +117,7 @@
     h=h.replace(/`([^`]+)`/g,'<code class="bg-stone-200 dark:bg-stone-700 px-1 rounded text-xs">$1</code>');
     h=h.replace(/\n(?!<)/g,"<br/>");return h}
 
-  function addTyping(){var w=document.createElement("div");w.className="flex gap-2 items-start chatbot-typing";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 text-[var(--color-ink)] dark:text-stone-200"><div class="flex gap-1 items-center"><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:300ms"></span></div></div>';mc.appendChild(w);mc.scrollTop=mc.scrollHeight;return w}
+  function addTyping(){var w=document.createElement("div");w.className="flex gap-2 items-start chatbot-typing";w.innerHTML='<span class="text-base shrink-0 mt-0.5">🤖</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 text-[var(--color-ink)] dark:text-stone-200"><div class="flex gap-1 items-center"><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:300ms"></span></div></div>';mc.appendChild(w);mc.scrollTop=mc.scrollHeight;return w}
   function rmTyping(){var t=mc.querySelector(".chatbot-typing");if(t)t.remove()}
   function addFeedback(bubble,idx){var fw=document.createElement("div");fw.className="flex gap-1 mt-1 pl-9";var u=document.createElement("button");u.className="text-xs px-2 py-0.5 rounded hover:bg-stone-200 dark:hover:bg-stone-700 transition opacity-50 hover:opacity-100";u.textContent="\ud83d\udc4d";u.title="Baik";var d=document.createElement("button");d.className="text-xs px-2 py-0.5 rounded hover:bg-stone-200 dark:hover:bg-stone-700 transition opacity-50 hover:opacity-100";d.textContent="\ud83d\udc4e";d.title="Tak tepat";u.addEventListener("click",function(){u.style.opacity="1";d.style.opacity="0.3";u.style.fontWeight="bold";track("feedback",{i:idx,r:"up"})});d.addEventListener("click",function(){d.style.opacity="1";u.style.opacity="0.3";d.style.fontWeight="bold";track("feedback",{i:idx,r:"down"})});fw.appendChild(u);fw.appendChild(d);mc.appendChild(fw)}
 
@@ -125,9 +125,9 @@
     streaming=streaming||false;
     var w=document.createElement("div");w.className="flex gap-2 items-start "+(role==="user"?"justify-end":"");
     var b=document.createElement("div");b.className=role==="user"?"bg-[#0d7377] text-white rounded-xl rounded-tr-sm px-3 py-2 max-w-[85%] leading-relaxed":"bg-stone-100 dark:bg-stone-800 text-[var(--color-ink)] dark:text-stone-200 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] leading-relaxed chatbot-bot-bubble";
-    if(role==="assistant"){var e=document.createElement("span");e.className="text-base shrink-0 mt-0.5";e.textContent="\U0001f916";w.appendChild(e)}
+    if(role==="assistant"){var e=document.createElement("span");e.className="text-base shrink-0 mt-0.5";e.textContent="🤖";w.appendChild(e)}
     b.innerHTML=renderMd(content);w.appendChild(b);
-    if(role==="user"){var e2=document.createElement("span");e2.className="text-base shrink-0 mt-0.5";e2.textContent="\U0001f464";w.appendChild(e2)}
+    if(role==="user"){var e2=document.createElement("span");e2.className="text-base shrink-0 mt-0.5";e2.textContent="👤";w.appendChild(e2)}
     var ec=mc.querySelector(".chatbot-cursor");if(ec)ec.remove();
     mc.appendChild(w);
     if(streaming){var c=document.createElement("span");c.className="chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";b.appendChild(c)}
@@ -160,10 +160,10 @@
     .catch(function(err){
       rmTyping();var cur=mc.querySelector(".chatbot-cursor");if(cur)cur.remove();
       var lt2=ut.toLowerCase();var fb="";
-      if(lt2.indexOf("rukun haji")>=0)fb="Rukun Haji ada 5:\n1\ufe0f\u20e3 Ihram\n2\ufe0f\u20e3 Wukuf di Arafah\n3\ufe0f\u20e3 Tawaf\n4\ufe0f\u20e3 Saie\n5\ufe0f\u20e3 Bercukur\n\n\U0001f4d6 [Baca selengkapnya](/panduan/haji/rukun-haji/)";
-      else if(lt2.indexOf("umrah")>=0)fb="Rukun Umrah ada 5:\n1\ufe0f\u20e3 Ihram dari miqat\n2\ufe0f\u20e3 Tawaf 7 pusingan\n3\ufe0f\u20e3 Saie 7 kali\n4\ufe0f\u20e3 Bercukur\n5\ufe0f\u20e3 Tertib\n\n\U0001f4d6 [Baca](/panduan/umrah/tatacara-asas-umrah/)";
-      else if(lt2.indexOf("solat")>=0||lt2.indexOf("musafir")>=0||lt2.indexOf("qasar")>=0)fb="Solat musafir: jarak >80km boleh qasar & jamak.\n\n\U0001f527 [Kalkulator Solat Musafir](/alat/solat-musafir/)";
-      else if(lt2.indexOf("kos")>=0||lt2.indexOf("harga")>=0)fb="Kos umrah: RM5,000\u2013RM15,000 bergantung pakej.\n\n\U0001f527 [Kalkulator Kos](/alat/kalkulator-kos/)";
+      if(lt2.indexOf("rukun haji")>=0)fb="Rukun Haji ada 5:\n1\ufe0f\u20e3 Ihram\n2\ufe0f\u20e3 Wukuf di Arafah\n3\ufe0f\u20e3 Tawaf\n4\ufe0f\u20e3 Saie\n5\ufe0f\u20e3 Bercukur\n\n📖 [Baca selengkapnya](/panduan/haji/rukun-haji/)";
+      else if(lt2.indexOf("umrah")>=0)fb="Rukun Umrah ada 5:\n1\ufe0f\u20e3 Ihram dari miqat\n2\ufe0f\u20e3 Tawaf 7 pusingan\n3\ufe0f\u20e3 Saie 7 kali\n4\ufe0f\u20e3 Bercukur\n5\ufe0f\u20e3 Tertib\n\n📖 [Baca](/panduan/umrah/tatacara-asas-umrah/)";
+      else if(lt2.indexOf("solat")>=0||lt2.indexOf("musafir")>=0||lt2.indexOf("qasar")>=0)fb="Solat musafir: jarak >80km boleh qasar & jamak.\n\n🔧 [Kalkulator Solat Musafir](/alat/solat-musafir/)";
+      else if(lt2.indexOf("kos")>=0||lt2.indexOf("harga")>=0)fb="Kos umrah: RM5,000\u2013RM15,000 bergantung pakej.\n\n🔧 [Kalkulator Kos](/alat/kalkulator-kos/)";
       if(fb){var b3=addMsg("assistant",fb+"\n\n<small class=\"opacity-60\">(Jawapan offline \u2014 AI sedang rehat)</small>");msgs.push({role:"assistant",content:fb});save();addFeedback(b3,msgIdx)}
       else addMsg("assistant","\u26a0\ufe0f "+(err.message||"Ralat rangkaian.")+"\n\n<small class=\"opacity-60\">Tip: Cuba tanya tentang rukun haji, umrah, atau solat musafir.</small>")
     })
@@ -192,8 +192,9 @@
       recog.start()});
   }else{micBtn.style.display="none"}
 
-  var saved=loadH();if(saved.length>0){for(var i=0;i<saved.length;i++)addMsg(saved[i].role,saved[i].content);for(var j=0;j<saved.length;j++)msgs.push(saved[j]);if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none"}
+  var loaded=false;var saved=loadH();if(saved.length>0){for(var i=0;i<saved.length;i++)addMsg(saved[i].role,saved[i].content);for(var j=0;j<saved.length;j++)msgs.push(saved[j]);if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none"}
 
-  new MutationObserver(function(){if(!open&&msgs.length>0&&msgs[msgs.length-1].role==="assistant"){badge.classList.remove("hidden");badge.classList.add("flex")}}).observe(mc,{childList:true});
+  loaded=true;
+  var _obs=new MutationObserver(function(){var _b=document.getElementById("chatbot-badge");if(loaded&&!open&&_b&&msgs.length>0&&msgs[msgs.length-1].role==="assistant"){_b.classList.remove("hidden");_b.classList.add("flex")}});_obs.observe(mc,{childList:true});
 })();
 </script>
