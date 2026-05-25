@@ -1,5 +1,8 @@
 @import "tailwindcss";
 
+/* Make Tailwind dark: classes respond to data-theme="dark" instead of .dark class */
+@custom-variant dark (&:where([data-theme="dark"], [data-theme="dark"] *));
+
 /* Self-hosted fonts — only latin + arabic (Amiri) subsets shipped.
    Drops ~600KB of unused cyrillic/greek/vietnamese/symbols subsets that
    @fontsource ships by default. Files in public/fonts/ → served from CDN. */
