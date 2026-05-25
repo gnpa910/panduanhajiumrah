@@ -1,28 +1,26 @@
 ---
 // ChatBot.astro — floating AI chat widget for panduanhajiumrah
-// Client-only interactive component, no server props needed
+// v2: memory, context-aware, typing indicator, tools, disclaimer, offline fallback
 ---
 
-<button
-  id="chatbot-fab"
-  aria-label="Tanya Panduan Haji"
-  class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-[#0d7377] text-white shadow-lg hover:bg-[#095e61] transition-all duration-200 flex items-center justify-center print:hidden"
->
+<!-- Disclaimer banner (first open) -->
+<div id="chatbot-disclaimer" class="hidden bg-amber-50 dark:bg-amber-900/30 border-b border-amber-200 dark:border-amber-700 px-4 py-2.5 text-xs text-amber-800 dark:text-amber-200 shrink-0">
+  <p class="font-medium">⚠️ AI Assistant — Bukan fatwa rasmi</p>
+  <p class="mt-0.5 opacity-80">Jawapan adalah panduan umum sahaja. Untuk keputusan agama, sila rujuk ustaz, mufti, atau JAKIM.</p>
+  <button id="chatbot-dismiss-disclaimer" class="mt-1.5 px-3 py-1 bg-amber-200 dark:bg-amber-700 rounded text-amber-900 dark:text-amber-100 font-medium hover:bg-amber-300 dark:hover:bg-amber-600 transition">Faham ✓</button>
+</div>
+
+<button id="chatbot-fab" aria-label="Tanya Panduan Haji" class="fixed bottom-5 right-5 z-50 w-14 h-14 rounded-full bg-[#0d7377] text-white shadow-lg hover:bg-[#095e61] transition-all duration-200 flex items-center justify-center print:hidden">
   <svg id="chatbot-icon-open" class="w-7 h-7" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
   </svg>
   <svg id="chatbot-icon-close" class="w-7 h-7 hidden" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
   </svg>
+  <span id="chatbot-badge" class="hidden absolute -top-1 -right-1 w-5 h-5 bg-red-500 text-white text-[10px] font-bold rounded-full flex items-center justify-center">1</span>
 </button>
 
-<!-- Chat Window -->
-<div
-  id="chatbot-window"
-  class="fixed bottom-24 right-5 z-50 w-[min(380px,calc(100vw-2rem))] h-[min(520px,calc(100vh-8rem))] bg-white dark:bg-[var(--color-ink)] border border-stone-200 dark:border-stone-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right print:hidden"
-  style="display: none; opacity: 0; transform: scale(0.9);"
->
-  <!-- Header -->
+<div id="chatbot-window" class="fixed bottom-24 right-5 z-50 w-[min(380px,calc(100vw-2rem))] h-[min(560px,calc(100vh-6rem))] bg-white dark:bg-[var(--color-ink)] border border-stone-200 dark:border-stone-700 rounded-2xl shadow-2xl flex flex-col overflow-hidden transition-all duration-300 origin-bottom-right print:hidden" style="display:none;opacity:0;transform:scale(0.9)">
   <div class="flex items-center justify-between px-4 py-3 bg-[#0d7377] text-white shrink-0">
     <div class="flex items-center gap-2">
       <span class="text-lg">🕌</span>
@@ -31,25 +29,34 @@
         <p class="text-[11px] opacity-80 leading-tight">AI assistant · Bukan fatwa rasmi</p>
       </div>
     </div>
-    <button id="chatbot-close" aria-label="Tutup" class="p-1 rounded hover:bg-white/20 transition">
-      <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-      </svg>
-    </button>
+    <div class="flex items-center gap-1">
+      <button id="chatbot-clear" aria-label="Padam sejarah" title="Padam sejarah" class="p-1 rounded hover:bg-white/20 transition">
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"/></svg>
+      </button>
+      <button id="chatbot-close" aria-label="Tutup" class="p-1 rounded hover:bg-white/20 transition">
+        <svg class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7"/></svg>
+      </button>
+    </div>
   </div>
 
-  <!-- Messages -->
   <div id="chatbot-messages" class="flex-1 overflow-y-auto px-4 py-3 space-y-3 text-sm scroll-smooth">
-    <!-- Welcome message -->
     <div class="flex gap-2 items-start">
       <span class="text-base shrink-0 mt-0.5">🤖</span>
       <div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] text-[var(--color-ink)] dark:text-stone-200 leading-relaxed">
         <p>Assalamualaikum! 👋 Saya Panduan Haji AI.</p>
-        <p class="mt-1">Boleh tanya apa sahaja tentang haji & umrah — rukun, tatacara, fiqh, persiapan, atau guna alat di laman kami.</p>
+        <p class="mt-1">Boleh tanya apa sahaja tentang haji &amp; umrah — rukun, tatacara, fiqh, persiapan.</p>
       </div>
     </div>
-
-    <!-- Suggested questions -->
+    <div id="chatbot-tools" class="pl-7">
+      <p class="text-[10px] text-stone-400 dark:text-stone-500 mb-1.5 uppercase tracking-wider">Alat Pantas</p>
+      <div class="flex flex-wrap gap-1.5">
+        <a href="/alat/kalkulator-dam/" class="chatbot-tool text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition">💰 Kalkulator Dam</a>
+        <a href="/alat/solat-musafir/" class="chatbot-tool text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition">🕌 Solat Musafir</a>
+        <a href="/alat/doa-harian/" class="chatbot-tool text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition">📖 Doa Harian</a>
+        <a href="/alat/wukuf-countdown/" class="chatbot-tool text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition">⏰ Wukuf</a>
+        <a href="/alat/checklist/" class="chatbot-tool text-[11px] px-2.5 py-1 rounded-lg bg-stone-100 dark:bg-stone-800 text-stone-600 dark:text-stone-300 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition">✅ Checklist</a>
+      </div>
+    </div>
     <div id="chatbot-suggestions" class="flex flex-wrap gap-2 pl-7">
       <button class="chatbot-suggestion text-xs px-3 py-1.5 rounded-full border border-[#0d7377] text-[#0d7377] dark:border-teal-400 dark:text-teal-400 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition whitespace-nowrap">Apa rukun haji?</button>
       <button class="chatbot-suggestion text-xs px-3 py-1.5 rounded-full border border-[#0d7377] text-[#0d7377] dark:border-teal-400 dark:text-teal-400 hover:bg-[#0d7377] hover:text-white dark:hover:bg-teal-400 dark:hover:text-[var(--color-ink)] transition whitespace-nowrap">Berapa kos umrah?</button>
@@ -58,24 +65,11 @@
     </div>
   </div>
 
-  <!-- Input Area -->
   <div class="shrink-0 border-t border-stone-200 dark:border-stone-700 px-3 py-2 bg-white dark:bg-[var(--color-ink)]">
     <div class="flex gap-2 items-end">
-      <textarea
-        id="chatbot-input"
-        rows="1"
-        placeholder="Taip soalan anda..."
-        class="flex-1 resize-none rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 px-3 py-2 text-sm text-[var(--color-ink)] dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#0d7377] dark:focus:ring-teal-400 max-h-24 leading-relaxed"
-      ></textarea>
-      <button
-        id="chatbot-send"
-        aria-label="Hantar"
-        class="shrink-0 w-9 h-9 rounded-xl bg-[#0d7377] text-white flex items-center justify-center hover:bg-[#095e61] disabled:opacity-40 disabled:cursor-not-allowed transition"
-        disabled
-      >
-        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7" />
-        </svg>
+      <textarea id="chatbot-input" rows="1" placeholder="Taip soalan anda..." class="flex-1 resize-none rounded-xl border border-stone-300 dark:border-stone-600 bg-stone-50 dark:bg-stone-800 px-3 py-2 text-sm text-[var(--color-ink)] dark:text-stone-100 placeholder:text-stone-400 dark:placeholder:text-stone-500 focus:outline-none focus:ring-2 focus:ring-[#0d7377] dark:focus:ring-teal-400 max-h-24 leading-relaxed"></textarea>
+      <button id="chatbot-send" aria-label="Hantar" class="shrink-0 w-9 h-9 rounded-xl bg-[#0d7377] text-white flex items-center justify-center hover:bg-[#095e61] disabled:opacity-40 disabled:cursor-not-allowed transition" disabled>
+        <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M5 12h14M12 5l7 7-7 7"/></svg>
       </button>
     </div>
     <p class="text-[10px] text-stone-400 dark:text-stone-500 mt-1 text-center">AI assistant — rujuk ustaz untuk keputusan agama</p>
@@ -83,226 +77,99 @@
 </div>
 
 <script>
-  // ── ChatBot client-side logic ──
-  (function () {
-    const fab = document.getElementById("chatbot-fab")!;
-    const iconOpen = document.getElementById("chatbot-icon-open")!;
-    const iconClose = document.getElementById("chatbot-icon-close")!;
-    const win = document.getElementById("chatbot-window") as HTMLDivElement;
-    const closeBtn = document.getElementById("chatbot-close")!;
-    const msgContainer = document.getElementById("chatbot-messages")!;
-    const suggestions = document.getElementById("chatbot-suggestions")!;
-    const input = document.getElementById("chatbot-input") as HTMLTextAreaElement;
-    const sendBtn = document.getElementById("chatbot-send") as HTMLButtonElement;
+(function(){
+  var SK="phu-chatbot-history",DK="phu-chatbot-disclaimer",CD=2000,MX=20,EX=24;
+  var fab=document.getElementById("chatbot-fab"),iO=document.getElementById("chatbot-icon-open"),iC=document.getElementById("chatbot-icon-close"),badge=document.getElementById("chatbot-badge");
+  var win=document.getElementById("chatbot-window"),clsBtn=document.getElementById("chatbot-close"),disclaimer=document.getElementById("chatbot-disclaimer"),disBtn=document.getElementById("chatbot-dismiss-disclaimer");
+  var mc=document.getElementById("chatbot-messages"),sug=document.getElementById("chatbot-suggestions"),toolsEl=document.getElementById("chatbot-tools");
+  var inp=document.getElementById("chatbot-input"),snd=document.getElementById("chatbot-send"),clrBtn=document.getElementById("chatbot-clear");
+  var open=false,load=false,lt=0;
+  var msgs=[];
 
-    let isOpen = false;
-    let isLoading = false;
-    const messages: { role: string; content: string }[] = [];
+  function save(){try{localStorage.setItem(SK,JSON.stringify({messages:msgs.slice(-MX),t:Date.now()}))}catch(e){}}
+  function loadH(){try{var r=localStorage.getItem(SK);if(!r)return[];var d=JSON.parse(r);if((Date.now()-(d.t||0))/(36e5*EX)>1){localStorage.removeItem(SK);return[]}return Array.isArray(d.messages)?d.messages:[]}catch(e){return[]}}
+  function clearH(){localStorage.removeItem(SK);msgs.length=0;mc.innerHTML="";var w=document.createElement("div");w.className="flex gap-2 items-start";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] text-[var(--color-ink)] dark:text-stone-200 leading-relaxed"><p>Assalamualaikum! \U0001f44b Saya Panduan Haji AI.</p><p class="mt-1">Boleh tanya apa sahaja tentang haji &amp; umrah.</p></div>';mc.appendChild(w);if(toolsEl)toolsEl.style.display="";if(sug)sug.style.display=""}
 
-    /* ── Toggle ── */
-    function toggle(open?: boolean) {
-      isOpen = open ?? !isOpen;
-      if (isOpen) {
-        win.style.display = "flex";
-        requestAnimationFrame(() => {
-          win.style.opacity = "1";
-          win.style.transform = "scale(1)";
-        });
-        iconOpen.classList.add("hidden");
-        iconClose.classList.remove("hidden");
-        input.focus();
-      } else {
-        win.style.opacity = "0";
-        win.style.transform = "scale(0.9)";
-        setTimeout(() => { win.style.display = "none"; }, 250);
-        iconOpen.classList.remove("hidden");
-        iconClose.classList.add("hidden");
-      }
-    }
+  if(!localStorage.getItem(DK))disclaimer.classList.remove("hidden");
+  disBtn.addEventListener("click",function(){disclaimer.classList.add("hidden");localStorage.setItem(DK,"1")});
 
-    fab.addEventListener("click", () => toggle());
-    closeBtn.addEventListener("click", () => toggle(false));
+  function toggle(o){open=o!==undefined?o:!open;if(open){win.style.display="flex";requestAnimationFrame(function(){win.style.opacity="1";win.style.transform="scale(1)"});iO.classList.add("hidden");iC.classList.remove("hidden");badge.classList.add("hidden");inp.focus()}else{win.style.opacity="0";win.style.transform="scale(0.9)";setTimeout(function(){win.style.display="none"},250);iO.classList.remove("hidden");iC.classList.add("hidden")}}
+  fab.addEventListener("click",function(){toggle()});clsBtn.addEventListener("click",function(){toggle(false)});
+  clrBtn.addEventListener("click",function(){if(confirm("Padam semua sejarah chat?"))clearH()});
 
-    /* ── Markdown-lite renderer ── */
-    function renderMd(text: string): string {
-      return text
-        .replace(/&/g, "&amp;")
-        .replace(/</g, "&lt;")
-        .replace(/>/g, "&gt;")
-        // links [text](url)
-        .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" class="underline text-[#0d7377] dark:text-teal-400 hover:opacity-80" target="_blank" rel="noopener">$1</a>')
-        // bold
-        .replace(/\*\*(.+?)\*\*/g, "<strong>$1</strong>")
-        // italic
-        .replace(/\*(.+?)\*/g, "<em>$1</em>")
-        // inline code
-        .replace(/`([^`]+)`/g, '<code class="bg-stone-200 dark:bg-stone-700 px-1 rounded text-xs">$1</code>')
-        // newlines
-        .replace(/\n/g, "<br/>");
-    }
+  function renderMd(t){
+    var h=t.replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+    h=h.replace(/^### (.+)$/gm,'<p class="font-bold text-sm mt-2 mb-1">$1</p>');
+    h=h.replace(/^## (.+)$/gm,'<p class="font-bold mt-2 mb-1">$1</p>');
+    h=h.replace(/^&gt; (.+)$/gm,'<blockquote class="border-l-2 border-[#0d7377] dark:border-teal-400 pl-2 italic opacity-80 my-1">$1</blockquote>');
+    h=h.replace(/^---+$/gm,'<hr class="border-stone-200 dark:border-stone-700 my-2"/>');
+    h=h.replace(/^(\d\ufe0f\u20e3|[0-9]+\.?)\s*(.+)$/gm,'<div class="flex gap-1.5 my-0.5"><span class="shrink-0">$1</span><span>$2</span></div>');
+    h=h.replace(/^[-\u2022]\s+(.+)$/gm,'<div class="flex gap-1.5 my-0.5"><span class="shrink-0">\u2022</span><span>$1</span></div>');
+    h=h.replace(/\[([^\]]+)\]\(([^)]+)\)/g,'<a href="$2" class="underline text-[#0d7377] dark:text-teal-400 hover:opacity-80" target="_blank" rel="noopener">$1</a>');
+    h=h.replace(/\*\*(.+?)\*\*/g,"<strong>$1</strong>").replace(/\*(.+?)\*/g,"<em>$1</em>");
+    h=h.replace(/`([^`]+)`/g,'<code class="bg-stone-200 dark:bg-stone-700 px-1 rounded text-xs">$1</code>');
+    h=h.replace(/\n(?!<)/g,"<br/>");return h}
 
-    /* ── Add message to UI ── */
-    function addMessage(role: string, content: string, streaming = false) {
-      const wrapper = document.createElement("div");
-      wrapper.className = "flex gap-2 items-start " + (role === "user" ? "justify-end" : "");
+  function addTyping(){var w=document.createElement("div");w.className="flex gap-2 items-start chatbot-typing";w.innerHTML='<span class="text-base shrink-0 mt-0.5">\U0001f916</span><div class="bg-stone-100 dark:bg-stone-800 rounded-xl rounded-tl-sm px-3 py-2 text-[var(--color-ink)] dark:text-stone-200"><div class="flex gap-1 items-center"><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:0ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:150ms"></span><span class="w-2 h-2 bg-[#0d7377] dark:bg-teal-400 rounded-full animate-bounce" style="animation-delay:300ms"></span></div></div>';mc.appendChild(w);mc.scrollTop=mc.scrollHeight;return w}
+  function rmTyping(){var t=mc.querySelector(".chatbot-typing");if(t)t.remove()}
 
-      const bubble = document.createElement("div");
-      bubble.className =
-        role === "user"
-          ? "bg-[#0d7377] text-white rounded-xl rounded-tr-sm px-3 py-2 max-w-[85%] leading-relaxed"
-          : "bg-stone-100 dark:bg-stone-800 text-[var(--color-ink)] dark:text-stone-200 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] leading-relaxed chatbot-bot-bubble";
+  function addMsg(role,content,streaming){
+    streaming=streaming||false;
+    var w=document.createElement("div");w.className="flex gap-2 items-start "+(role==="user"?"justify-end":"");
+    var b=document.createElement("div");b.className=role==="user"?"bg-[#0d7377] text-white rounded-xl rounded-tr-sm px-3 py-2 max-w-[85%] leading-relaxed":"bg-stone-100 dark:bg-stone-800 text-[var(--color-ink)] dark:text-stone-200 rounded-xl rounded-tl-sm px-3 py-2 max-w-[85%] leading-relaxed chatbot-bot-bubble";
+    if(role==="assistant"){var e=document.createElement("span");e.className="text-base shrink-0 mt-0.5";e.textContent="\U0001f916";w.appendChild(e)}
+    b.innerHTML=renderMd(content);w.appendChild(b);
+    if(role==="user"){var e2=document.createElement("span");e2.className="text-base shrink-0 mt-0.5";e2.textContent="\U0001f464";w.appendChild(e2)}
+    var ec=mc.querySelector(".chatbot-cursor");if(ec)ec.remove();
+    mc.appendChild(w);
+    if(streaming){var c=document.createElement("span");c.className="chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";b.appendChild(c)}
+    mc.scrollTop=mc.scrollHeight;return b}
 
-      if (role === "assistant") {
-        const emoji = document.createElement("span");
-        emoji.className = "text-base shrink-0 mt-0.5";
-        emoji.textContent = "🤖";
-        wrapper.appendChild(emoji);
-      }
+  function sendMessage(text){
+    if(!text.trim()||load)return;
+    var now=Date.now();if(now-lt<CD){var w=Math.ceil((CD-(now-lt))/1000);addMsg("assistant","\u23f3 Tunggu "+w+"s sebelum hantar mesej.");return}
+    lt=now;
+    var ut=text.trim();inp.value="";autoR();snd.disabled=true;
+    if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none";
+    msgs.push({role:"user",content:ut});addMsg("user",ut);save();
+    load=true;var typing=addTyping();
+    fetch("/api/chat/",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({messages:msgs,pageUrl:window.location.pathname})})
+    .then(function(r){
+      rmTyping();
+      if(!r.ok)return r.json().then(function(e){
+        if(e.choices&&e.choices[0]&&e.choices[0].message&&e.choices[0].message.content){addMsg("assistant",e.choices[0].message.content);msgs.push({role:"assistant",content:e.choices[0].message.content});save();return}
+        throw new Error(e.detail||"HTTP "+r.status)});
+      var ct=r.headers.get("content-type")||"";
+      if(ct.indexOf("application/json")>=0)return r.json().then(function(d){var fc=(d.choices&&d.choices[0]&&d.choices[0].message&&d.choices[0].message.content)||d.detail||"Maaf, cuba lagi.";addMsg("assistant",fc);msgs.push({role:"assistant",content:fc});save()});
+      var bubble=addMsg("assistant","",true);var reader=r.body.getReader();var dec=new TextDecoder();var full="";var buf="";
+      function pump(){return reader.read().then(function(result){
+        if(result.done){var cur=mc.querySelector(".chatbot-cursor");if(cur)cur.remove();if(full){msgs.push({role:"assistant",content:full});save()}else bubble.innerHTML="<em class=\"text-stone-400\">Tiada respons.</em>";return}
+        buf+=dec.decode(result.value,{stream:true});var lines=buf.split("\n");buf=lines.pop()||"";
+        for(var i=0;i<lines.length;i++){var tr=lines[i].trim();if(!tr||tr.indexOf("data:")!==0)continue;var d=tr.slice(5).trim();if(d==="[DONE]")continue;
+          try{var p=JSON.parse(d);var dl=p.choices&&p.choices[0]&&p.choices[0].delta&&p.choices[0].delta.content;if(dl){full+=dl;bubble.innerHTML=renderMd(full);var cur2=document.createElement("span");cur2.className="chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";bubble.appendChild(cur2);mc.scrollTop=mc.scrollHeight}}catch(e){}}
+        return pump()})}
+      return pump()})
+    .catch(function(err){
+      rmTyping();var cur=mc.querySelector(".chatbot-cursor");if(cur)cur.remove();
+      var lt2=ut.toLowerCase();var fb="";
+      if(lt2.indexOf("rukun haji")>=0)fb="Rukun Haji ada 5:\n1\ufe0f\u20e3 Ihram\n2\ufe0f\u20e3 Wukuf di Arafah\n3\ufe0f\u20e3 Tawaf\n4\ufe0f\u20e3 Saie\n5\ufe0f\u20e3 Bercukur\n\n\U0001f4d6 [Baca selengkapnya](/panduan/haji/rukun-haji/)";
+      else if(lt2.indexOf("umrah")>=0)fb="Rukun Umrah ada 5:\n1\ufe0f\u20e3 Ihram dari miqat\n2\ufe0f\u20e3 Tawaf 7 pusingan\n3\ufe0f\u20e3 Saie 7 kali\n4\ufe0f\u20e3 Bercukur\n5\ufe0f\u20e3 Tertib\n\n\U0001f4d6 [Baca](/panduan/umrah/tatacara-asas-umrah/)";
+      else if(lt2.indexOf("solat")>=0||lt2.indexOf("musafir")>=0||lt2.indexOf("qasar")>=0)fb="Solat musafir: jarak >80km boleh qasar & jamak.\n\n\U0001f527 [Kalkulator Solat Musafir](/alat/solat-musafir/)";
+      else if(lt2.indexOf("kos")>=0||lt2.indexOf("harga")>=0)fb="Kos umrah: RM5,000\u2013RM15,000 bergantung pakej.\n\n\U0001f527 [Kalkulator Kos](/alat/kalkulator-kos/)";
+      if(fb){addMsg("assistant",fb+"\n\n<small class=\"opacity-60\">(Jawapan offline \u2014 AI sedang rehat)</small>");msgs.push({role:"assistant",content:fb});save()}
+      else addMsg("assistant","\u26a0\ufe0f "+(err.message||"Ralat rangkaian.")+"\n\n<small class=\"opacity-60\">Tip: Cuba tanya tentang rukun haji, umrah, atau solat musafir.</small>")
+    })
+    .then(function(){load=false;snd.disabled=!inp.value.trim()})}
 
-      bubble.innerHTML = renderMd(content);
-      wrapper.appendChild(bubble);
+  function autoR(){inp.style.height="auto";inp.style.height=Math.min(inp.scrollHeight,96)+"px"}
+  inp.addEventListener("input",function(){snd.disabled=!inp.value.trim()||load;autoR()});
+  inp.addEventListener("keydown",function(e){if(e.key==="Enter"&&!e.shiftKey){e.preventDefault();if(inp.value.trim()&&!load)sendMessage(inp.value)}});
+  snd.addEventListener("click",function(){if(inp.value.trim()&&!load)sendMessage(inp.value)});
+  document.querySelectorAll(".chatbot-suggestion").forEach(function(b){b.addEventListener("click",function(){var t=b.textContent.trim();if(t)sendMessage(t)})});
+  document.querySelectorAll(".chatbot-tool").forEach(function(a){a.addEventListener("click",function(e){e.preventDefault();var n=a.textContent.trim();if(n)sendMessage("Bagaimana guna "+n+"?")})});
 
-      if (role === "user") {
-        const emoji = document.createElement("span");
-        emoji.className = "text-base shrink-0 mt-0.5";
-        emoji.textContent = "👤";
-        wrapper.appendChild(emoji);
-      }
+  var saved=loadH();if(saved.length>0){for(var i=0;i<saved.length;i++)addMsg(saved[i].role,saved[i].content);for(var j=0;j<saved.length;j++)msgs.push(saved[j]);if(sug)sug.style.display="none";if(toolsEl)toolsEl.style.display="none"}
 
-      // Remove streaming cursor if present
-      const existingCursor = msgContainer.querySelector(".chatbot-cursor");
-      if (existingCursor) existingCursor.remove();
-
-      msgContainer.appendChild(wrapper);
-
-      // Add streaming cursor for assistant
-      if (streaming) {
-        const cursor = document.createElement("span");
-        cursor.className = "chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";
-        bubble.appendChild(cursor);
-      }
-
-      msgContainer.scrollTop = msgContainer.scrollHeight;
-      return bubble;
-    }
-
-    /* ── Send message ── */
-    async function sendMessage(text: string) {
-      if (!text.trim() || isLoading) return;
-
-      const userText = text.trim();
-      input.value = "";
-      autoResize();
-      sendBtn.disabled = true;
-
-      // Hide suggestions on first message
-      if (suggestions) suggestions.style.display = "none";
-
-      // Add user message
-      messages.push({ role: "user", content: userText });
-      addMessage("user", userText);
-
-      // Add assistant placeholder
-      isLoading = true;
-      const bubble = addMessage("assistant", "", true);
-
-      try {
-        const response = await fetch("/api/chat/", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ messages }),
-        });
-
-        if (!response.ok) {
-          const err = await response.json().catch(() => ({}));
-          throw new Error(err.detail || `HTTP ${response.status}`);
-        }
-
-        const reader = response.body!.getReader();
-        const decoder = new TextDecoder();
-        let fullContent = "";
-        let buffer = "";
-
-        while (true) {
-          const { done, value } = await reader.read();
-          if (done) break;
-
-          buffer += decoder.decode(value, { stream: true });
-          const lines = buffer.split("\n");
-          buffer = lines.pop() || "";
-
-          for (const line of lines) {
-            const trimmed = line.trim();
-            if (!trimmed || !trimmed.startsWith("data:")) continue;
-            const data = trimmed.slice(5).trim();
-            if (data === "[DONE]") continue;
-
-            try {
-              const parsed = JSON.parse(data);
-              const delta = parsed.choices?.[0]?.delta?.content;
-              if (delta) {
-                fullContent += delta;
-                bubble.innerHTML = renderMd(fullContent);
-                // Re-add cursor
-                const cursor = document.createElement("span");
-                cursor.className = "chatbot-cursor inline-block w-1.5 h-4 bg-[#0d7377] dark:bg-teal-400 animate-pulse ml-0.5 align-middle";
-                bubble.appendChild(cursor);
-                msgContainer.scrollTop = msgContainer.scrollHeight;
-              }
-            } catch {
-              // Skip malformed chunks
-            }
-          }
-        }
-
-        // Remove cursor
-        const cursor = msgContainer.querySelector(".chatbot-cursor");
-        if (cursor) cursor.remove();
-
-        if (fullContent) {
-          messages.push({ role: "assistant", content: fullContent });
-        } else {
-          bubble.innerHTML = "<em class='text-stone-400'>Tiada respons. Cuba lagi.</em>";
-        }
-      } catch (err: any) {
-        const cursor = msgContainer.querySelector(".chatbot-cursor");
-        if (cursor) cursor.remove();
-        bubble.innerHTML = `<span class="text-red-500">⚠️ ${err.message || "Ralat rangkaian. Cuba lagi sebentar."}</span>`;
-      } finally {
-        isLoading = false;
-        sendBtn.disabled = !input.value.trim();
-      }
-    }
-
-    /* ── Auto-resize textarea ── */
-    function autoResize() {
-      input.style.height = "auto";
-      input.style.height = Math.min(input.scrollHeight, 96) + "px";
-    }
-
-    /* ── Event listeners ── */
-    input.addEventListener("input", () => {
-      sendBtn.disabled = !input.value.trim() || isLoading;
-      autoResize();
-    });
-
-    input.addEventListener("keydown", (e: KeyboardEvent) => {
-      if (e.key === "Enter" && !e.shiftKey) {
-        e.preventDefault();
-        if (input.value.trim() && !isLoading) sendMessage(input.value);
-      }
-    });
-
-    sendBtn.addEventListener("click", () => {
-      if (input.value.trim() && !isLoading) sendMessage(input.value);
-    });
-
-    // Suggested questions
-    document.querySelectorAll(".chatbot-suggestion").forEach((btn) => {
-      btn.addEventListener("click", () => {
-        const text = btn.textContent?.trim() || "";
-        if (text) sendMessage(text);
-      });
-    });
-  })();
+  new MutationObserver(function(){if(!open&&msgs.length>0&&msgs[msgs.length-1].role==="assistant"){badge.classList.remove("hidden");badge.classList.add("flex")}}).observe(mc,{childList:true});
+})();
 </script>
