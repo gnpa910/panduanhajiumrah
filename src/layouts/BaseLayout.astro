@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import BackToTop from "../components/BackToTop.astro";
+import ThemeToggle from "../components/ThemeToggle.astro";
 
 interface Props {
   title: string;
@@ -95,6 +96,11 @@ const schemas = jsonLd
 
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
 
+    {/* Prevent FOUC — apply theme before first paint */}
+    <script is:inline>
+      (function(){var t=localStorage.getItem('theme')||(window.matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light');document.documentElement.setAttribute('data-theme',t)})();
+    </script>
+
     <!-- Structured data -->
     {schemas.map((schema) => (
       <script type="application/ld+json" set:html={JSON.stringify(schema)} />
@@ -157,6 +163,9 @@ const schemas = jsonLd
               </svg>
               Cari
             </a>
+          </li>
+          <li class="flex items-center">
+            <ThemeToggle />
           </li>
         </ul>
       </nav>

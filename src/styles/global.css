@@ -633,3 +633,120 @@
     cursor: pointer;
   }
 }
+
+/* ─────────────────────────────────────────────
+   Dark Mode
+   ───────────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-ink: #E8E4DF;
+  --color-ink-soft: #D4CFC8;
+  --color-stone-warm: #A8A099;
+  --color-teal: #3EC9A7;
+  --color-teal-soft: #0E3329;
+  --color-teal-deep: #5EEBC4;
+  --color-saffron: #D4A04A;
+  --color-saffron-soft: #2A1F0E;
+  --color-paper: #111310;
+  --color-surface: #1A1D18;
+  --color-surface-soft: #222520;
+  --color-rule: #2E3229;
+  --color-on-ink: #111310;
+}
+
+[data-theme="dark"] .verse-card {
+  background: linear-gradient(180deg, #1A1D18 0%, #111310 100%);
+}
+
+[data-theme="dark"] .pattern-bg::before {
+  opacity: 0.3;
+}
+
+[data-theme="dark"] .btn-primary {
+  color: #111310;
+}
+
+[data-theme="dark"] .btn-secondary {
+  background: var(--color-surface);
+  color: var(--color-ink);
+}
+
+[data-theme="dark"] ::selection {
+  background: #3A2A10;
+  color: var(--color-ink);
+}
+
+/* Smooth transition for theme switch */
+html.theme-transition,
+html.theme-transition *,
+html.theme-transition *::before,
+html.theme-transition *::after {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease !important;
+}
+
+/* ─────────────────────────────────────────────
+   Print Styles
+   ───────────────────────────────────────────── */
+@media print {
+  header, footer, .back-to-top, .share-buttons, .toc-desktop, .toc-mobile,
+  .skip-link, [aria-label="Cari"], .theme-toggle {
+    display: none !important;
+  }
+  body {
+    background: #fff !important;
+    color: #000 !important;
+    font-size: 11pt;
+    line-height: 1.5;
+  }
+  .prose-haji {
+    max-width: 100% !important;
+    padding: 0 !important;
+  }
+  .prose-haji h2 {
+    border-top: 1px solid #ccc;
+    page-break-after: avoid;
+  }
+  .prose-haji h2, .prose-haji h3 {
+    page-break-after: avoid;
+  }
+  .prose-haji blockquote {
+    border-left: 3px solid #999;
+    background: #f5f5f5;
+  }
+  .prose-haji a {
+    color: #000 !important;
+    text-decoration: underline;
+  }
+  .prose-haji a::after {
+    content: " (" attr(href) ")";
+    font-size: 0.8em;
+    color: #555;
+    word-break: break-all;
+  }
+  .prose-haji a[href^="#"]::after,
+  .prose-haji a[href^="/"]::after {
+    content: "";
+  }
+  .card, .card-feature {
+    border: 1px solid #ccc;
+    box-shadow: none;
+  }
+  .badge, .badge-teal {
+    border: 1px solid #999;
+    background: #f0f0f0;
+  }
+  .verse-card {
+    border: 2px solid #ccc;
+    box-shadow: none;
+    background: #fafafa !important;
+  }
+  .pattern-bg::before, .pattern-bg::after {
+    display: none;
+  }
+  .ornament {
+    page-break-inside: avoid;
+  }
+  .checklist-item input[type="checkbox"] {
+    appearance: auto !important;
+    -webkit-appearance: auto !important;
+  }
+}

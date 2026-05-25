@@ -1,0 +1,318 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const sections = [
+  {
+    id: "dokumen",
+    title: "Dokumen & Identiti",
+    icon: "📄",
+    items: [
+      "Pasport sah (minimum 6 bulan dari tarikh berlepas)",
+      "Salinan pasport (3 salinan — simpan berasingan)",
+      "Kad pengenalan asal + salinan",
+      "Sijil vaksin meningitis (ACYW135) — suntikan dalam tempoh sah",
+      "Sijil suntikan vaksin COVID-19 (jika diperlukan)",
+      "Buku suntikan vaksin / kad kesihatan",
+      "Tiket penerbangan (cetak + digital)",
+      "Visa haji / umrah (semak melalui TH / agensi)",
+      "Surat pengesahan TH / agensi pelancongan",
+      "Baucar penginapan / hotel",
+      "Kad perlindungan takaful / insurans perjalanan",
+      "2–4 keping gambar berukuran pasport",
+      "Salinan dokumen penting disimpan dalam email / cloud",
+    ],
+  },
+  {
+    id: "kewangan",
+    title: "Kewangan & Pembayaran",
+    icon: "💰",
+    items: [
+      "Wang saku Saudi Riyal (SAR) — tukar sebelum berlepas",
+      "Kad debit / kredit antarabangsa (aktifkan luar negara)",
+      "Dompet kecil / pouch untuk wang harian",
+      "Simpan wang di 2–3 tempat berasingan (beg pinggang, poket dalaman)",
+      "Bawa sedikit USD sebagai backup",
+      "Senarai bayaran tambahan: dam, qurban, cenderahati",
+    ],
+  },
+  {
+    id: "pakaian",
+    title: "Pakaian & Ihram",
+    icon: "👕",
+    items: [
+      "Kain ihram (2 helai — putih, tidak berjahit) — lelaki",
+      "Baju ihram / pakaian labuh longgar — wanita",
+      "Selipar / sandal Jepun (tidak bertutup tumit & jari kaki) — lelaki",
+      "Pakaian harian yang sopan & longgar (4–5 set)",
+      "Stokin tebal (untuk ke masjid)",
+      "Tudung / telekung wanita (2–3 set)",
+      "Baju sejuk / jaket ringan (masjid berhawa dingin)",
+      "Pakaian dalam secukupnya",
+      "Tali pinggang berzip (simpan wang ketika ihram)",
+    ],
+  },
+  {
+    id: "kesihatan",
+    title: "Kesihatan & Ubatan",
+    icon: "💊",
+    items: [
+      "Ubat preskripsi dokter (bekalan mencukupi + salinan preskripsi)",
+      "Paracetamol / panadol",
+      "Ubat selesema / batuk",
+      "Ubat cirit-birit / loh smecta",
+      "Minyak angin / balm",
+      "Plaster luka / band-aid",
+      "Ubat titis mata (kering / debu pasir)",
+      "Krim pelindung matahari SPF50+",
+      "Losyen / pelembap kulit (udara kering)",
+      "Garam ORS (cegah dehidrasi)",
+      "Vitamin C / multivitamin",
+      "Penutup hidung / mask (debu Mina / Muzdalifah)",
+    ],
+  },
+  {
+    id: "keperluan-harian",
+    title: "Keperluan Harian",
+    icon: "🎒",
+    items: [
+      "Botol air boleh isi semula (1L minimum)",
+      "Payung kecil (lindung dari panas terik)",
+      "Tuala kecil / tuala basah",
+      "Sabun & syampu kecil (botol travel)",
+      "Ubat gigi & berus gigi",
+      "Tisu basah & tisu kering",
+      "Pencuci tangan / hand sanitizer",
+      "Beg kecil / sling bag untuk ke masjid",
+      "Pen & buku kecil (catatan doa / nota)",
+      "Pengetip kuku",
+      "Cermin mata hitam",
+      "Tali beg / tag nama (bezakan beg rombongan)",
+    ],
+  },
+  {
+    id: "elektronik",
+    title: "Elektronik & Komunikasi",
+    icon: "📱",
+    items: [
+      "Kad SIM Arab Saudi / roaming (semak pelan dengan telco)",
+      "Powerbank (kapasiti tinggi, bawa dalam beg tangan)",
+      "Pengecas telefon + adapter plug Type G (UK style)",
+      "Muat turun aplikasi: Eatmarna, Nusuk, Google Maps, kamus Arab",
+      "Simpan nombor penting: TH, kedutaan, ketua rombongan, keluarga",
+      "Gambar & peta Masjidil Haram / Masjid Nabawi (offline)",
+      "Earphone untuk tazkirah / zikir digital",
+    ],
+  },
+  {
+    id: "ibadah",
+    title: "Persiapan Ibadah",
+    icon: "🕌",
+    items: [
+      "Muat turun / cetak panduan tatacara haji & umrah",
+      "Buku doa & zikir (kecil, mudah bawa)",
+      "Al-Quran mini / aplikasi Quran offline",
+      "Tasbih digital / tasbih jari",
+      "Sejadah kecil nipis (jika perlu)",
+      "Nota doa-doa penting: tawaf, saie, wukuf, melontar",
+      "Hafal talbiyah & doa iftitah",
+      "Kiraan dam / fidyah jika perlu (rujuk kalkulator)",
+      "Senarai nama untuk didoakan (keluarga, sahabat)",
+    ],
+  },
+  {
+    id: "sebelum-berlepas",
+    title: "Sebelum Berlepas",
+    icon: "✈️",
+    items: [
+      "Semak jadual penerbangan (tarikh & masa)",
+      "Timbang beg (had bagasi TH / airlines)",
+      "Label semua beg dengan tag nama & nombor telefon",
+      "Buat wasiat / pesanan kecemasan kepada keluarga",
+      "Selesaikan hutang & tanggungan sebelum berangkat",
+      "Mohon maaf kepada keluarga, jiran, rakan",
+      "Bersedekah sebelum berlepas",
+      "Niatkan haji / umrah dengan ikhlas, semata-mata kerana Allah",
+    ],
+  },
+];
+---
+
+<BaseLayout
+  title="Checklist Persiapan Haji & Umrah"
+  description="Senarai semak lengkap untuk persiapan haji dan umrah. Jimat & semak progress anda — dokumen, pakaian, kesihatan, keperluan harian, ibadah dan banyak lagi."
+>
+  <section class="max-w-3xl mx-auto px-4 py-12 md:py-16">
+    <div class="text-center mb-10">
+      <p class="badge badge-teal mb-4">Alat Interaktif</p>
+      <h1
+        class="text-3xl md:text-4xl font-semibold text-[var(--color-ink)] mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Checklist Persiapan Haji
+      </h1>
+      <p class="text-[var(--color-stone-warm)] max-w-lg mx-auto leading-relaxed">
+        Senarai semak lengkap untuk jemaah haji & umrah. Tandakan apa yang dah siap —
+        progress disimpan automatik dalam browser anda.
+      </p>
+    </div>
+
+    {/* Progress bar */}
+    <div class="mb-8 p-4 bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg">
+      <div class="flex items-center justify-between mb-2">
+        <span class="text-sm font-semibold text-[var(--color-ink)]">Kemajuan</span>
+        <span id="progress-text" class="text-sm text-[var(--color-stone-warm)]">0 / 0</span>
+      </div>
+      <div class="w-full h-2.5 bg-[var(--color-surface-soft)] rounded-full overflow-hidden">
+        <div id="progress-bar" class="h-full rounded-full transition-all duration-500" style="width: 0%; background: var(--color-teal);"></div>
+      </div>
+      <div class="flex justify-between mt-2">
+        <button
+          id="btn-reset"
+          class="text-xs text-[var(--color-stone-warm)] hover:text-red-600 transition-colors underline"
+          type="button"
+        >
+          Reset semua
+        </button>
+        <button
+          id="btn-expand-all"
+          class="text-xs text-[var(--color-stone-warm)] hover:text-[var(--color-teal)] transition-colors underline"
+          type="button"
+        >
+          Buka / tutup semua
+        </button>
+      </div>
+    </div>
+
+    {/* Checklist sections */}
+    <div id="checklist" class="space-y-4">
+      {sections.map((section) => (
+        <details class="checklist-section" open>
+          <summary class="flex items-center gap-3 cursor-pointer p-4 bg-[var(--color-surface)] border border-[var(--color-rule)] rounded-lg hover:border-[var(--color-teal)] transition-colors select-none">
+            <span class="text-xl" aria-hidden="true">{section.icon}</span>
+            <span class="font-semibold text-[var(--color-ink)] flex-1" style="font-family: var(--font-serif);">
+              {section.title}
+            </span>
+            <span class="checklist-count text-xs text-[var(--color-stone-warm)] font-mono" data-section={section.id}>
+              0/{section.items.length}
+            </span>
+          </summary>
+          <ul class="mt-2 ml-2 space-y-1">
+            {section.items.map((item, i) => (
+              <li class="checklist-item flex items-start gap-3 py-2 px-3 rounded hover:bg-[var(--color-surface-soft)] transition-colors">
+                <input
+                  type="checkbox"
+                  class="mt-1 w-4 h-4 rounded border-[var(--color-rule)] text-[var(--color-teal)] focus:ring-[var(--color-saffron)] cursor-pointer accent-[var(--color-teal)]"
+                  data-key={`${section.id}-${i}`}
+                  aria-label={item}
+                />
+                <span class="text-sm text-[var(--color-ink-soft)] leading-relaxed checklist-label">
+                  {item}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </details>
+      ))}
+    </div>
+
+    {/* Tip box */}
+    <div class="mt-10 p-5 bg-[var(--color-saffron-soft)] border border-[var(--color-saffron)] border-opacity-30 rounded-lg">
+      <p class="text-sm text-[var(--color-ink)] leading-relaxed">
+        <strong>💡 Tip:</strong> Progress disimpan dalam browser anda (localStorage). Jika guna
+        browser lain atau padam data, checklist akan reset. Untuk backup, screenshot
+        progress anda sebelum tukar peranti.
+      </p>
+    </div>
+  </section>
+</BaseLayout>
+
+<script is:inline>
+  (function() {
+    const KEY = 'haji-checklist';
+    const checkboxes = document.querySelectorAll('.checklist-item input[type="checkbox"]');
+    const progressBar = document.getElementById('progress-bar');
+    const progressText = document.getElementById('progress-text');
+    const btnReset = document.getElementById('btn-reset');
+    const btnExpand = document.getElementById('btn-expand-all');
+
+    // Load saved state
+    let state = {};
+    try { state = JSON.parse(localStorage.getItem(KEY)) || {}; } catch(e) {}
+
+    // Apply saved state to checkboxes
+    checkboxes.forEach(function(cb) {
+      const key = cb.getAttribute('data-key');
+      if (state[key]) cb.checked = true;
+    });
+
+    function updateProgress() {
+      var total = checkboxes.length;
+      var checked = 0;
+      checkboxes.forEach(function(cb) { if (cb.checked) checked++; });
+      var pct = total ? Math.round((checked / total) * 100) : 0;
+      progressBar.style.width = pct + '%';
+      if (pct === 100) {
+        progressBar.style.background = 'var(--color-saffron)';
+      } else {
+        progressBar.style.background = 'var(--color-teal)';
+      }
+      progressText.textContent = checked + ' / ' + total + ' (' + pct + '%)';
+
+      // Update section counts
+      document.querySelectorAll('.checklist-count').forEach(function(el) {
+        var sec = el.getAttribute('data-section');
+        var secCbs = document.querySelectorAll('input[data-key^="' + sec + '-"]');
+        var secChecked = 0;
+        secCbs.forEach(function(c) { if (c.checked) secChecked++; });
+        el.textContent = secChecked + '/' + secCbs.length;
+      });
+    }
+
+    // Save on change
+    checkboxes.forEach(function(cb) {
+      cb.addEventListener('change', function() {
+        var key = cb.getAttribute('data-key');
+        if (cb.checked) {
+          state[key] = true;
+        } else {
+          delete state[key];
+        }
+        localStorage.setItem(KEY, JSON.stringify(state));
+        // Strikethrough label
+        var label = cb.closest('.checklist-item').querySelector('.checklist-label');
+        label.style.textDecoration = cb.checked ? 'line-through' : 'none';
+        label.style.opacity = cb.checked ? '0.5' : '1';
+        updateProgress();
+      });
+      // Apply initial strikethrough
+      var label = cb.closest('.checklist-item').querySelector('.checklist-label');
+      label.style.textDecoration = cb.checked ? 'line-through' : 'none';
+      label.style.opacity = cb.checked ? '0.5' : '1';
+    });
+
+    // Reset
+    btnReset.addEventListener('click', function() {
+      if (!confirm('Reset semua checklist? Progress akan hilang.')) return;
+      checkboxes.forEach(function(cb) { cb.checked = false; });
+      state = {};
+      localStorage.removeItem(KEY);
+      checkboxes.forEach(function(cb) {
+        var label = cb.closest('.checklist-item').querySelector('.checklist-label');
+        label.style.textDecoration = 'none';
+        label.style.opacity = '1';
+      });
+      updateProgress();
+    });
+
+    // Expand/collapse all
+    var allExpanded = true;
+    btnExpand.addEventListener('click', function() {
+      allExpanded = !allExpanded;
+      document.querySelectorAll('.checklist-section').forEach(function(d) {
+        d.open = allExpanded;
+      });
+    });
+
+    updateProgress();
+  })();
+</script>

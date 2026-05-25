@@ -1,0 +1,231 @@
+---
+import BaseLayout from "../../../layouts/BaseLayout.astro";
+
+const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
+const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
+
+const breadcrumbSchema = {
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  itemListElement: [
+    { "@type": "ListItem", position: 1, name: "Laman Utama", item: siteUrl.href },
+    { "@type": "ListItem", position: 2, name: "Alat", item: new URL("/alat/", siteUrl).href },
+    { "@type": "ListItem", position: 3, name: "Jadual Ibadah Haji", item: pageUrl },
+  ],
+};
+
+// Timeline 8-13 Zulhijjah
+const days = [
+  {
+    date: "8 Zulhijjah",
+    title: "Hari Tarwiyah",
+    pre: "Pagi: Niat ihram haji di Mekah/hotel",
+    activities: [
+      { time: "Subuh", action: "Mandi sunat ihram, pakai kain ihram" },
+      { time: "Selepas Zuhur", action: "Bertolak ke Mina dengan basnya" },
+      { time: "Petang", action: "Tiba di Mina, solat Zuhur+Asar+Maghrib+Isyak qasar tanpa jamak" },
+      { time: "Malam", action: "Mabit (bermalam) di Mina, banyakkan zikir & talbiyah" },
+    ],
+    link: "/panduan/haji/jenis-haji-tamattu-ifrad-qiran/",
+    note: "Hari ini disebut 'Tarwiyah' kerana jemaah lama mengisi air sebagai bekal ke Arafah.",
+  },
+  {
+    date: "9 Zulhijjah",
+    title: "Hari Arafah · WUKUF",
+    pre: "Rukun haji terbesar — tiada haji tanpa wukuf",
+    activities: [
+      { time: "Selepas Subuh", action: "Bertolak dari Mina ke Arafah" },
+      { time: "Tergelincir matahari", action: "WUKUF dimulakan — solat Zuhur+Asar jamak qasar di Masjid Namirah/khemah" },
+      { time: "Asar–Maghrib", action: "Doa, istighfar, talbiyah, tadabbur — masa paling mustajab" },
+      { time: "Selepas Maghrib", action: "Bertolak ke Muzdalifah TANPA solat Maghrib di Arafah" },
+      { time: "Tiba Muzdalifah", action: "Solat Maghrib+Isyak jamak takhir, mabit, kutip 49-70 batu kerikil" },
+    ],
+    link: "/panduan/haji/tatacara-wukuf-arafah-9-zulhijjah/",
+    note: "Wajib wukuf walau sekejap antara tergelincir matahari 9 Zulhijjah hingga Subuh 10 Zulhijjah.",
+  },
+  {
+    date: "10 Zulhijjah",
+    title: "Hari Nahr · Eidul Adha",
+    pre: "Hari paling padat — 4 amalan utama",
+    activities: [
+      { time: "Selepas Subuh Muzdalifah", action: "Bertolak ke Mina" },
+      { time: "Pagi", action: "1️⃣ Lontar Jamratul Aqabah — 7 batu" },
+      { time: "Pagi/Tengahari", action: "2️⃣ Sembelih dam tamattu/qiran (uruskan TH)" },
+      { time: "", action: "3️⃣ Tahallul awal: cukur/gunting rambut → larangan ihram terbuka kecuali jimak" },
+      { time: "", action: "4️⃣ Tawaf Ifadhah + Saie (jika belum) di Masjidil Haram" },
+      { time: "Petang/Malam", action: "Balik ke Mina, mabit malam pertama" },
+    ],
+    link: "/panduan/haji/tatacara-mabit-muzdalifah-mina-melontar/",
+    note: "Selepas tahallul thani (cukur + tawaf ifadhah), semua larangan ihram terbuka termasuk jimak.",
+  },
+  {
+    date: "11 Zulhijjah",
+    title: "Hari Tasyrik 1",
+    pre: "Mabit di Mina + lontar 3 jamrah",
+    activities: [
+      { time: "Selepas Zuhur", action: "Lontar 3 jamrah berturut: Sughra (kecil) → Wusta (sederhana) → Aqabah (besar), 7 batu setiap satu" },
+      { time: "Antara lontaran", action: "Berhenti, doa menghadap kiblat" },
+      { time: "Malam", action: "Mabit di Mina (wajib)" },
+    ],
+    link: "/panduan/haji/tatacara-mabit-muzdalifah-mina-melontar/",
+    note: "Waktu lontar 3 jamrah: dari tergelincir matahari hingga terbit fajar 12 Zulhijjah.",
+  },
+  {
+    date: "12 Zulhijjah",
+    title: "Hari Tasyrik 2 · Nafar Awwal",
+    pre: "Pilihan: balik Mekah hari ini ATAU bermalam ke 13",
+    activities: [
+      { time: "Selepas Zuhur", action: "Lontar 3 jamrah (sama urutan: Sughra → Wusta → Aqabah)" },
+      { time: "Sebelum Maghrib", action: "Pilihan A — Nafar Awwal: balik ke Mekah sebelum Maghrib" },
+      { time: "Atau", action: "Pilihan B — Nafar Thani: kekal di Mina, mabit lagi satu malam" },
+    ],
+    link: "/panduan/haji/wajib-haji-tujuh-perkara/",
+    note: "Nafar Awwal: kena keluar dari sempadan Mina sebelum Maghrib. Lewat = wajib mabit.",
+  },
+  {
+    date: "13 Zulhijjah",
+    title: "Hari Tasyrik 3 · Nafar Thani",
+    pre: "Bagi yang pilih nafar thani sahaja",
+    activities: [
+      { time: "Selepas Zuhur", action: "Lontar 3 jamrah terakhir" },
+      { time: "Selepas itu", action: "Balik ke Mekah" },
+    ],
+    link: "/panduan/haji/wajib-haji-tujuh-perkara/",
+    note: "Bagi nafar thani — pahala lebih kerana ikut sunnah Nabi ﷺ.",
+  },
+  {
+    date: "Sebelum Pulang",
+    title: "Tawaf Wada",
+    pre: "Wajib bagi yang bukan haid",
+    activities: [
+      { time: "Akhir kunjungan Mekah", action: "Tawaf 7 pusingan tanpa saie" },
+      { time: "Selepas tawaf", action: "Solat sunat 2 rakaat di belakang Maqam Ibrahim, minum air zamzam" },
+      { time: "Setelah itu", action: "Tidak boleh berlama-lama atau buat urusan baru di Mekah — terus ke lapangan terbang/hotel" },
+    ],
+    link: "/panduan/umrah/tatacara-tawaf-tujuh-pusingan/",
+    note: "Wanita haid: dimaafkan tanpa dam (hadis Ibn Abbas).",
+  },
+];
+---
+
+<BaseLayout
+  title="Jadual Ibadah Haji 8–13 Zulhijjah"
+  description="Timeline lengkap haji dari 8 Zulhijjah ke tawaf wada — wukuf Arafah, mabit Muzdalifah, lontar jamrah, dam, tahallul, dengan rujukan Mufti WP."
+  jsonLd={breadcrumbSchema}
+>
+  <section class="max-w-4xl mx-auto px-4 py-10">
+    <nav class="text-sm text-stone-600 mb-6" aria-label="Breadcrumb">
+      <a href="/" class="hover:text-emerald-700">Laman Utama</a>
+      <span class="mx-2">›</span>
+      <a href="/alat/" class="hover:text-emerald-700">Alat</a>
+      <span class="mx-2">›</span>
+      <span class="text-stone-900">Jadual Ibadah Haji</span>
+    </nav>
+
+    <header class="mb-10">
+      <p class="badge badge-teal mb-4">Alat Interaktif · Timeline</p>
+      <h1
+        class="text-4xl md:text-5xl font-semibold text-emerald-900 mb-4"
+        style="font-family: var(--font-serif);"
+      >
+        Jadual Ibadah Haji 8–13 Zulhijjah
+      </h1>
+      <p class="text-lg text-stone-700 max-w-2xl mb-4">
+        Timeline lengkap: dari hari Tarwiyah ke tawaf wada. Klik hari untuk
+        terangkan amalan, dengan link ke panduan terperinci setiap rukun.
+      </p>
+      <div class="flex flex-wrap gap-2">
+        <button
+          id="expand-all"
+          class="text-sm px-4 py-2 border border-emerald-700 text-emerald-700 rounded hover:bg-emerald-50"
+        >Buka Semua</button>
+        <button
+          id="collapse-all"
+          class="text-sm px-4 py-2 border border-stone-300 text-stone-600 rounded hover:bg-stone-50"
+        >Tutup Semua</button>
+        <button
+          id="print-btn"
+          class="text-sm px-4 py-2 border border-stone-300 text-stone-600 rounded hover:bg-stone-50"
+        >🖨 Cetak</button>
+      </div>
+    </header>
+
+    <ol class="space-y-3">
+      {days.map((d, i) => (
+        <li class="timeline-day">
+          <details class="bg-white border border-stone-200 rounded-lg overflow-hidden hover:border-emerald-700 transition-colors" {...(i < 2 ? { open: true } : {})}>
+            <summary class="cursor-pointer p-5 md:p-6 list-none">
+              <div class="flex items-start gap-4">
+                <div class="flex-shrink-0 w-12 h-12 md:w-14 md:h-14 rounded-full bg-emerald-700 text-white flex items-center justify-center font-bold text-lg">
+                  {i + 1}
+                </div>
+                <div class="flex-1">
+                  <div class="text-xs uppercase tracking-wider text-saffron-700 font-semibold mb-1">{d.date}</div>
+                  <h2 class="text-xl md:text-2xl font-semibold text-emerald-900 mb-1" style="font-family: var(--font-serif);">{d.title}</h2>
+                  <p class="text-sm text-stone-600">{d.pre}</p>
+                </div>
+                <div class="flex-shrink-0 text-stone-400 transition-transform">▾</div>
+              </div>
+            </summary>
+            <div class="px-5 md:px-6 pb-6 pt-2 border-t border-stone-100">
+              <ul class="space-y-3 mb-4">
+                {d.activities.map((a) => (
+                  <li class="flex gap-3 items-start">
+                    {a.time && <span class="flex-shrink-0 text-xs font-mono px-2 py-1 bg-stone-100 rounded text-stone-700 mt-0.5 min-w-[90px] text-center">{a.time}</span>}
+                    <span class="text-stone-700 flex-1">{a.action}</span>
+                  </li>
+                ))}
+              </ul>
+              <div class="bg-saffron-50 border-l-4 border-saffron-400 p-3 text-sm text-stone-700 mb-3">
+                <strong class="text-saffron-900">Nota:</strong> {d.note}
+              </div>
+              <a
+                href={d.link}
+                class="inline-flex items-center text-sm text-emerald-700 underline hover:text-emerald-900"
+              >
+                → Panduan terperinci
+              </a>
+            </div>
+          </details>
+        </li>
+      ))}
+    </ol>
+
+    {/* CTA links */}
+    <div class="mt-12 pt-8 border-t border-stone-200">
+      <h2 class="text-xl font-semibold text-emerald-900 mb-4">Bacaan lanjut</h2>
+      <ul class="space-y-2 text-stone-700">
+        <li>→ <a href="/panduan/haji/rukun-haji-enam-perkara/" class="text-emerald-700 underline">Rukun Haji: Enam Perkara Wajib</a></li>
+        <li>→ <a href="/panduan/haji/wajib-haji-tujuh-perkara/" class="text-emerald-700 underline">Wajib Haji: Tujuh Perkara dan Dam</a></li>
+        <li>→ <a href="/alat/kalkulator-dam/" class="text-emerald-700 underline">Kalkulator Dam</a></li>
+        <li>→ <a href="/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/" class="text-emerald-700 underline">Dam Haji: Kategori, Kadar, Tempat Bayar</a></li>
+      </ul>
+    </div>
+  </section>
+
+  <script is:inline>
+    const expand = document.getElementById("expand-all");
+    const collapse = document.getElementById("collapse-all");
+    const print = document.getElementById("print-btn");
+    const all = () => document.querySelectorAll("li.timeline-day details");
+    expand?.addEventListener("click", () => all().forEach((d) => d.setAttribute("open", "")));
+    collapse?.addEventListener("click", () => all().forEach((d) => d.removeAttribute("open")));
+    print?.addEventListener("click", () => {
+      all().forEach((d) => d.setAttribute("open", ""));
+      setTimeout(() => window.print(), 100);
+    });
+  </script>
+
+  <style>
+    .badge-teal { display: inline-block; padding: 0.25rem 0.75rem; background: var(--color-teal, #115e4e); color: #fff; border-radius: 999px; font-size: 0.75rem; font-weight: 500; text-transform: uppercase; letter-spacing: 0.05em; }
+    .text-saffron-700 { color: #a16207; }
+    .text-saffron-900 { color: #713f12; }
+    .bg-saffron-50 { background-color: #fef9ec; }
+    .border-saffron-400 { border-color: #f0c349; }
+    details[open] summary > div > div:last-child { transform: rotate(180deg); }
+    @media print {
+      .timeline-day details { break-inside: avoid; border: 1px solid #ccc !important; }
+      header button, nav, .border-t a { display: none !important; }
+    }
+  </style>
+</BaseLayout>
