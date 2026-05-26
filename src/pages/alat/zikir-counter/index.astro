@@ -430,28 +430,43 @@ const webAppSchema = {
 
       // Reset
       resetBtn.addEventListener("click", () => {
-        if (state.count > 0 && !confirm("Reset kiraan semasa ke 0?")) return;
-        state.count = 0;
-        saveState();
-        updateDisplay();
+        if (state.count > 0) {
+          siteConfirmDanger("Reset kiraan semasa ke 0?").then(function(ok) {
+            if (!ok) return;
+            state.count = 0;
+            saveState();
+            updateDisplay();
+          });
+        } else {
+          state.count = 0;
+          saveState();
+          updateDisplay();
+        }
       });
 
       // Preset buttons
       presetBtns.forEach((btn) => {
         btn.addEventListener("click", () => {
-          if (state.count > 0 && !confirm("Tukar zikir? Kiraan semasa akan di-reset.")) return;
+          function applyPreset() {
+            const key = btn.dataset.zikir;
+            const target = parseInt(btn.dataset.target, 10) || 0;
+            const arabic = btn.dataset.arabic || "";
 
-          const key = btn.dataset.zikir;
-          const target = parseInt(btn.dataset.target, 10) || 0;
-          const arabic = btn.dataset.arabic || "";
+            state.zikir = key;
+            state.target = target;
+            state.arabic = arabic;
+            state.count = 0;
 
-          state.zikir = key;
-          state.target = target;
-          state.arabic = arabic;
-          state.count = 0;
-
-          saveState();
-          updateDisplay();
+            saveState();
+            updateDisplay();
+          }
+          if (state.count > 0) {
+            siteConfirm("Tukar zikir? Kiraan semasa akan di-reset.").then(function(ok) {
+              if (ok) applyPreset();
+            });
+          } else {
+            applyPreset();
+          }
         });
       });
 

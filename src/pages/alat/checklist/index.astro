@@ -292,16 +292,18 @@ const sections = [
 
     // Reset
     btnReset.addEventListener('click', function() {
-      if (!confirm('Reset semua checklist? Progress akan hilang.')) return;
-      checkboxes.forEach(function(cb) { cb.checked = false; });
-      state = {};
-      localStorage.removeItem(KEY);
-      checkboxes.forEach(function(cb) {
-        var label = cb.closest('.checklist-item').querySelector('.checklist-label');
-        label.style.textDecoration = 'none';
-        label.style.opacity = '1';
+      siteConfirmDanger('Reset semua checklist? Progress akan hilang.').then(function(ok) {
+        if (!ok) return;
+        checkboxes.forEach(function(cb) { cb.checked = false; });
+        state = {};
+        localStorage.removeItem(KEY);
+        checkboxes.forEach(function(cb) {
+          var label = cb.closest('.checklist-item').querySelector('.checklist-label');
+          label.style.textDecoration = 'none';
+          label.style.opacity = '1';
+        });
+        updateProgress();
       });
-      updateProgress();
     });
 
     // Expand/collapse all

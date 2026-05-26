@@ -347,12 +347,14 @@ const totalItems = sections.reduce((sum, s) => sum + s.items.length, 0);
 
     // Reset all
     btnReset.addEventListener('click', function() {
-      if (!confirm('Reset semua senarai beg? Progress akan hilang.')) return;
-      checkboxes.forEach(function(cb) { cb.checked = false; });
-      state = {};
-      localStorage.removeItem(KEY);
-      checkboxes.forEach(function(cb) { applyLabelStyle(cb); });
-      updateProgress();
+      siteConfirmDanger('Reset semua senarai beg? Progress akan hilang.').then(function(ok) {
+        if (!ok) return;
+        checkboxes.forEach(function(cb) { cb.checked = false; });
+        state = {};
+        localStorage.removeItem(KEY);
+        checkboxes.forEach(function(cb) { applyLabelStyle(cb); });
+        updateProgress();
+      });
     });
 
     // Expand/collapse all
