@@ -1,0 +1,101 @@
+# Panduan Haji & Umrah
+
+> Sumber rujukan haji dan umrah berbahasa Melayu — fatwa Mufti Wilayah, hadis sahih, panduan Tabung Haji.
+
+Web: https://panduanhajiumrah.vercel.app
+Contact: admin@panduanhajiumrah.com
+
+## Panduan (Guides)
+
+### Persiapan
+- [Checklist Kesihatan dan Vaksin Sebelum Berangkat Haji & Umrah](https://panduanhajiumrah.vercel.app/panduan/persiapan/checklist-kesihatan-vaksin-haji-umrah/)
+- [Ilmu Asas Fardhu Ain yang Wajib Dikuasai Sebelum Haji](https://panduanhajiumrah.vercel.app/panduan/persiapan/ilmu-asas-fardhu-ain-sebelum-haji/)
+- [Istitaah: Apa Maksud 'Mampu' untuk Tunai Haji](https://panduanhajiumrah.vercel.app/panduan/persiapan/istitaah-syarat-mampu-tunai-haji/)
+- [Persediaan Fizikal dan Mental untuk Jemaah Lansia](https://panduanhajiumrah.vercel.app/panduan/persiapan/persediaan-fizikal-mental-jemaah-lansia/)
+- [Persiapan Dokumen dan Kewangan Sebelum Berangkat Haji/Umrah](https://panduanhajiumrah.vercel.app/panduan/persiapan/persiapan-dokumen-kewangan/)
+
+### Ihram & Miqat
+- [Pampers, Hand Sanitizer, dan Payung Semasa Ihram: Halal atau Dam](https://panduanhajiumrah.vercel.app/panduan/ihram-miqat/ihram-pampers-sanitizer-payung-hukum/)
+- [Larangan Ihram Lelaki dan Wanita: Senarai Lengkap dan Dam](https://panduanhajiumrah.vercel.app/panduan/ihram-miqat/larangan-ihram-lelaki-wanita-perbezaan/)
+- [Miqat Makani: Tempat Berihram untuk Jemaah Asia Tenggara](https://panduanhajiumrah.vercel.app/panduan/ihram-miqat/miqat-makani-jemaah-asia-tenggara/)
+- [Miqat Zamani: Bila Boleh Mula Niat Ihram Haji dan Umrah](https://panduanhajiumrah.vercel.app/panduan/ihram-miqat/miqat-zamani-haji-umrah-bila-mula/)
+
+### Umrah
+- [Tahalul: Bercukur atau Taqsir, Mana Lebih Utama?](https://panduanhajiumrah.vercel.app/panduan/umrah/tahalul-bercukur-vs-taqsir-pilihan/)
+- [Tatacara Asas Umrah: Panduan A-Z untuk Jemaah Pertama Kali](https://panduanhajiumrah.vercel.app/panduan/umrah/tatacara-asas-umrah/)
+- [Tatacara Saie: Tujuh Perjalanan antara Safa dan Marwah](https://panduanhajiumrah.vercel.app/panduan/umrah/tatacara-saie-safa-marwah/)
+- [Tatacara Tawaf: Tujuh Pusingan Mengelilingi Kaabah](https://panduanhajiumrah.vercel.app/panduan/umrah/tatacara-tawaf-tujuh-pusingan/)
+- [Niat Bersyarat (Al-Istithna') dalam Umrah: Bila dan Bagaimana](https://panduanhajiumrah.vercel.app/panduan/umrah/umrah-niat-bersyarat-istithna-rukhsah/)
+- [Wajib Umrah vs Rukun Umrah: Apa Beza dan Kesan Jika Ditinggal](https://panduanhajiumrah.vercel.app/panduan/umrah/wajib-umrah-vs-rukun-umrah/)
+
+### Haji
+- [Tiga Jenis Haji: Tamattu, Ifrad, Qiran — Mana Pilihan Anda?](https://panduanhajiumrah.vercel.app/panduan/haji/jenis-haji-tamattu-ifrad-qiran/)
+- [Rukun Haji: Enam Perkara Wajib yang Tidak Boleh Ditinggalkan](https://panduanhajiumrah.vercel.app/panduan/haji/rukun-haji-enam-perkara/)
+- [Tatacara Mabit di Muzdalifah dan Mina serta Melontar Jamrah](https://panduanhajiumrah.vercel.app/panduan/haji/tatacara-mabit-muzdalifah-mina-melontar/)
+- [Tatacara Wukuf di Arafah pada 9 Zulhijjah](https://panduanhajiumrah.vercel.app/panduan/haji/tatacara-wukuf-arafah-9-zulhijjah/)
+- [Wajib Haji: Tujuh Perkara dan Dam Jika Ditinggalkan](https://panduanhajiumrah.vercel.app/panduan/haji/wajib-haji-tujuh-perkara/)
+
+### Tempat Penting
+- [Raudhah di Masjid Nabawi: Tatacara Masuk dan Doa](https://panduanhajiumrah.vercel.app/panduan/tempat/raudhah-masjid-nabawi-tatacara-masuk/)
+- [Tempat Mustajab Doa di Masjidil Haram: Panduan Lengkap](https://panduanhajiumrah.vercel.app/panduan/tempat/tempat-mustajab-masjidil-haram/)
+- [Tempat Ziarah Bersejarah di Mekah dan Madinah: Panduan dan Adab](https://panduanhajiumrah.vercel.app/panduan/tempat/ziarah-bersejarah-mekah-madinah/)
+
+### Doa & Zikir
+- [Doa Tawaf Wada: Adab Perpisahan dengan Baitullah](https://panduanhajiumrah.vercel.app/panduan/doa-zikir/doa-tawaf-wada-perpisahan-baitullah/)
+- [Doa dan Zikir Penting Semasa Haji dan Umrah](https://panduanhajiumrah.vercel.app/panduan/doa-zikir/doa-zikir-haji-umrah/)
+- [Talbiyah: Bila dan Bagaimana Dibaca dengan Betul](https://panduanhajiumrah.vercel.app/panduan/doa-zikir/talbiyah-bila-bagaimana-dibaca/)
+
+### Hukum Khas
+- [Badal Haji: Syarat, Hukum, dan Siapa Layak Dilakukan](https://panduanhajiumrah.vercel.app/panduan/hukum-khas/badal-haji-syarat-hukum/)
+- [Rukhsah Haji untuk Lansia dan Pesakit Kronik](https://panduanhajiumrah.vercel.app/panduan/hukum-khas/haji-lansia-pesakit-kronik-rukhsah/)
+- [Haji Wanita Haid dan Istihadhah: Apa Boleh, Apa Tidak](https://panduanhajiumrah.vercel.app/panduan/hukum-khas/haji-wanita-haid-istihadhah-tatacara/)
+- [Umrah untuk Orang Kurang Upaya (OKU): Tatacara dan Rukhsah](https://panduanhajiumrah.vercel.app/panduan/hukum-khas/umrah-orang-kurang-upaya-tatacara/)
+
+### Selepas Pulang
+- [Adab Sambut Jemaah Pulang Haji dan Walimah Hajj](https://panduanhajiumrah.vercel.app/panduan/selepas/adab-sambut-jemaah-pulang-walimah/)
+- [Amalan Ayyam al-Tashreeq (11–13 Zulhijjah): Panduan Lengkap](https://panduanhajiumrah.vercel.app/panduan/selepas/amalan-ayyam-al-tashreeq/)
+- [Amalan Rutin Selepas Haji: Mengekalkan Transformasi Rohani](https://panduanhajiumrah.vercel.app/panduan/selepas/amalan-rutin-selepas-haji/)
+- [Nadhr (Nazar) dalam Haji: Hukum dan Wajib Tunaikan](https://panduanhajiumrah.vercel.app/panduan/selepas/nadhr-nazar-haji-wajib-tunaikan/)
+- [Berkongsi Pengalaman Haji di Media Sosial: Adab & Batasan](https://panduanhajiumrah.vercel.app/panduan/selepas/pengalaman-haji-di-media-sosial/)
+- [Pengurusan Hutang Selepas Haji: Kewangan & Tanggungjawab](https://panduanhajiumrah.vercel.app/panduan/selepas/pengurusan-hutang-selepas-haji/)
+- [Tanda Haji Mabrur dan Cara Memeliharanya Selepas Pulang](https://panduanhajiumrah.vercel.app/panduan/selepas/tanda-haji-mabrur-cara-pelihara/)
+
+## Artikel (Articles)
+
+### Soal Jawab
+- [10 Soalan Lazim Tentang Tawaf untuk Jemaah Pertama Kali](https://panduanhajiumrah.vercel.app/artikel/persoalan/10-soalan-lazim-tawaf-jemaah-pertama/)
+- [Dam Haji dan Umrah: Kategori, Kadar, dan Tempat Pembayaran](https://panduanhajiumrah.vercel.app/artikel/persoalan/dam-haji-kategori-kadar-tempat-bayar/)
+- [Soal Jawab Lengkap: Wanita Haid Semasa Haji dan Umrah](https://panduanhajiumrah.vercel.app/artikel/persoalan/soal-jawab-wanita-haid-haji-umrah/)
+- [Solat Jamak dan Qasar untuk Jemaah Haji dan Umrah: Persoalan Lazim](https://panduanhajiumrah.vercel.app/artikel/persoalan/solat-jamak-qasar-jemaah-haji-umrah/)
+
+### Muzakarah
+- [Badal Haji atau Infaq untuk Arwah: Mana Lebih Utama?](https://panduanhajiumrah.vercel.app/artikel/muzakarah/badal-haji-vs-infaq-arwah-mana-utama/)
+- [Adakah Haji Mabrur Menggugurkan Semua Dosa, Termasuk Hak Manusia?](https://panduanhajiumrah.vercel.app/artikel/muzakarah/haji-mabrur-menggugur-dosa-hak-manusia/)
+- [Hukum Berhutang dan Meminjam untuk Menunaikan Haji](https://panduanhajiumrah.vercel.app/artikel/muzakarah/hukum-berhutang-untuk-haji-pinjaman-pendidikan/)
+- [Hukum Memotong Giliran Haji dengan Cara Tunai](https://panduanhajiumrah.vercel.app/artikel/muzakarah/hukum-memotong-giliran-tunai-haji/)
+- [Hukum Tertidur dan Tertangguh Selepas Tawaf Wada](https://panduanhajiumrah.vercel.app/artikel/muzakarah/hukum-tertidur-selepas-tawaf-wada/)
+- [Wanita Datang Haid pada Hari Arafah: Apa Boleh, Apa Tidak](https://panduanhajiumrah.vercel.app/artikel/muzakarah/wanita-haid-hari-arafah-tatacara-haji/)
+- [Bolehkah Wanita Haid Melaksanakan Saie?](https://panduanhajiumrah.vercel.app/artikel/muzakarah/wanita-haid-laksana-saie/)
+- [Hukum Wanita Menunaikan Umrah Tanpa Mahram: Syarat dan Pandangan Mufti WP](https://panduanhajiumrah.vercel.app/artikel/muzakarah/wanita-umrah-tanpa-mahram-syarat-dan-hukum/)
+
+### Berita
+- [Persiapan Haji 2026: Kuota, Pakej, dan Jadual Tabung Haji](https://panduanhajiumrah.vercel.app/artikel/berita/persiapan-haji-2026-tabung-haji-malaysia/)
+- [Umrah Ramadhan: Fadhilat, Persiapan, dan Tips Jemaah](https://panduanhajiumrah.vercel.app/artikel/berita/umrah-ramadhan-keutamaan-fadhilat/)
+
+### Pengalaman
+- [Dokumen atau Pasport Hilang di Tanah Suci: Apa Nak Buat](https://panduanhajiumrah.vercel.app/artikel/pengalaman/dokumen-hilang-di-tanah-suci/)
+- [Terpisah dari Rombongan Haji: Cara Pulang ke Maktab](https://panduanhajiumrah.vercel.app/artikel/pengalaman/hilang-dari-rombongan-haji/)
+- [Sepuluh Perkara Penting untuk Jemaah Haji Kali Pertama](https://panduanhajiumrah.vercel.app/artikel/pengalaman/persiapan-jemaah-haji-kali-pertama/)
+- [Sakit dan Dehidrasi Semasa Wukuf: Pencegahan dan Rukhsah](https://panduanhajiumrah.vercel.app/artikel/pengalaman/sakit-dan-dehidrasi-semasa-wukuf/)
+
+## Alat (Interactive Tools)
+
+- [Kompas Qiblat](https://panduanhajiumrah.vercel.app/alat/qibla/)
+- [Kalkulator Kos Haji & Umrah](https://panduanhajiumrah.vercel.app/alat/kalkulator-kos/)
+- [Senarai Beg Jemaah](https://panduanhajiumrah.vercel.app/alat/senarai-beg/)
+- [Zikir Counter](https://panduanhajiumrah.vercel.app/alat/zikir-counter/)
+- [Solat Musafir Guide](https://panduanhajiumrah.vercel.app/alat/solat-musafir/)
+- [Kalkulator Dam](https://panduanhajiumrah.vercel.app/alat/kalkulator-dam/)
+- [Doa Harian](https://panduanhajiumrah.vercel.app/alat/doa-harian/)
+- [Checklist Haji](https://panduanhajiumrah.vercel.app/alat/checklist/)
+- [Jadual Haji](https://panduanhajiumrah.vercel.app/alat/jadual-haji/)

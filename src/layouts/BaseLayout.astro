@@ -43,6 +43,14 @@ const defaultSchema: Record<string, unknown>[] = [
     inLanguage: "ms-MY",
     description:
       "Sumber rujukan haji dan umrah berbahasa Melayu — fatwa Mufti Wilayah, hadis sahih, panduan Tabung Haji.",
+    potentialAction: {
+      "@type": "SearchAction",
+      target: {
+        "@type": "EntryPoint",
+        urlTemplate: siteUrl.href + "cari?q={search_term_string}",
+      },
+      "query-input": "required name=search_term_string",
+    },
   },
   {
     "@context": "https://schema.org",
