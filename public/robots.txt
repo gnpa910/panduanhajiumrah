@@ -1,8 +1,30 @@
 User-agent: *
 Allow: /
 
+# AI search engines — explicitly welcome
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
 # Sitemap
 Sitemap: https://panduanhajiumrah.vercel.app/sitemap-index.xml
+
+# LLM context file
+# https://panduanhajiumrah.vercel.app/llms.txt
 
 # Disallow API and internal
 Disallow: /api/
