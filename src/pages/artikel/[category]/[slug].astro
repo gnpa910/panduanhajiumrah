@@ -27,17 +27,27 @@ const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
 const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
 const categoryLabel = categoryLabels[entry.data.category] ?? entry.data.category;
 
+const authorSchema = {
+  "@type": "Person",
+  name: author?.data.name ?? "Aiman",
+  ...(author?.data.bio && { description: author.data.bio }),
+  ...(author?.data.credentials && author.data.credentials.length > 0 && {
+    hasCredential: author.data.credentials.map((c) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: c,
+    })),
+  }),
+  ...(author?.data.url && { url: author.data.url }),
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": entry.data.category === "berita" ? "NewsArticle" : "Article",
   headline: entry.data.title,
   description: entry.data.description,
   datePublished: entry.data.publishedAt.toISOString(),
-  dateModified: (entry.data.updatedAt ?? entry.data.publishedAt).toISOString(),
-  author: {
-    "@type": "Person",
-    name: author?.data.name ?? "Aiman",
-  },
+  dateModified: (entry.data.updatedAt ?? entry.data.factCheckedAt ?? entry.data.publishedAt).toISOString(),
+  author: authorSchema,
   publisher: {
     "@type": "Organization",
     name: "Panduan Haji & Umrah",

@@ -14,6 +14,8 @@ interface Props {
   jsonLd?: Record<string, unknown> | Record<string, unknown>[];
   /** Optional canonical override (defaults to current URL) */
   canonicalUrl?: string;
+  /** Set true to emit noindex robots meta (e.g. tag/archive pages with thin content) */
+  noindex?: boolean;
 }
 
 const {
@@ -24,6 +26,7 @@ const {
   updatedAt,
   jsonLd,
   canonicalUrl,
+  noindex = false,
 } = Astro.props;
 
 const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
@@ -73,7 +76,7 @@ const schemas = jsonLd
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="generator" content={Astro.generator} />
     <meta name="theme-color" content="#0d7377" />
-    <meta name="robots" content="index, follow, max-image-preview:large" />
+    <meta name="robots" content={noindex ? "noindex, follow" : "index, follow, max-image-preview:large"} />
 
     {/* PWA */}
     <link rel="manifest" href="/manifest.json" />

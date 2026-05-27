@@ -19,17 +19,27 @@ const author = await getEntry(entry.data.author);
 const siteUrl = Astro.site ?? new URL("https://panduanhajiumrah.vercel.app");
 const pageUrl = new URL(Astro.url.pathname, siteUrl).href;
 
+const authorSchema = {
+  "@type": "Person",
+  name: author?.data.name ?? "Aiman",
+  ...(author?.data.bio && { description: author.data.bio }),
+  ...(author?.data.credentials && author.data.credentials.length > 0 && {
+    hasCredential: author.data.credentials.map((c) => ({
+      "@type": "EducationalOccupationalCredential",
+      name: c,
+    })),
+  }),
+  ...(author?.data.url && { url: author.data.url }),
+};
+
 const articleSchema = {
   "@context": "https://schema.org",
   "@type": "Article",
   headline: entry.data.title,
   description: entry.data.description,
   datePublished: entry.data.publishedAt.toISOString(),
-  dateModified: (entry.data.updatedAt ?? entry.data.publishedAt).toISOString(),
-  author: {
-    "@type": "Person",
-    name: author?.data.name ?? "Aiman",
-  },
+  dateModified: (entry.data.updatedAt ?? entry.data.factCheckedAt ?? entry.data.publishedAt).toISOString(),
+  author: authorSchema,
   publisher: {
     "@type": "Organization",
     name: "Panduan Haji & Umrah",
@@ -47,6 +57,27 @@ const articleSchema = {
     url: s.url,
   })),
 };
+
+// HowTo schema for procedural guides — tatacara/cara-cara content.
+// Detect by title prefix or section. Keeps schema lightweight (no manual steps);
+// signals to Google + AI that this is procedural how-to content.
+const isHowTo =
+  /^(Tatacara|Cara|Panduan)\s/i.test(entry.data.title) ||
+  ["umrah", "haji", "ihram-miqat"].includes(entry.data.section);
+
+const howToSchema = isHowTo
+  ? {
+      "@context": "https://schema.org",
+      "@type": "HowTo",
+      name: entry.data.title,
+      description: entry.data.description,
+      inLanguage: "ms-MY",
+      datePublished: entry.data.publishedAt.toISOString(),
+      dateModified: (entry.data.updatedAt ?? entry.data.factCheckedAt ?? entry.data.publishedAt).toISOString(),
+      author: authorSchema,
+      mainEntityOfPage: { "@type": "WebPage", "@id": pageUrl },
+    }
+  : null;
 
 const sectionLabels: Record<string, string> = {
   persiapan: "Persiapan",
@@ -94,7 +125,7 @@ const relatedArticles = allArticles
   ogType="article"
   publishedAt={entry.data.publishedAt}
   updatedAt={entry.data.updatedAt}
-  jsonLd={[articleSchema, breadcrumbSchema]}
+  jsonLd={[articleSchema, breadcrumbSchema, ...(howToSchema ? [howToSchema] : [])]}
 >
   {/* Visible breadcrumb */}
   <nav class="max-w-5xl mx-auto px-4 pt-6 text-sm text-[var(--color-stone-warm)]" aria-label="Breadcrumb">
